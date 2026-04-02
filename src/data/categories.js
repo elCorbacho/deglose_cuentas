@@ -1,0 +1,28 @@
+export const CATEGORIES = {
+  "Supermercado": ["JUMBO ONECLICK", "CENCOPAY-SUPERMERCADOS", "LIDER MATUCANA", "UNIMARC", "JUMBO MAIPU", "JUMBO"],
+  "Restaurante": ["SOHO THAI RESTAURANT", "TEXAS RIBS", "EL BARBARA", "LIRA 45", "TUU*VITTORIO", "SUNRISE COFFEE", "JUNIO", "SUC LIRA"],
+  "Delivery": ["UBER EATS", "PAYU *UBER EATS"],
+  "Farmacia": ["AHUM"],
+  "Combustible": ["COPEC APP", "AGASNAR SPA"],
+  "Educación": ["COLEGIO SAN IGNACIO", "PISCINA PUC"],
+  "Servicios": ["UNIRED CL", "GAS DON VICTOR"],
+  "Transporte": ["UBER TRIP", "TAG TOTAL CREDITO", "PUC ESTACIONAMIENTO", "MALL ARAUCO MAIPU", "PARKING MALL", "PAYU *UBER TRIP"],
+  "Streaming": ["NETFLIX", "CINEPOLIS", "HAPPYLAND", "PETERLAND", "MAMUT"],
+  "Suscripciones": ["MERPAGO*MELIMAS"],
+  "Seguros": ["DP *SEGUROS", "DP *SEGFALA CL PAC"],
+  "Municipalidad": ["MUNI DE LO PRADO", "REGISTRO CIVIL"],
+  "Estacionamiento": ["PUC ESTACIONAMIENTO", "MALL ARAUCO MAIPU", "PARKING MALL"],
+  "Hogar/Construcción": ["CONSTRUMART"],
+  "Alimentación/Tienda": ["DONDE LA CLAU", "DONDE LOS TIOS", "TUU*AQUI HAY DE TODO", "ISABEL", "TOTYS"],
+  "Cuotas": [],
+  "Otros": []
+}
+
+export const NON_EXPENSE_KEYWORDS = [
+  "MONTO CANCELADO",
+  "NOTA DE CREDITO",
+  "INTERESES",
+  "COMISION DE MANTENCION",
+  "MONTO FACTURADO",
+  "CUPO",
+]
