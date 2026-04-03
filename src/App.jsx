@@ -21,14 +21,16 @@ export default function App() {
     setLoading(true)
     setError('')
     setFileName(file.name)
+
     try {
       const text = await extractText(file)
-      // Save extracted text for debugging
       window.__extractedText = text
       console.log('=== PDF TEXT EXTRACTED (first 3000 chars) ===')
       console.log(text.slice(0, 3000))
       console.log('=== END ===')
+
       const transactions = parse(text)
+
       if (transactions.length === 0) {
         setError('No se encontraron transacciones en el PDF.')
         setRawTransactions([])
@@ -47,6 +49,7 @@ export default function App() {
 
   const filteredTransactions = useMemo(() => {
     if (!desde && !hasta) return rawTransactions
+
     return rawTransactions.filter(tx => {
       const txDate = parseDate(tx.fecha)
       if (desde && txDate < new Date(desde)) return false
@@ -60,63 +63,156 @@ export default function App() {
     [filteredTransactions]
   )
 
+  const hasTransactions = rawTransactions.length > 0
+  const hasActiveFilters = Boolean(desde || hasta)
+  const resetResults = () => {
+    setRawTransactions([])
+    setFileName('')
+    setDesde('')
+    setHasta('')
+    setError('')
+  }
+
   console.log('=== APP: categories:', categories)
   console.log('=== APP: grandTotal:', grandTotal)
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       <SummaryBar total={grandTotal} />
 
-      <main className="max-w-4xl mx-auto px-4 py-8">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">
-          Deglose de Cuentas
-        </h1>
-        <p className="text-sm text-gray-500 mb-8">
-          Sube tu estado de cuenta Santander para ver tus gastos categorizados.
-        </p>
+      <main className="app-shell space-y-6">
+        <section className="hero-shell">
+          <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-2xl space-y-4">
+              <span className="eyebrow">Santander · visión rápida</span>
 
-        {rawTransactions.length === 0 && !loading && (
-          <FileUpload onFileLoaded={handleFile} />
-        )}
-
-        {loading && (
-          <div className="text-center py-12 text-gray-500">
-            <div className="animate-spin inline-block w-8 h-8 border-4 border-gray-300 border-t-blue-500 rounded-full mb-3"></div>
-            <p>Procesando PDF...</p>
-          </div>
-        )}
-
-        {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 mb-6">
-            {error}
-          </div>
-        )}
-
-        {rawTransactions.length > 0 && !loading && (
-          <div className="space-y-6">
-            <div className="flex items-center justify-between flex-wrap gap-4">
-              <div>
-                <p className="text-sm text-gray-500">
-                  📄 {fileName} — {rawTransactions.length} transacciones encontradas
+              <div className="space-y-3">
+                <h1 className="text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
+                  Entendé tus gastos del mes sin pelearte con el PDF.
+                </h1>
+                <p className="max-w-xl text-sm leading-6 text-slate-600 sm:text-base">
+                  Subí tu estado de cuenta, revisá el total del período y explorá categorías,
+                  comercios y movimientos con una vista más clara y ordenada.
                 </p>
               </div>
-              <button
-                onClick={() => { setRawTransactions([]); setFileName(''); setDesde(''); setHasta('') }}
-                className="text-sm text-blue-600 hover:text-blue-800 underline"
-              >
-                Cargar otro PDF
-              </button>
             </div>
 
-            <DateFilter
-              desde={desde}
-              hasta={hasta}
-              onDesdeChange={setDesde}
-              onHastaChange={setHasta}
-            />
+            <div className="grid gap-3 sm:grid-cols-2 lg:min-w-[320px]">
+              <div className="panel-muted px-4 py-3">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+                  Flujo
+                </p>
+                <p className="mt-1 text-sm font-medium text-slate-800">
+                  Subir PDF → filtrar fechas → expandir categorías
+                </p>
+              </div>
 
-            <CategoryList categories={categories} />
+              <div className="panel-muted px-4 py-3">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+                  Alcance
+                </p>
+                <p className="mt-1 text-sm font-medium text-slate-800">
+                  Solo mejora visual, sin tocar cálculos ni agrupación
+                </p>
+              </div>
+            </div>
           </div>
+
+          {!hasTransactions && !loading && (
+            <div className="relative z-10 mt-6 panel p-5 sm:p-6">
+              <div className="mb-5 flex flex-col gap-2">
+                <h2 className="text-lg font-semibold text-slate-900">Cargá tu estado de cuenta</h2>
+                <p className="text-sm leading-6 text-slate-600">
+                  Elegí un PDF de Santander para ver el total general, aplicar filtros por fecha
+                  y navegar los gastos agrupados por categoría.
+                </p>
+              </div>
+
+              <FileUpload onFileLoaded={handleFile} />
+            </div>
+          )}
+        </section>
+
+        {loading && (
+          <section className="panel status-card status-card--loading">
+            <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-blue-100 border-t-blue-600"></div>
+
+            <div className="space-y-2">
+              <p className="text-lg font-semibold text-slate-900">Procesando tu PDF</p>
+              <p className="max-w-md text-sm leading-6 text-slate-600">
+                Estamos leyendo el archivo y reorganizando tus movimientos para mostrarlos por categoría.
+              </p>
+            </div>
+          </section>
+        )}
+
+        {error && !loading && (
+          <section className="panel status-card status-card--error">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-rose-100 text-2xl text-rose-600">
+              !
+            </div>
+
+            <div className="space-y-2">
+              <p className="text-lg font-semibold text-slate-900">No pudimos usar este archivo</p>
+              <p className="max-w-xl text-sm leading-6 text-slate-600">{error}</p>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <button onClick={resetResults} className="btn-secondary" type="button">
+                Intentar con otro PDF
+              </button>
+              <span className="text-xs text-slate-500">
+                La zona de carga vuelve a quedar disponible arriba.
+              </span>
+            </div>
+          </section>
+        )}
+
+        {hasTransactions && !loading && (
+          <section className="space-y-5">
+            <div className="panel p-5 sm:p-6">
+              <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+                      Archivo procesado
+                    </p>
+                    <h2 className="text-2xl font-semibold tracking-tight text-slate-950">
+                      Tus resultados ya están listos
+                    </h2>
+                    <p className="max-w-2xl text-sm leading-6 text-slate-600">
+                      Revisá el resumen general, ajustá el rango de fechas si hace falta y expandí
+                      cada categoría para ver comercios y montos en detalle.
+                    </p>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2">
+                    <span className="badge-soft">📄 {fileName}</span>
+                    <span className="badge-soft">{rawTransactions.length} transacciones detectadas</span>
+                    {hasActiveFilters && (
+                      <span className="badge-soft">
+                        {filteredTransactions.length} visibles en el rango actual
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                <button onClick={resetResults} className="btn-secondary shrink-0" type="button">
+                  Cargar otro PDF
+                </button>
+              </div>
+
+              <div className="mt-5">
+                <DateFilter
+                  desde={desde}
+                  hasta={hasta}
+                  onDesdeChange={setDesde}
+                  onHastaChange={setHasta}
+                />
+              </div>
+            </div>
+            <CategoryList categories={categories} />
+          </section>
         )}
       </main>
     </div>

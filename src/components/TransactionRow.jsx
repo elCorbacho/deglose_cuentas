@@ -2,15 +2,22 @@ import { formatCLP } from '../lib/formatters.js'
 
 export default function TransactionRow({ tx }) {
   return (
-    <div className="flex items-center justify-between py-1.5 px-3 text-sm
-                    hover:bg-gray-50 rounded">
-      <div className="flex gap-4 min-w-0">
-        <span className="text-gray-500 w-20 shrink-0">{tx.fecha}</span>
-        <span className="text-gray-800 truncate">{tx.comercio}</span>
+    <div className="flex flex-col gap-2 px-4 py-3 transition-colors hover:bg-slate-50 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+      <div className="min-w-0 space-y-1">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+          {tx.fecha}
+        </p>
+        <p className="break-words text-sm font-medium leading-6 text-slate-800 sm:text-[0.95rem]">
+          {tx.comercio}
+        </p>
       </div>
-      <span className={`font-mono font-medium whitespace-nowrap ml-4 ${tx.monto < 0 ? 'text-red-600' : 'text-gray-700'}`}>
-        {formatCLP(tx.monto)}
-      </span>
+
+      <div className="sm:pl-4">
+        <p className="text-xs uppercase tracking-[0.18em] text-slate-400 sm:text-right">Monto</p>
+        <p className={`font-mono text-base font-semibold ${tx.monto < 0 ? 'text-rose-600' : 'text-slate-800'} sm:text-right`}>
+          {formatCLP(tx.monto)}
+        </p>
+      </div>
     </div>
   )
 }

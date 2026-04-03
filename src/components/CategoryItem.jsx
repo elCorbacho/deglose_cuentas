@@ -6,45 +6,74 @@ export default function CategoryItem({ category }) {
   const [expanded, setExpanded] = useState(false)
 
   return (
-    <div className="border border-gray-200 rounded-xl overflow-hidden bg-white">
+    <div className="panel overflow-hidden bg-white/95">
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full flex items-center justify-between px-4 py-3
-                   hover:bg-gray-50 transition-colors text-left"
+        className="flex w-full items-center justify-between gap-4 px-4 py-4 text-left transition-colors hover:bg-slate-50 sm:px-5"
+        type="button"
       >
-        <div className="flex items-center gap-3">
-          <span className={`transition-transform duration-200 text-gray-400 ${expanded ? 'rotate-90' : ''}`}>
+        <div className="flex min-w-0 flex-1 items-start gap-3">
+          <span
+            className={`mt-1 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-100 text-sm text-slate-500 transition-transform duration-200 ${expanded ? 'rotate-90' : ''}`}
+          >
             ▶
           </span>
-          <span className="font-semibold text-gray-800">{category.name}</span>
-          <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
-            {category.count} {category.count === 1 ? 'transacción' : 'transacciones'}
+
+          <div className="min-w-0 space-y-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-base font-semibold text-slate-900 sm:text-lg">{category.name}</span>
+              <span className="badge-soft">
+                {category.count} {category.count === 1 ? 'movimiento' : 'movimientos'}
+              </span>
+            </div>
+
+            <p className="text-sm text-slate-500">
+              Tocá para {expanded ? 'ocultar' : 'ver'} el detalle por comercio y transacción.
+            </p>
+          </div>
+        </div>
+
+        <div className="shrink-0 text-right">
+          <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Total</p>
+          <span className="font-mono text-lg font-bold text-slate-900">
+            {formatCLP(category.total)}
           </span>
         </div>
-        <span className="font-mono font-bold text-gray-800">
-          {formatCLP(category.total)}
-        </span>
       </button>
 
       {expanded && (
-        <div className="border-t border-gray-100 divide-y divide-gray-50">
-          {category.merchants.map((merchant) => (
-            <div key={merchant.name}>
-              {merchant.isRecurring && merchant.count > 1 && (
-                <div className="px-4 py-1.5 bg-blue-50/60 flex items-center justify-between text-xs">
-                  <span className="text-blue-700 font-medium">
-                    🔄 {merchant.name} — {merchant.count} veces
-                  </span>
-                  <span className="font-mono font-semibold text-blue-800">
-                    {formatCLP(merchant.total)}
-                  </span>
+        <div className="border-t border-slate-100 bg-white px-3 py-3 sm:px-4">
+          <div className="space-y-4">
+            {category.merchants.map((merchant) => (
+              <div key={merchant.name} className="overflow-hidden rounded-2xl border border-slate-100 bg-slate-50/55">
+                <div className="flex flex-col gap-2 border-b border-slate-100 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-semibold text-slate-800">{merchant.name}</p>
+                    <p className="text-xs text-slate-500">
+                      {merchant.count} {merchant.count === 1 ? 'transacción' : 'transacciones'} asociadas
+                    </p>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-2 sm:justify-end">
+                    {merchant.isRecurring && merchant.count > 1 && (
+                      <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
+                        🔄 Recurrente · {merchant.count} veces
+                      </span>
+                    )}
+                    <span className="font-mono text-sm font-semibold text-slate-700">
+                      {formatCLP(merchant.total)}
+                    </span>
+                  </div>
                 </div>
-              )}
-              {merchant.transactions.map((tx, i) => (
-                <TransactionRow key={`${tx.raw}-${i}`} tx={tx} />
-              ))}
-            </div>
-          ))}
+
+                <div className="divide-y divide-slate-100 bg-white">
+                  {merchant.transactions.map((tx, index) => (
+                    <TransactionRow key={`${tx.raw}-${index}`} tx={tx} />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>
