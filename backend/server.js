@@ -1,6 +1,6 @@
-const express = require('express');
-const cors = require('cors');
-const categoriesRouter = require('./routes/categories');
+import express from 'express';
+import cors from 'cors';
+import categoriesRouter from './routes/categories.js';
 
 const app = express();
 const PORT = 3001;

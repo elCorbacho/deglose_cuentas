@@ -4,11 +4,26 @@ import DateFilter from './components/DateFilter.jsx'
 import CategoryList from './components/CategoryList.jsx'
 import SummaryBar from './components/SummaryBar.jsx'
 import Header from './components/Header.jsx'
+import CategoryConfig from './components/CategoryConfig.jsx'
 import { extractText } from './lib/pdfParser.js'
 import { parse } from './lib/transactionExtractor.js'
 import { categorize } from './lib/categorizer.js'
 import { group } from './lib/aggregator.js'
 import { parseDate } from './lib/formatters.js'
+import { getCategories } from './services/api.js'
+import { CATEGORIES as DEFAULT_CATEGORIES } from './data/categories.js'
+
+// Convert JSON format to object format used by categorizer
+function convertCategoriesFromJSON(jsonCategories) {
+  const obj = {}
+  for (const cat of jsonCategories) {
+    obj[cat.name] = {
+      icon: cat.icon,
+      keywords: cat.keywords || []
+    }
+  }
+  return obj
+}
 
 export default function App() {
   const [rawTransactions, setRawTransactions] = useState([])
@@ -17,12 +32,41 @@ export default function App() {
   const [desde, setDesde] = useState('')
   const [hasta, setHasta] = useState('')
   const [fileName, setFileName] = useState('')
+  const [showConfig, setShowConfig] = useState(false)
+  const [categoriesConfig, setCategoriesConfig] = useState(null)
+  const [loadingCategories, setLoadingCategories] = useState(true)
   const [theme, setTheme] = useState(() => {
     if (typeof window !== 'undefined') {
       return localStorage.getItem('theme') || 'light'
     }
     return 'light'
   })
+
+  // Load categories from backend on mount
+  useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        const data = await getCategories()
+        const converted = convertCategoriesFromJSON(data.categories)
+        setCategoriesConfig(converted)
+        // Cache in localStorage
+        localStorage.setItem('cachedCategories', JSON.stringify(converted))
+      } catch (err) {
+        console.warn('Could not load categories from backend, using cached/default:', err)
+        // Try localStorage cache
+        const cached = localStorage.getItem('cachedCategories')
+        if (cached) {
+          setCategoriesConfig(JSON.parse(cached))
+        } else {
+          // Fall back to default
+          setCategoriesConfig(DEFAULT_CATEGORIES)
+        }
+      } finally {
+        setLoadingCategories(false)
+      }
+    }
+    loadCategories()
+  }, [])
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -45,7 +89,9 @@ export default function App() {
         setError('No se encontraron transacciones en el PDF.')
         setRawTransactions([])
       } else {
-        const categorized = categorize(transactions)
+        // Use categories from config or default
+        const cats = categoriesConfig || DEFAULT_CATEGORIES
+        const categorized = categorize(transactions, cats)
         setRawTransactions(categorized)
       }
     } catch (err) {
@@ -69,8 +115,8 @@ export default function App() {
   }, [rawTransactions, desde, hasta])
 
   const { categories, grandTotal } = useMemo(
-    () => group(filteredTransactions),
-    [filteredTransactions]
+    () => group(filteredTransactions, categoriesConfig),
+    [filteredTransactions, categoriesConfig]
   )
 
   const hasTransactions = rawTransactions.length > 0
@@ -83,9 +129,52 @@ export default function App() {
     setError('')
   }
 
+  // View toggle between main app and config
+  if (showConfig) {
+    return (
+      <div className="min-h-screen">
+        <Header 
+          theme={theme} 
+          onThemeToggle={() => setTheme(t => t === 'dark' ? 'light' : 'dark')} 
+          onConfigClick={() => setShowConfig(false)}
+          showBackButton={true}
+          onBackClick={() => setShowConfig(false)}
+        />
+        <main className="app-shell space-y-6" style={{ paddingTop: '1.25rem' }}>
+          <section className="panel p-5">
+            <CategoryConfig onSaved={async () => {
+              // Reload categories from backend without page reload
+              try {
+                const data = await getCategories()
+                const converted = convertCategoriesFromJSON(data.categories)
+                setCategoriesConfig(converted)
+                localStorage.setItem('cachedCategories', JSON.stringify(converted))
+                
+                // Re-categorize current transactions with new categories
+                if (rawTransactions.length > 0) {
+                  const categorized = categorize(rawTransactions, converted)
+                  setRawTransactions(categorized)
+                }
+                
+                alert('Categorías actualizadas correctamente')
+              } catch (err) {
+                console.error('Error reloading categories:', err)
+                window.location.reload()
+              }
+            }} />
+          </section>
+        </main>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen">
-      <Header theme={theme} onThemeToggle={() => setTheme(t => t === 'dark' ? 'light' : 'dark')} />
+      <Header 
+        theme={theme} 
+        onThemeToggle={() => setTheme(t => t === 'dark' ? 'light' : 'dark')} 
+        onConfigClick={() => setShowConfig(true)}
+      />
       <SummaryBar total={grandTotal} />
 
       <main className="app-shell space-y-6" style={{ paddingTop: '1.25rem' }}>
@@ -219,6 +308,7 @@ export default function App() {
                 />
               </div>
             </div>
+
             <CategoryList categories={categories} />
           </section>
         )}

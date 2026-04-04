@@ -1,16 +1,19 @@
-import { CATEGORIES } from '../data/categories.js'
+import { CATEGORIES as DEFAULT_CATEGORIES } from '../data/categories.js'
 
 /**
  * Categorize a transaction by matching merchant against category keywords.
  * First matching category wins. Unmatched → "Otros".
  * @param {Array<object>} transactions - parsed transactions
+ * @param {object} categories - categories object (optional, uses DEFAULT_CATEGORIES if not provided)
  * @returns {Array<object>} transactions with `categoria` field added
  */
-export function categorize(transactions) {
+export function categorize(transactions, categories = null) {
+  const cats = categories || DEFAULT_CATEGORIES
+  
   const result = transactions.map(tx => {
     const upperMerchant = tx.comercio.toUpperCase()
 
-    for (const [category, categoryData] of Object.entries(CATEGORIES)) {
+    for (const [category, categoryData] of Object.entries(cats)) {
       if (category === 'Otros' || category === 'Cuotas') continue
 
       const keywords = categoryData.keywords || []
@@ -28,3 +31,6 @@ export function categorize(transactions) {
 
   return result
 }
+
+// Export default for backward compatibility
+export default categorize

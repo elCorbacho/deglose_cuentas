@@ -1,4 +1,4 @@
-import { CATEGORIES } from '../data/categories.js'
+import { CATEGORIES as DEFAULT_CATEGORIES } from '../data/categories.js'
 import { parseDate } from './formatters.js'
 
 function getTransactionTimestamp(fecha) {
@@ -39,16 +39,18 @@ function getTransactionTimestamp(fecha) {
 /**
  * Group transactions by category and detect recurring merchants.
  * @param {Array<object>} transactions - categorized transactions
+ * @param {object} categories - categories object (optional, uses DEFAULT_CATEGORIES if not provided)
  * @returns {{ categories: Array<{name, total, count, merchants}>, grandTotal: number }}
  */
-export function group(transactions) {
+export function group(transactions, categories = null) {
+  const cats = categories || DEFAULT_CATEGORIES
   const categoryMap = {}
 
   // Group by category
   for (const tx of transactions) {
     const cat = tx.categoria || 'Otros'
     if (!categoryMap[cat]) {
-      const categoryData = CATEGORIES[cat]
+      const categoryData = cats[cat]
       const icon = categoryData?.icon || '📋'
       categoryMap[cat] = { name: cat, icon, total: 0, count: 0, transactions: [] }
     }
@@ -58,7 +60,7 @@ export function group(transactions) {
   }
 
   // Within each category, sort transactions by date descending
-  const categories = Object.values(categoryMap).map(cat => {
+  const result = Object.values(categoryMap).map(cat => {
     // Sort transactions by date descending (most recent first)
     const sortedTransactions = [...cat.transactions].sort((a, b) => {
       const timestampA = getTransactionTimestamp(a.fecha)
@@ -76,9 +78,9 @@ export function group(transactions) {
   })
 
   // Sort categories by total descending
-  categories.sort((a, b) => b.total - a.total)
+  result.sort((a, b) => b.total - a.total)
 
   const grandTotal = transactions.reduce((sum, tx) => sum + tx.monto, 0)
 
-  return { categories, grandTotal }
+  return { categories: result, grandTotal }
 }
