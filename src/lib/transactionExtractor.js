@@ -53,9 +53,5 @@ export function parse(text) {
     })
   }
 
-  console.log('=== PARSER RESULT: Found', transactions.length, 'transactions ===')
-  if (transactions.length > 0) {
-    console.log('First 10 transactions:', transactions.slice(0, 10).map(t => `${t.fecha} ${t.ciudad} ${t.comercio} $${t.monto}`))
-  }
   return transactions
 }

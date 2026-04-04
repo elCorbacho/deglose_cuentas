@@ -141,7 +141,7 @@ describe('App', () => {
     await userEvent.click(screen.getByRole('button', { name: /supermercado/i }))
 
     expect(screen.getByText(/tocá para ocultar el detalle/i)).toBeInTheDocument()
-    expect(screen.getAllByText(/supermercado uno/i)).toHaveLength(2)
+    expect(screen.getByText(/supermercado uno/i)).toBeInTheDocument()
     expect(screen.getByText(/05\/01\/24/i)).toBeInTheDocument()
 
     await userEvent.click(screen.getByRole('button', { name: /supermercado/i }))

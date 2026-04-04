@@ -2,19 +2,22 @@ import { formatCLP } from '../lib/formatters.js'
 
 export default function TransactionRow({ tx }) {
   return (
-    <div className="flex flex-col gap-2 px-4 py-3 transition-colors hover:bg-slate-50 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
-      <div className="min-w-0 space-y-1">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+    <div className="flex flex-col gap-2 px-4 py-3 transition-colors tx-row sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+      <div className="min-w-0 flex items-center gap-2">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: 'var(--text-soft)' }}>
           {tx.fecha}
         </p>
-        <p className="break-words text-sm font-medium leading-6 text-slate-800 sm:text-[0.95rem]">
+        <span className="tx-separator" style={{ color: 'var(--border-soft)' }}>•</span>
+        <p className="break-words text-sm font-medium leading-6 sm:text-[0.95rem]" style={{ color: 'var(--text-base)' }}>
           {tx.comercio}
         </p>
       </div>
 
-      <div className="sm:pl-4">
-        <p className="text-xs uppercase tracking-[0.18em] text-slate-400 sm:text-right">Monto</p>
-        <p className={`font-mono text-base font-semibold ${tx.monto < 0 ? 'text-rose-600' : 'text-slate-800'} sm:text-right`}>
+      <div className="sm:pl-4 shrink-0">
+        <p 
+          className={`font-mono text-base font-semibold sm:text-right ${tx.monto < 0 ? 'tx-amount-negative' : ''}`}
+          style={tx.monto < 0 ? { color: 'var(--text-danger)' } : { color: 'var(--text-base)' }}
+        >
           {formatCLP(tx.monto)}
         </p>
       </div>

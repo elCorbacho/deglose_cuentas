@@ -1,8 +1,9 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import FileUpload from './components/FileUpload.jsx'
 import DateFilter from './components/DateFilter.jsx'
 import CategoryList from './components/CategoryList.jsx'
 import SummaryBar from './components/SummaryBar.jsx'
+import Header from './components/Header.jsx'
 import { extractText } from './lib/pdfParser.js'
 import { parse } from './lib/transactionExtractor.js'
 import { categorize } from './lib/categorizer.js'
@@ -16,6 +17,19 @@ export default function App() {
   const [desde, setDesde] = useState('')
   const [hasta, setHasta] = useState('')
   const [fileName, setFileName] = useState('')
+  const [theme, setTheme] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('theme') || 'light'
+    }
+    return 'light'
+  })
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      document.documentElement.classList.toggle('dark', theme === 'dark')
+      localStorage.setItem('theme', theme)
+    }
+  }, [theme])
 
   const handleFile = async (file) => {
     setLoading(true)
@@ -24,10 +38,6 @@ export default function App() {
 
     try {
       const text = await extractText(file)
-      window.__extractedText = text
-      console.log('=== PDF TEXT EXTRACTED (first 3000 chars) ===')
-      console.log(text.slice(0, 3000))
-      console.log('=== END ===')
 
       const transactions = parse(text)
 
@@ -73,24 +83,22 @@ export default function App() {
     setError('')
   }
 
-  console.log('=== APP: categories:', categories)
-  console.log('=== APP: grandTotal:', grandTotal)
-
   return (
     <div className="min-h-screen">
+      <Header theme={theme} onThemeToggle={() => setTheme(t => t === 'dark' ? 'light' : 'dark')} />
       <SummaryBar total={grandTotal} />
 
-      <main className="app-shell space-y-6">
+      <main className="app-shell space-y-6" style={{ paddingTop: '1.25rem' }}>
         <section className="hero-shell">
           <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl space-y-4">
               <span className="eyebrow">Santander · visión rápida</span>
 
               <div className="space-y-3">
-                <h1 className="text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
+                <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl" style={{ color: 'var(--text-strong)' }}>
                   Entendé tus gastos del mes sin pelearte con el PDF.
                 </h1>
-                <p className="max-w-xl text-sm leading-6 text-slate-600 sm:text-base">
+                <p className="max-w-xl text-sm leading-6 sm:text-base" style={{ color: 'var(--text-base)' }}>
                   Subí tu estado de cuenta, revisá el total del período y explorá categorías,
                   comercios y movimientos con una vista más clara y ordenada.
                 </p>
@@ -99,19 +107,19 @@ export default function App() {
 
             <div className="grid gap-3 sm:grid-cols-2 lg:min-w-[320px]">
               <div className="panel-muted px-4 py-3">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: 'var(--text-soft)' }}>
                   Flujo
                 </p>
-                <p className="mt-1 text-sm font-medium text-slate-800">
+                <p className="mt-1 text-sm font-medium" style={{ color: 'var(--text-base)' }}>
                   Subir PDF → filtrar fechas → expandir categorías
                 </p>
               </div>
 
               <div className="panel-muted px-4 py-3">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: 'var(--text-soft)' }}>
                   Alcance
                 </p>
-                <p className="mt-1 text-sm font-medium text-slate-800">
+                <p className="mt-1 text-sm font-medium" style={{ color: 'var(--text-base)' }}>
                   Solo mejora visual, sin tocar cálculos ni agrupación
                 </p>
               </div>
@@ -121,8 +129,8 @@ export default function App() {
           {!hasTransactions && !loading && (
             <div className="relative z-10 mt-6 panel p-5 sm:p-6">
               <div className="mb-5 flex flex-col gap-2">
-                <h2 className="text-lg font-semibold text-slate-900">Cargá tu estado de cuenta</h2>
-                <p className="text-sm leading-6 text-slate-600">
+                <h2 className="text-lg font-semibold" style={{ color: 'var(--text-strong)' }}>Cargá tu estado de cuenta</h2>
+                <p className="text-sm leading-6" style={{ color: 'var(--text-base)' }}>
                   Elegí un PDF de Santander para ver el total general, aplicar filtros por fecha
                   y navegar los gastos agrupados por categoría.
                 </p>
@@ -135,11 +143,11 @@ export default function App() {
 
         {loading && (
           <section className="panel status-card status-card--loading">
-            <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-blue-100 border-t-blue-600"></div>
+            <div className="inline-block h-12 w-12 animate-spin rounded-full spinner-ring"></div>
 
             <div className="space-y-2">
-              <p className="text-lg font-semibold text-slate-900">Procesando tu PDF</p>
-              <p className="max-w-md text-sm leading-6 text-slate-600">
+              <p className="text-lg font-semibold" style={{ color: 'var(--text-strong)' }}>Procesando tu PDF</p>
+              <p className="max-w-md text-sm leading-6" style={{ color: 'var(--text-base)' }}>
                 Estamos leyendo el archivo y reorganizando tus movimientos para mostrarlos por categoría.
               </p>
             </div>
@@ -148,20 +156,20 @@ export default function App() {
 
         {error && !loading && (
           <section className="panel status-card status-card--error">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-rose-100 text-2xl text-rose-600">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full text-2xl error-icon">
               !
             </div>
 
             <div className="space-y-2">
-              <p className="text-lg font-semibold text-slate-900">No pudimos usar este archivo</p>
-              <p className="max-w-xl text-sm leading-6 text-slate-600">{error}</p>
+              <p className="text-lg font-semibold" style={{ color: 'var(--text-strong)' }}>No pudimos usar este archivo</p>
+              <p className="max-w-xl text-sm leading-6" style={{ color: 'var(--text-base)' }}>{error}</p>
             </div>
 
             <div className="flex flex-wrap items-center justify-center gap-3">
               <button onClick={resetResults} className="btn-secondary" type="button">
                 Intentar con otro PDF
               </button>
-              <span className="text-xs text-slate-500">
+              <span className="text-xs" style={{ color: 'var(--text-soft)' }}>
                 La zona de carga vuelve a quedar disponible arriba.
               </span>
             </div>
@@ -174,15 +182,15 @@ export default function App() {
               <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: 'var(--text-soft)' }}>
                       Archivo procesado
                     </p>
-                    <h2 className="text-2xl font-semibold tracking-tight text-slate-950">
+                    <h2 className="text-2xl font-semibold tracking-tight" style={{ color: 'var(--text-strong)' }}>
                       Tus resultados ya están listos
                     </h2>
-                    <p className="max-w-2xl text-sm leading-6 text-slate-600">
+                    <p className="max-w-2xl text-sm leading-6" style={{ color: 'var(--text-base)' }}>
                       Revisá el resumen general, ajustá el rango de fechas si hace falta y expandí
-                      cada categoría para ver comercios y montos en detalle.
+                      cada categoría para ver las transacciones en detalle.
                     </p>
                   </div>
 

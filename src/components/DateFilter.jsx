@@ -2,13 +2,13 @@ export default function DateFilter({ desde, hasta, onDesdeChange, onHastaChange 
   const isFiltered = Boolean(desde || hasta)
 
   return (
-    <div className="rounded-[22px] border border-slate-200 bg-slate-50/80 p-4">
+    <div className="filter-container rounded-[22px] p-4">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div className="space-y-1">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: 'var(--text-soft)' }}>
             Filtros
           </p>
-          <p className="text-sm text-slate-600">
+          <p className="text-sm" style={{ color: 'var(--text-base)' }}>
             Acotá el período para revisar movimientos específicos sin alterar el total original del PDF.
           </p>
         </div>
@@ -28,7 +28,7 @@ export default function DateFilter({ desde, hasta, onDesdeChange, onHastaChange 
       </div>
 
       <div className="mt-4 grid gap-3 md:grid-cols-2">
-        <label className="space-y-2 text-sm text-slate-700">
+        <label className="space-y-2 text-sm" style={{ color: 'var(--text-base)' }}>
           <span className="block font-medium">Desde</span>
           <input
             type="date"
@@ -38,7 +38,7 @@ export default function DateFilter({ desde, hasta, onDesdeChange, onHastaChange 
           />
         </label>
 
-        <label className="space-y-2 text-sm text-slate-700">
+        <label className="space-y-2 text-sm" style={{ color: 'var(--text-base)' }}>
           <span className="block font-medium">Hasta</span>
           <input
             type="date"
