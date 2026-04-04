@@ -1,0 +1,165 @@
+{
+  "version": "1.0",
+  "categories": [
+    {
+      "name": "Supermercado",
+      "icon": "🛒",
+      "keywords": [
+        "JUMBO ONECLICK",
+        "CENCOPAY-SUPERMERCADOS",
+        "SUPERMERCADO SANTA ISABEL",
+        "SUPERMERCADO TOTAL",
+        "SUPERMERCADO LIDER",
+        "SUPERMERCADO JUMBO",
+        "SUPERMERCADO DISCO",
+        "SUPERMERCADO FALABELLA",
+        "SUPERMERCADO PARIS",
+        "SUPERMERCADO WONG"
+      ]
+    },
+    {
+      "name": "Restaurantes",
+      "icon": "🍽️",
+      "keywords": [
+        "RESTAURANTE",
+        "COMIDA RAPIDA",
+        "PIZZA",
+        "HAMBURGUESA",
+        "SUSHI",
+        "PASTA",
+        "ASADO",
+        "CEVICHERIA",
+        "PARRILLA",
+        "BAR"
+      ]
+    },
+    {
+      "name": "Transporte",
+      "icon": "🚌",
+      "keywords": [
+        "TRANSPORTE",
+        "TAXI",
+        "UBER",
+        "CABIFY",
+        "METRO",
+        "BUS",
+        "TREN",
+        "AUTOBUS",
+        "COLECTIVO",
+        "TRANSPORTE PUBLICO"
+      ]
+    },
+    {
+      "name": "Entretenimiento",
+      "icon": "🎬",
+      "keywords": [
+        "CINE",
+        "CINEMA",
+        "CINEPOLIS",
+        "CINEMA MARKET",
+        "CINEMA PARADISO",
+        "CINEMA CITY",
+        "CINEMA HOME",
+        "CINEMA PARIS",
+        "CINEMA WONG",
+        "CINEMA LIDER"
+      ]
+    },
+    {
+      "name": "Salud",
+      "icon": "🏥",
+      "keywords": [
+        "HOSPITAL",
+        "CLINICA",
+        "MEDICO",
+        "DENTISTA",
+        "FARMACIA",
+        "LABORATORIO",
+        "IMAGENOLOGIA",
+        "RAYOS X",
+        "TOMOGRAFIA",
+        "RESONANCIA"
+      ]
+    },
+    {
+      "name": "Educación",
+      "icon": "🎒",
+      "keywords": [
+        "COLEGIO",
+        "UNIVERSIDAD",
+        "ESCUELA",
+        "INSTITUTO",
+        "CURSO",
+        "TALLER",
+        "SEMINARIO",
+        "CONFERENCIA",
+        "CAPACITACION",
+        "EDUCACION"
+      ]
+    },
+    {
+      "name": "Hogar",
+      "icon": "🏠",
+      "keywords": [
+        "ALQUILER",
+        "ARRIENDO",
+        "MUEBLES",
+        "ELECTRODOMESTICOS",
+        "DECORACION",
+        "JARDINERIA",
+        "PINTURA",
+        "CONSTRUCCION",
+        "REPARACION",
+        "MANTENIMIENTO"
+      ]
+    },
+    {
+      "name": "Tecnología",
+      "icon": "💻",
+      "keywords": [
+        "TELEFONIA",
+        "INTERNET",
+        "TELECOMUNICACIONES",
+        "TECNOLOGIA",
+        "SOFTWARE",
+        "HARDWARE",
+        "INFORMATICA",
+        "PROGRAMACION",
+        "DESARROLLO",
+        "INNOVACION"
+      ]
+    },
+    {
+      "name": "Finanzas",
+      "icon": "💰",
+      "keywords": [
+        "BANCO",
+        "CUENTA",
+        "TARJETA",
+        "CREDITO",
+        "DEBITO",
+        "AHORRO",
+        "INVERSION",
+        "SEGURO",
+        "FINANZAS",
+        "ECONOMIA"
+      ]
+    },
+    {
+      "name": "Deporte",
+      "icon": "⚽",
+      "keywords": [
+        "GIMNASIO",
+        "CANCHA",
+        "ESTADIO",
+        "CLUB",
+        "ENTRENAMIENTO",
+        "COMPETICION",
+        "TORNEO",
+        "LIGA",
+        "DEPORTE",
+        "FITNESS"
+      ]
+    }
+  ]
+}
