@@ -18,7 +18,9 @@ export default function FileUpload({ onFileLoaded }) {
   const handleDrop = (event) => {
     event.preventDefault()
     setIsDragging(false)
-    handleFile(event.dataTransfer.files[0])
+    const droppedFile = event.dataTransfer?.files?.[0]
+    if (!droppedFile) return
+    handleFile(droppedFile)
   }
 
   const handleDragOver = (event) => {

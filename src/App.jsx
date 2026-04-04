@@ -75,6 +75,15 @@ export default function App() {
     }
   }, [theme])
 
+  const parseInputDateLocal = (dateStr, endOfDay = false) => {
+    const [year, month, day] = dateStr.split('-').map(Number)
+    if (!year || !month || !day) return null
+    if (endOfDay) {
+      return new Date(year, month - 1, day, 23, 59, 59, 999)
+    }
+    return new Date(year, month - 1, day, 0, 0, 0, 0)
+  }
+
   const handleFile = async (file) => {
     setLoading(true)
     setError('')
@@ -106,10 +115,13 @@ export default function App() {
   const filteredTransactions = useMemo(() => {
     if (!desde && !hasta) return rawTransactions
 
+    const fromDate = desde ? parseInputDateLocal(desde) : null
+    const toDate = hasta ? parseInputDateLocal(hasta, true) : null
+
     return rawTransactions.filter(tx => {
       const txDate = parseDate(tx.fecha)
-      if (desde && txDate < new Date(desde)) return false
-      if (hasta && txDate > new Date(hasta)) return false
+      if (fromDate && txDate < fromDate) return false
+      if (toDate && txDate > toDate) return false
       return true
     })
   }, [rawTransactions, desde, hasta])

@@ -34,9 +34,10 @@ export function parse(text) {
     const upperComercio = comercio.toUpperCase()
     if (NON_EXPENSE_KEYWORDS.some(kw => upperComercio.includes(kw))) continue
     
-    // Parse amount: remove dots and commas
-    const cleanAmount = montoStr.replace(/\./g, '').replace(/,/g, '')
-    const monto = parseInt(cleanAmount, 10)
+    // Parse amount keeping decimal separators consistent and avoiding cent inflation
+    const normalizedAmount = montoStr.replace(/\s/g, '').replace(/\./g, '').replace(',', '.')
+    const amountNumber = Number.parseFloat(normalizedAmount)
+    const monto = Number.isFinite(amountNumber) ? Math.trunc(amountNumber) : Number.NaN
     
     if (isNaN(monto) || monto <= 0) continue
     

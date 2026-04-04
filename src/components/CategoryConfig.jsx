@@ -118,8 +118,13 @@ const CategoryConfig = ({ onSaved }) => {
 
   const handleAddCategory = () => {
     if (!newCategoryName.trim()) return;
+    const trimmedName = newCategoryName.trim();
+    if (categories.some(c => c.name.toUpperCase() === trimmedName.toUpperCase())) {
+      showMessage('Ya existe una categoría con ese nombre', 'error');
+      return;
+    }
     const newCat = {
-      name: newCategoryName.trim(),
+      name: trimmedName,
       icon: '📋',
       keywords: []
     };
@@ -269,21 +274,15 @@ const CategoryConfig = ({ onSaved }) => {
           
           <ul className="flex-1 overflow-y-auto rounded-lg border" 
               style={{ borderColor: 'var(--border-soft)', background: 'var(--bg-panel)' }}>
-            {filteredCategories.map((category, index) => (
+            {filteredCategories.map((category) => (
               <li
-                key={index}
-                className="p-3 cursor-pointer transition-colors"
+                key={category.name}
+                className="p-3 cursor-pointer transition-colors hover:bg-[var(--bg-accent-soft)]"
                 style={{ 
                   borderBottom: '1px solid var(--border-soft)',
-                  background: selectedCategory?.name === category.name ? 'var(--bg-accent-soft)' : 'transparent'
+                  background: selectedCategory?.name === category.name ? 'var(--bg-accent-soft)' : undefined
                 }}
                 onClick={() => setSelectedCategory(category)}
-                onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-accent-soft)'}
-                onMouseLeave={(e) => {
-                  if (selectedCategory?.name !== category.name) {
-                    e.currentTarget.style.background = 'transparent';
-                  }
-                }}
               >
                 <span className="mr-2">{category.icon}</span>
                 <span style={{ color: 'var(--text-base)' }}>{category.name}</span>

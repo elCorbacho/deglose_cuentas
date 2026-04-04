@@ -6,6 +6,7 @@ import { DEFAULT_CATEGORY_ICON } from '../data/categories.js'
 export default function CategoryItem({ category }) {
   const [expanded, setExpanded] = useState(false)
   const icon = category.icon || DEFAULT_CATEGORY_ICON
+  const keyCounts = new Map()
 
   return (
     <div className="panel overflow-hidden">
@@ -48,7 +49,15 @@ export default function CategoryItem({ category }) {
         <div className="expanded-content px-3 py-3 sm:px-4">
           <div className="transaction-divider-container">
             {category.transactions.map((tx, index) => (
-              <div key={`${tx.raw}-${index}`} className={index > 0 ? 'transaction-divider' : ''}>
+              <div
+                key={(() => {
+                  const baseKey = `${tx.fecha}-${tx.comercio}-${tx.monto}-${tx.ciudad}`
+                  const count = keyCounts.get(baseKey) || 0
+                  keyCounts.set(baseKey, count + 1)
+                  return `${baseKey}-${count}`
+                })()}
+                className={index > 0 ? 'transaction-divider' : ''}
+              >
                 <TransactionRow tx={tx} />
               </div>
             ))}

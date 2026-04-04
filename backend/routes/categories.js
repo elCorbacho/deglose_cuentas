@@ -3,6 +3,8 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+const { promises: fsp } = fs;
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -10,6 +12,50 @@ const router = express.Router();
 const DATA_DIR = path.join(__dirname, '../data');
 const categoriesFilePath = path.join(DATA_DIR, 'categories.json');
 const backupFilePath = path.join(DATA_DIR, 'categories.backup.json');
+let mutationQueue = Promise.resolve();
+
+function writeFileAtomic(filePath, content, callback) {
+  const tempPath = `${filePath}.${process.pid}.${Date.now()}.tmp`;
+
+  fs.writeFile(tempPath, content, (writeErr) => {
+    if (writeErr) {
+      return callback(writeErr);
+    }
+
+    fs.rename(tempPath, filePath, (renameErr) => {
+      if (renameErr) {
+        fs.unlink(tempPath, () => {});
+        return callback(renameErr);
+      }
+
+      callback(null);
+    });
+  });
+}
+
+function writeFileAtomicAsync(filePath, content) {
+  return new Promise((resolve, reject) => {
+    writeFileAtomic(filePath, content, (err) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve();
+    });
+  });
+}
+
+function runMutation(mutationFn) {
+  const next = mutationQueue.then(() => mutationFn());
+  mutationQueue = next.catch(() => {});
+  return next;
+}
+
+function createHttpError(status, message) {
+  const err = new Error(message);
+  err.status = status;
+  return err;
+}
 
 // Logger helper
 const log = (level, message, data = null) => {
@@ -105,46 +151,19 @@ router.post('/', (req, res) => {
     });
   }
   
-  // Crear backup antes de guardar
-  createBackup();
-  
-  fs.writeFile(categoriesFilePath, JSON.stringify(categories, null, 2), (err) => {
-    if (err) {
+  runMutation(async () => {
+    createBackup();
+    await writeFileAtomicAsync(categoriesFilePath, JSON.stringify(categories, null, 2));
+    return { count: categories.categories.length };
+  })
+    .then(({ count }) => {
+      log('info', 'Categorías guardadas exitosamente', { count });
+      res.json({ success: true, message: 'Categorías guardadas correctamente' });
+    })
+    .catch((err) => {
       log('error', 'Error guardando categorías', { error: err.message });
-      return res.status(500).json({ error: 'Failed to save categories' });
-    }
-    
-    log('info', 'Categorías guardadas exitosamente', { count: categories.categories.length });
-    res.json({ success: true, message: 'Categorías guardadas correctamente' });
-  });
-});
-
-// GET /api/categories/:name - Obtener una categoría
-router.get('/:name', (req, res) => {
-  const { name } = req.params;
-  log('info', 'GET /api/categories/:name', { name });
-  
-  fs.readFile(categoriesFilePath, 'utf8', (err, data) => {
-    if (err) {
-      log('error', 'Error leyendo categorías', { error: err.message });
-      return res.status(500).json({ error: 'Failed to read categories' });
-    }
-    
-    try {
-      const json = JSON.parse(data);
-      const category = json.categories.find(c => c.name === name);
-      
-      if (!category) {
-        log('warn', 'Categoría no encontrada', { name });
-        return res.status(404).json({ error: 'Categoría no encontrada' });
-      }
-      
-      res.json(category);
-    } catch (parseErr) {
-      log('error', 'Error parseando JSON', { error: parseErr.message });
-      res.status(500).json({ error: 'Invalid JSON format' });
-    }
-  });
+      res.status(500).json({ error: 'Failed to save categories' });
+    });
 });
 
 // PUT /api/categories/:name - Actualizar una categoría
@@ -152,84 +171,86 @@ router.put('/:name', (req, res) => {
   const { name } = req.params;
   const updatedCategory = req.body;
   log('info', 'PUT /api/categories/:name', { name, updated: updatedCategory.name });
-  
-  fs.readFile(categoriesFilePath, 'utf8', (err, data) => {
-    if (err) {
-      log('error', 'Error leyendo categorías', { error: err.message });
-      return res.status(500).json({ error: 'Failed to read categories' });
-    }
-    
+
+  runMutation(async () => {
+    const data = await fsp.readFile(categoriesFilePath, 'utf8');
+    let json;
+
     try {
-      const json = JSON.parse(data);
-      const index = json.categories.findIndex(c => c.name === name);
-      
-      if (index === -1) {
-        log('warn', 'Categoría no encontrada para actualizar', { name });
-        return res.status(404).json({ error: 'Categoría no encontrada' });
-      }
-      
-      // Crear backup
-      createBackup();
-      
-      // Actualizar categoría
-      json.categories[index] = { ...json.categories[index], ...updatedCategory, name };
-      
-      fs.writeFile(categoriesFilePath, JSON.stringify(json, null, 2), (writeErr) => {
-        if (writeErr) {
-          log('error', 'Error guardando categorías', { error: writeErr.message });
-          return res.status(500).json({ error: 'Failed to save categories' });
-        }
-        
-        log('info', 'Categoría actualizada', { name });
-        res.json({ success: true, category: json.categories[index] });
-      });
-    } catch (parseErr) {
-      log('error', 'Error parseando JSON', { error: parseErr.message });
-      res.status(500).json({ error: 'Invalid JSON format' });
+      json = JSON.parse(data);
+    } catch {
+      throw createHttpError(500, 'Invalid JSON format');
     }
-  });
+
+    const index = json.categories.findIndex(c => c.name === name);
+    if (index === -1) {
+      throw createHttpError(404, 'Categoría no encontrada');
+    }
+
+    createBackup();
+    json.categories[index] = { ...json.categories[index], ...updatedCategory, name };
+    await writeFileAtomicAsync(categoriesFilePath, JSON.stringify(json, null, 2));
+
+    return json.categories[index];
+  })
+    .then((category) => {
+      log('info', 'Categoría actualizada', { name });
+      res.json({ success: true, category });
+    })
+    .catch((err) => {
+      const status = err.status || 500;
+      if (status === 404) {
+        log('warn', 'Categoría no encontrada para actualizar', { name });
+      } else if (err.message === 'Invalid JSON format') {
+        log('error', 'Error parseando JSON', { error: err.message });
+      } else {
+        log('error', 'Error guardando categorías', { error: err.message });
+      }
+      res.status(status).json({ error: err.message || 'Failed to save categories' });
+    });
 });
 
 // DELETE /api/categories/:name - Eliminar una categoría
 router.delete('/:name', (req, res) => {
   const { name } = req.params;
   log('info', 'DELETE /api/categories/:name', { name });
-  
-  fs.readFile(categoriesFilePath, 'utf8', (err, data) => {
-    if (err) {
-      log('error', 'Error leyendo categorías', { error: err.message });
-      return res.status(500).json({ error: 'Failed to read categories' });
-    }
-    
+
+  runMutation(async () => {
+    const data = await fsp.readFile(categoriesFilePath, 'utf8');
+    let json;
+
     try {
-      const json = JSON.parse(data);
-      const index = json.categories.findIndex(c => c.name === name);
-      
-      if (index === -1) {
-        log('warn', 'Categoría no encontrada para eliminar', { name });
-        return res.status(404).json({ error: 'Categoría no encontrada' });
-      }
-      
-      // Crear backup antes
-      createBackup();
-      
-      // Eliminar categoría
-      const removed = json.categories.splice(index, 1)[0];
-      
-      fs.writeFile(categoriesFilePath, JSON.stringify(json, null, 2), (writeErr) => {
-        if (writeErr) {
-          log('error', 'Error guardando categorías', { error: writeErr.message });
-          return res.status(500).json({ error: 'Failed to save categories' });
-        }
-        
-        log('info', 'Categoría eliminada', { name, removed });
-        res.json({ success: true, removed });
-      });
-    } catch (parseErr) {
-      log('error', 'Error parseando JSON', { error: parseErr.message });
-      res.status(500).json({ error: 'Invalid JSON format' });
+      json = JSON.parse(data);
+    } catch {
+      throw createHttpError(500, 'Invalid JSON format');
     }
-  });
+
+    const index = json.categories.findIndex(c => c.name === name);
+    if (index === -1) {
+      throw createHttpError(404, 'Categoría no encontrada');
+    }
+
+    createBackup();
+    const removed = json.categories.splice(index, 1)[0];
+    await writeFileAtomicAsync(categoriesFilePath, JSON.stringify(json, null, 2));
+
+    return removed;
+  })
+    .then((removed) => {
+      log('info', 'Categoría eliminada', { name, removed });
+      res.json({ success: true, removed });
+    })
+    .catch((err) => {
+      const status = err.status || 500;
+      if (status === 404) {
+        log('warn', 'Categoría no encontrada para eliminar', { name });
+      } else if (err.message === 'Invalid JSON format') {
+        log('error', 'Error parseando JSON', { error: err.message });
+      } else {
+        log('error', 'Error guardando categorías', { error: err.message });
+      }
+      res.status(status).json({ error: err.message || 'Failed to save categories' });
+    });
 });
 
 // POST /api/categories/reload - Recargar desde archivo
@@ -269,6 +290,34 @@ router.get('/backup', (req, res) => {
   }
   
   res.download(backupFilePath, 'categories.backup.json');
+});
+
+// GET /api/categories/:name - Obtener una categoría
+router.get('/:name', (req, res) => {
+  const { name } = req.params;
+  log('info', 'GET /api/categories/:name', { name });
+  
+  fs.readFile(categoriesFilePath, 'utf8', (err, data) => {
+    if (err) {
+      log('error', 'Error leyendo categorías', { error: err.message });
+      return res.status(500).json({ error: 'Failed to read categories' });
+    }
+    
+    try {
+      const json = JSON.parse(data);
+      const category = json.categories.find(c => c.name === name);
+      
+      if (!category) {
+        log('warn', 'Categoría no encontrada', { name });
+        return res.status(404).json({ error: 'Categoría no encontrada' });
+      }
+      
+      res.json(category);
+    } catch (parseErr) {
+      log('error', 'Error parseando JSON', { error: parseErr.message });
+      res.status(500).json({ error: 'Invalid JSON format' });
+    }
+  });
 });
 
 export default router;
