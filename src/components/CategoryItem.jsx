@@ -12,7 +12,7 @@ export default function CategoryItem({ category }) {
     <div className="panel overflow-hidden">
       <button
         onClick={() => setExpanded(!expanded)}
-        className="flex w-full items-center justify-between gap-4 px-4 py-4 text-left transition-colors sm:px-5 category-item-button"
+        className="flex w-full items-center justify-between gap-4 px-4 py-3 text-left transition-colors sm:px-5 category-item-button"
         type="button"
       >
         <div className="flex min-w-0 flex-1 items-start gap-3">
@@ -31,9 +31,7 @@ export default function CategoryItem({ category }) {
               </span>
             </div>
 
-            <p className="text-sm" style={{ color: 'var(--text-soft)' }}>
-              Tocá para {expanded ? 'ocultar' : 'ver'} el detalle de las transacciones.
-            </p>
+            
           </div>
         </div>
 

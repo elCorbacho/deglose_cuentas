@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from 'react'
 import FileUpload from './components/FileUpload.jsx'
 import DateFilter from './components/DateFilter.jsx'
 import CategoryList from './components/CategoryList.jsx'
-import SummaryBar from './components/SummaryBar.jsx'
+
 import Header from './components/Header.jsx'
 import CategoryConfig from './components/CategoryConfig.jsx'
 import { extractText } from './lib/pdfParser.js'
@@ -145,10 +145,11 @@ export default function App() {
   if (showConfig) {
     return (
       <div className="min-h-screen">
-        <Header 
-          theme={theme} 
-          onThemeToggle={() => setTheme(t => t === 'dark' ? 'light' : 'dark')} 
-          onConfigClick={() => setShowConfig(false)}
+<Header  
+          theme={theme}  
+          onThemeToggle={() => setTheme(t => t === 'dark' ? 'light' : 'dark')}  
+          onConfigClick={() => setShowConfig(false)}  
+          total={0}
           showBackButton={true}
           onBackClick={() => setShowConfig(false)}
         />
@@ -182,12 +183,13 @@ export default function App() {
 
   return (
     <div className="min-h-screen">
-      <Header 
-        theme={theme} 
-        onThemeToggle={() => setTheme(t => t === 'dark' ? 'light' : 'dark')} 
-        onConfigClick={() => setShowConfig(true)}
+<Header  
+          theme={theme}  
+          onThemeToggle={() => setTheme(t => t === 'dark' ? 'light' : 'dark')}  
+          onConfigClick={() => setShowConfig(true)}  
+          total={grandTotal}
       />
-      <SummaryBar total={grandTotal} />
+      
 
       <main className="app-shell space-y-6" style={{ paddingTop: '1.25rem' }}>
         <section className="hero-shell">

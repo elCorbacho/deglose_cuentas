@@ -1,9 +1,11 @@
 import ThemeToggle from './ThemeToggle.jsx'
+import { APP_TITLE } from '../data/config.js'
+import { formatCLP } from '../lib/formatters.js'
 
-export default function Header({ theme, onThemeToggle, onConfigClick, showBackButton, onBackClick }) {
+export default function Header({ theme, onThemeToggle, onConfigClick, showBackButton, onBackClick, total }) {
   return (
     <header className="header-shell fixed top-0 left-0 right-0 z-30 border-b backdrop-blur-sm">
-      <div className="mx-auto flex h-14 w-full max-w-[1100px] items-center justify-between px-4">
+      <div className="mx-auto flex h-auto min-h-14 w-full max-w-[1100px] items-center justify-between gap-4 px-4 py-2 flex-col sm:flex-row">
         <div className="flex items-center gap-3">
           {showBackButton && onBackClick && (
             <button 
@@ -16,7 +18,7 @@ export default function Header({ theme, onThemeToggle, onConfigClick, showBackBu
             </button>
           )}
           <h1 className="text-lg font-semibold" style={{ color: 'var(--text-strong)' }}>
-            Deglose Cuentas
+            {APP_TITLE}
           </h1>
         </div>
         <div className="flex items-center gap-3">
@@ -31,6 +33,16 @@ export default function Header({ theme, onThemeToggle, onConfigClick, showBackBu
             </button>
           )}
           <ThemeToggle theme={theme} onToggle={onThemeToggle} />
+          {total !== undefined && (
+            <div className="text-right ml-4 pl-4 border-l border-gray-300 dark:border-gray-600">
+              <p className="text-xs uppercase tracking-[0.18em]" style={{ color: 'var(--text-soft)' }}>
+                Total general
+              </p>
+              <p className="text-sm font-bold" style={{ color: 'var(--text-strong)' }}>
+                {formatCLP(total)}
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </header>
