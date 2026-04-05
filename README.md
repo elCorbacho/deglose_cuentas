@@ -1,4 +1,4 @@
-# Deglose Cuentas
+# Deglose Cuentas MAIN
 
 Aplicación web para analizar estados de cuenta Santander en PDF, clasificar movimientos por categoría y revisar el gasto de forma más clara.
 
