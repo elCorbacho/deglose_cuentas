@@ -1,17 +1,5 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "framework": "vite",
-  "cleanUrls": true,
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
-    {
-      "src": "/(.*)",
-      "status": 200,
-      "dest": "/index.html"
-    }
-  ]
+  "framework": "vite"
 }
