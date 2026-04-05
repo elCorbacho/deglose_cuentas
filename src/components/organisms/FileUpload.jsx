@@ -60,12 +60,12 @@ export default function FileUpload({ onFileLoaded }) {
         .upload-zone-dragging {
           border-color: var(--border-strong);
           background: var(--bg-accent-soft);
-          box-shadow: var(--shadow-card);
+          border: 2px solid var(--color-accent-blue);
         }
         .upload-icon {
           background: var(--text-strong);
           color: var(--bg-panel-strong);
-          box-shadow: var(--shadow-card);
+          border: 2px solid var(--color-accent-blue);
         }
         .upload-tip {
           border-radius: 16px;

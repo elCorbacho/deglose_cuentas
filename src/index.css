@@ -62,6 +62,28 @@
   --spacing-16: 64px;
   --spacing-20: 80px;
   --spacing-24: 96px;
+
+  /* Legacy text colors (for backward compatibility) */
+  --text-base: #201d1d;
+  --text-strong: #201d1d;
+  --text-soft: #9a9898;
+  --text-accent: #007aff;
+  --text-danger: #ff3b30;
+
+  /* Legacy background colors (for backward compatibility) */
+  --bg-shell: #f1eeee;
+  --bg-panel: #f1eeee;
+  --bg-panel-strong: #fdfcfc;
+  --bg-accent-soft: #e0f2fe;
+  --bg-danger-soft: #fee2e2;
+
+  /* Legacy border colors (for backward compatibility) */
+  --border-soft: rgba(15, 0, 0, 0.12);
+  --border-strong: rgba(15, 0, 0, 0.20);
+
+  /* Shadow variables (removed from use, kept for backward compat) */
+  --shadow-soft: none;
+  --shadow-card: none;
 }
 
 @layer base {
