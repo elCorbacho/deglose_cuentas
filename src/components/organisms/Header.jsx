@@ -1,6 +1,6 @@
 
-import { APP_TITLE } from '../data/config.js'
-import { formatCLP } from '../lib/formatters.js'
+import { APP_TITLE } from '../../data/config.js'
+import { formatCLP } from '../../lib/formatters.js'
 
 export default function Header({ onConfigClick, showBackButton, onBackClick, total }) {
   return (

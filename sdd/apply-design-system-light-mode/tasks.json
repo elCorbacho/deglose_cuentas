@@ -1,0 +1,343 @@
+{
+  "status": "success",
+  "executive_summary": "32 tasks across 6 phases, organized by dependency - remove dark mode infrastructure first (blocking), then integrate fonts, apply colors, create atomic components, refactor organisms, and validate",
+  "artifacts": {
+    "tasks": {
+      "change_name": "apply-design-system-light-mode",
+      "total_tasks": 32,
+      "phases": [
+        {
+          "phase_id": "Phase 1",
+          "phase_name": "Remove Dark Mode Infrastructure",
+          "tasks": [
+            {
+              "task_id": "T1.1",
+              "task_name": "Remove theme state from App.jsx",
+              "description": "Delete useState for theme and setTheme from App.jsx",
+              "files_affected": ["src/App.jsx"],
+              "acceptance_criteria": ["No useState for theme found", "No setTheme calls remaining"],
+              "dependencies": [],
+              "effort": "Small"
+            },
+            {
+              "task_id": "T1.2",
+              "task_name": "Remove useEffect dark class logic from App.jsx",
+              "description": "Remove useEffect that adds/removes 'dark' class on documentElement",
+              "files_affected": ["src/App.jsx"],
+              "acceptance_criteria": ["No useEffect adding 'dark' class", "No documentElement.classList manipulation for theme"],
+              "dependencies": ["T1.1"],
+              "effort": "Small"
+            },
+            {
+              "task_id": "T1.3",
+              "task_name": "Remove localStorage theme caching from App.jsx",
+              "description": "Remove localStorage.getItem and localStorage.setItem for theme",
+              "files_affected": ["src/App.jsx"],
+              "acceptance_criteria": ["No localStorage access for theme", "No 'theme' key in localStorage code"],
+              "dependencies": ["T1.2"],
+              "effort": "Small"
+            },
+            {
+              "task_id": "T1.4",
+              "task_name": "Remove ThemeToggle import from Header.jsx",
+              "description": "Remove ThemeToggle import and its usage from Header component",
+              "files_affected": ["src/components/Header.jsx"],
+              "acceptance_criteria": ["No ThemeToggle import", "No <ThemeToggle /> component usage"],
+              "dependencies": [],
+              "effort": "Small"
+            },
+            {
+              "task_id": "T1.5",
+              "task_name": "Delete ThemeToggle.jsx file",
+              "description": "Delete src/components/ThemeToggle.jsx file",
+              "files_affected": ["src/components/ThemeToggle.jsx"],
+              "acceptance_criteria": ["File does not exist", "No import references remain"],
+              "dependencies": ["T1.4"],
+              "effort": "Small"
+            },
+            {
+              "task_id": "T1.6",
+              "task_name": "Remove dark: Tailwind classes from components",
+              "description": "Grep for 'dark:' classes across all components and remove them",
+              "files_affected": ["src/components/*.jsx"],
+              "acceptance_criteria": ["No 'dark:' Tailwind classes found", "Run: grep -r 'dark:' src/"],
+              "dependencies": ["T1.5"],
+              "effort": "Medium"
+            },
+            {
+              "task_id": "T1.7",
+              "task_name": "Remove :root.dark CSS selector from index.css",
+              "description": "Find and remove :root.dark CSS selector block from index.css",
+              "files_affected": ["src/index.css"],
+              "acceptance_criteria": [":root.dark selector not found", "No .dark class CSS rules"],
+              "dependencies": ["T1.6"],
+              "effort": "Small"
+            },
+            {
+              "task_id": "T1.8",
+              "task_name": "Remove --color-dark-mode from @theme block",
+              "description": "Remove --color-dark-mode property from @theme block in index.css",
+              "files_affected": ["src/index.css"],
+              "acceptance_criteria": ["No --color-dark-mode in @theme", "Run: grep 'dark-mode' src/index.css"],
+              "dependencies": ["T1.7"],
+              "effort": "Small"
+            }
+          ]
+        },
+        {
+          "phase_id": "Phase 2",
+          "phase_name": "Integrate Fonts",
+          "tasks": [
+            {
+              "task_id": "T2.1",
+              "task_name": "Add Google Fonts @import to index.css",
+              "description": "Add @import for Plus Jakarta Sans and Inter from Google Fonts at top of index.css",
+              "files_affected": ["src/index.css"],
+              "acceptance_criteria": ["@import includes Plus Jakarta Sans", "@import includes Inter", "Import placed at top of file"],
+              "dependencies": ["T1.8"],
+              "effort": "Small"
+            },
+            {
+              "task_id": "T2.2",
+              "task_name": "Update global font-family declarations",
+              "description": "Update CSS font-family for headlines (Plus Jakarta Sans) and body (Inter) in index.css",
+              "files_affected": ["src/index.css"],
+              "acceptance_criteria": ["h1-h6 use Plus Jakarta Sans", "body uses Inter", "font-family declarations updated"],
+              "dependencies": ["T2.1"],
+              "effort": "Small"
+            },
+            {
+              "task_id": "T2.3",
+              "task_name": "Verify font loading in browser",
+              "description": "Test in browser that Plus Jakarta Sans and Inter render correctly",
+              "files_affected": [],
+              "acceptance_criteria": ["DevTools shows correct fonts loaded", "Text renders with expected font families"],
+              "dependencies": ["T2.2"],
+              "effort": "Small"
+            }
+          ]
+        },
+        {
+          "phase_id": "Phase 3",
+          "phase_name": "Apply Design System Colors",
+          "tasks": [
+            {
+              "task_id": "T3.1",
+              "task_name": "Create design-system color mapping",
+              "description": "Document all new color values from design.md (primary, secondary, accent, background, text, etc.)",
+              "files_affected": [],
+              "acceptance_criteria": ["Color mapping documented", "All design.md colors captured"],
+              "dependencies": ["T2.3"],
+              "effort": "Small"
+            },
+            {
+              "task_id": "T3.2",
+              "task_name": "Add design.md colors to @theme block",
+              "description": "Add all design system colors to @theme block in index.css",
+              "files_affected": ["src/index.css"],
+              "acceptance_criteria": ["@theme block includes all colors", "Colors match design.md values"],
+              "dependencies": ["T3.1"],
+              "effort": "Medium"
+            },
+            {
+              "task_id": "T3.3",
+              "task_name": "Update component CSS to use new colors",
+              "description": "Update Header, FileUpload, CategoryList to use new color values or Tailwind utilities",
+              "files_affected": ["src/components/Header.jsx", "src/components/FileUpload.jsx", "src/components/CategoryList.jsx"],
+              "acceptance_criteria": ["Components use new design colors", "No hardcoded color values remain"],
+              "dependencies": ["T3.2"],
+              "effort": "Medium"
+            },
+            {
+              "task_id": "T3.4",
+              "task_name": "Verify color consistency",
+              "description": "Verify Header, FileUpload, CategoryList use consistent colors per design.md",
+              "files_affected": [],
+              "acceptance_criteria": ["All components match design colors", "Color contrast meets standards"],
+              "dependencies": ["T3.3"],
+              "effort": "Small"
+            }
+          ]
+        },
+        {
+          "phase_id": "Phase 4",
+          "phase_name": "Create Atomic Design Structure",
+          "tasks": [
+            {
+              "task_id": "T4.1",
+              "task_name": "Create src/components/atoms/ directory",
+              "description": "Create atoms directory structure",
+              "files_affected": ["src/components/atoms/"],
+              "acceptance_criteria": ["Directory exists", "index.js export file created"],
+              "dependencies": ["T3.4"],
+              "effort": "Small"
+            },
+            {
+              "task_id": "T4.2",
+              "task_name": "Create Button atom",
+              "description": "Create reusable Button component at src/components/atoms/Button.jsx with primary/secondary variants",
+              "files_affected": ["src/components/atoms/Button.jsx"],
+              "acceptance_criteria": ["Button renders", "Has primary/secondary variants", "Uses design system colors"],
+              "dependencies": ["T4.1"],
+              "effort": "Medium"
+            },
+            {
+              "task_id": "T4.3",
+              "task_name": "Create Input atom",
+              "description": "Create reusable Input component at src/components/atoms/Input.jsx with label and error states",
+              "files_affected": ["src/components/atoms/Input.jsx"],
+              "acceptance_criteria": ["Input renders", "Supports label prop", "Shows error state correctly"],
+              "dependencies": ["T4.1"],
+              "effort": "Medium"
+            },
+            {
+              "task_id": "T4.4",
+              "task_name": "Create Badge atom",
+              "description": "Create reusable Badge component at src/components/atoms/Badge.jsx with color variants",
+              "files_affected": ["src/components/atoms/Badge.jsx"],
+              "acceptance_criteria": ["Badge renders", "Supports different color variants"],
+              "dependencies": ["T4.1"],
+              "effort": "Medium"
+            },
+            {
+              "task_id": "T4.5",
+              "task_name": "Create Card atom",
+              "description": "Create reusable Card component at src/components/atoms/Card.jsx with padding and shadow",
+              "files_affected": ["src/components/atoms/Card.jsx"],
+              "acceptance_criteria": ["Card renders", "Has proper padding and shadow", "Uses design colors"],
+              "dependencies": ["T4.1"],
+              "effort": "Medium"
+            },
+            {
+              "task_id": "T4.6",
+              "task_name": "Create src/components/molecules/ directory",
+              "description": "Create molecules directory structure",
+              "files_affected": ["src/components/molecules/"],
+              "acceptance_criteria": ["Directory exists", "index.js export file created"],
+              "dependencies": ["T4.5"],
+              "effort": "Small"
+            },
+            {
+              "task_id": "T4.7",
+              "task_name": "Create TransactionRow molecule if needed",
+              "description": "Create TransactionRow molecule combining Badge + text for transaction display (only if design requires)",
+              "files_affected": ["src/components/molecules/TransactionRow.jsx"],
+              "acceptance_criteria": ["Component renders if created", "Combines existing component logic"],
+              "dependencies": ["T4.6"],
+              "effort": "Medium"
+            },
+            {
+              "task_id": "T4.8",
+              "task_name": "Create CategoryItem molecule if needed",
+              "description": "Create CategoryItem molecule combining Badge + icon for category display (only if design requires)",
+              "files_affected": ["src/components/molecules/CategoryItem.jsx"],
+              "acceptance_criteria": ["Component renders if created", "Combines existing component logic"],
+              "dependencies": ["T4.6"],
+              "effort": "Medium"
+            }
+          ]
+        },
+        {
+          "phase_id": "Phase 5",
+          "phase_name": "Refactor Organisms to Use Atoms",
+          "tasks": [
+            {
+              "task_id": "T5.1",
+              "task_name": "Refactor Header.jsx to use atoms",
+              "description": "Refactor Header to import and use atomic Button and other atom components",
+              "files_affected": ["src/components/Header.jsx"],
+              "acceptance_criteria": ["Header uses Button atom", "Imports from atoms/ directory"],
+              "dependencies": ["T4.5"],
+              "effort": "Medium"
+            },
+            {
+              "task_id": "T5.2",
+              "task_name": "Refactor FileUpload.jsx to use atoms",
+              "description": "Refactor FileUpload to import and use atomic Input and Button components",
+              "files_affected": ["src/components/FileUpload.jsx"],
+              "acceptance_criteria": ["FileUpload uses Input atom", "FileUpload uses Button atom", "Imports from atoms/ directory"],
+              "dependencies": ["T5.1"],
+              "effort": "Medium"
+            },
+            {
+              "task_id": "T5.3",
+              "task_name": "Refactor CategoryList.jsx to use atoms",
+              "description": "Refactor CategoryList to import and use atomic components (Badge, Card)",
+              "files_affected": ["src/components/CategoryList.jsx"],
+              "acceptance_criteria": ["CategoryList uses Badge atom", "CategoryList uses Card atom", "Imports from atoms/ directory"],
+              "dependencies": ["T5.2"],
+              "effort": "Medium"
+            },
+            {
+              "task_id": "T5.4",
+              "task_name": "Update imports in App.jsx",
+              "description": "Update imports in App.jsx to use new component structure if paths changed",
+              "files_affected": ["src/App.jsx"],
+              "acceptance_criteria": ["All imports resolve correctly", "No missing module errors"],
+              "dependencies": ["T5.3"],
+              "effort": "Small"
+            }
+          ]
+        },
+        {
+          "phase_id": "Phase 6",
+          "phase_name": "Validate and Test",
+          "tasks": [
+            {
+              "task_id": "T6.1",
+              "task_name": "Run unit tests",
+              "description": "Run npm test to ensure no regressions in existing functionality",
+              "files_affected": [],
+              "acceptance_criteria": ["All tests pass", "No test failures"],
+              "dependencies": ["T5.4"],
+              "effort": "Medium"
+            },
+            {
+              "task_id": "T6.2",
+              "task_name": "Run accessibility audit",
+              "description": "Run WCAG AA accessibility audit (axe DevTools or lighthouse)",
+              "files_affected": [],
+              "acceptance_criteria": ["No critical a11y violations", "Color contrast meets AA"],
+              "dependencies": ["T6.1"],
+              "effort": "Medium"
+            },
+            {
+              "task_id": "T6.3",
+              "task_name": "Visual regression testing",
+              "description": "Take screenshots to verify UI matches design.md (manual or automated)",
+              "files_affected": [],
+              "acceptance_criteria": ["UI matches design", "No visual regressions"],
+              "dependencies": ["T6.2"],
+              "effort": "Medium"
+            },
+            {
+              "task_id": "T6.4",
+              "task_name": "Browser console check",
+              "description": "Open browser console and verify no errors or warnings",
+              "files_affected": [],
+              "acceptance_criteria": ["No console errors", "No console warnings"],
+              "dependencies": ["T6.3"],
+              "effort": "Small"
+            },
+            {
+              "task_id": "T6.5",
+              "task_name": "Color DevTools inspection",
+              "description": "Inspect computed styles in DevTools to verify all colors match design.md",
+              "files_affected": [],
+              "acceptance_criteria": ["Computed colors match design.md", "All theme colors applied correctly"],
+              "dependencies": ["T6.4"],
+              "effort": "Small"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "next_recommended": "sdd-apply: Implement tasks in batches",
+  "risks": [
+    "Font loading delays may affect Phase 2",
+    "Component refactoring complexity in Phase 5 - may need additional iterations",
+    "Color consistency verification requires manual browser testing"
+  ],
+  "skill_resolution": "none"
+}

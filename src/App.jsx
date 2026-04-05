@@ -1,10 +1,10 @@
 import { useState, useMemo, useEffect } from 'react'
-import FileUpload from './components/FileUpload.jsx'
-import DateFilter from './components/DateFilter.jsx'
-import CategoryList from './components/CategoryList.jsx'
+import FileUpload from './components/organisms/FileUpload.jsx'
+import DateFilter from './components/organisms/DateFilter.jsx'
+import CategoryList from './components/organisms/CategoryList.jsx'
 
-import Header from './components/Header.jsx'
-import CategoryConfig from './components/CategoryConfig.jsx'
+import Header from './components/organisms/Header.jsx'
+import CategoryConfig from './components/organisms/CategoryConfig.jsx'
 import { extractText } from './lib/pdfParser.js'
 import { parse } from './lib/transactionExtractor.js'
 import { categorize } from './lib/categorizer.js'
@@ -35,12 +35,7 @@ export default function App() {
   const [showConfig, setShowConfig] = useState(false)
   const [categoriesConfig, setCategoriesConfig] = useState(null)
   const [loadingCategories, setLoadingCategories] = useState(true)
-  const [theme, setTheme] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('theme') || 'light'
-    }
-    return 'light'
-  })
+  
 
   // Load categories from backend on mount
   useEffect(() => {
@@ -68,12 +63,7 @@ export default function App() {
     loadCategories()
   }, [])
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      document.documentElement.classList.toggle('dark', theme === 'dark')
-      localStorage.setItem('theme', theme)
-    }
-  }, [theme])
+  
 
   const parseInputDateLocal = (dateStr, endOfDay = false) => {
     const [year, month, day] = dateStr.split('-').map(Number)
@@ -146,13 +136,11 @@ export default function App() {
     return (
       <div className="min-h-screen">
 <Header  
-          theme={theme}  
-          onThemeToggle={() => setTheme(t => t === 'dark' ? 'light' : 'dark')}  
-          onConfigClick={() => setShowConfig(false)}  
-          total={0}
-          showBackButton={true}
-          onBackClick={() => setShowConfig(false)}
-        />
+           onConfigClick={() => setShowConfig(false)}  
+           total={0}
+           showBackButton={true}
+           onBackClick={() => setShowConfig(false)}
+         />
         <main className="app-shell space-y-6" style={{ paddingTop: '1.25rem' }}>
           <section className="panel p-5">
             <CategoryConfig onSaved={async () => {
@@ -184,11 +172,9 @@ export default function App() {
   return (
     <div className="min-h-screen">
 <Header  
-          theme={theme}  
-          onThemeToggle={() => setTheme(t => t === 'dark' ? 'light' : 'dark')}  
-          onConfigClick={() => setShowConfig(true)}  
-          total={grandTotal}
-      />
+           onConfigClick={() => setShowConfig(true)}  
+           total={grandTotal}
+       />
       
 
       <main className="app-shell space-y-6" style={{ paddingTop: '1.25rem' }}>
