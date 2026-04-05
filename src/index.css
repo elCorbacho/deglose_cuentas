@@ -450,3 +450,113 @@
     font-size: 38px;
   }
 }
+
+/* Dashboard & Sidebar Styling */
+/* 3-tier surface color palette for dark theme */
+@layer base {
+  :root {
+    --surface-primary: #1a1a1a;
+    --surface-secondary: #201d1d;
+    --surface-tertiary: #302c2c;
+    --surface-hover: #3a3738;
+    
+    --text-primary: #fdfcfc;
+    --text-secondary: #d4d2d2;
+    --text-tertiary: #9a9898;
+    
+    --accent-primary: #007aff;
+    --accent-hover: #0056b3;
+  }
+}
+
+@layer components {
+  /* Sidebar styles */
+  .sidebar {
+    @apply bg-[var(--surface-secondary)] text-[var(--text-primary)] h-full flex flex-col transition-all duration-300;
+  }
+  
+  .sidebar.open {
+    @apply w-[240px];
+  }
+  
+  .sidebar.collapsed {
+    @apply w-[60px];
+  }
+  
+  @media (max-width: 767px) {
+    .sidebar.open {
+      @apply fixed inset-0 z-50 w-screen;
+    }
+  }
+  
+  /* Sidebar header */
+  .sidebar-header {
+    @apply p-4 flex items-center justify-between border-b border-[var(--surface-tertiary)];
+  }
+  
+  /* Sidebar navigation */
+  .sidebar-nav {
+    @apply flex-1 overflow-y-auto p-4;
+  }
+  
+  .sidebar-nav-item {
+    @apply px-3 py-2.5 rounded-lg transition-colors duration-200 text-[var(--text-secondary)] hover:bg-[var(--surface-hover)];
+  }
+  
+  .sidebar-nav-item.active {
+    @apply bg-[var(--surface-tertiary)] text-[var(--text-primary)] font-semibold border-l-2 border-[var(--accent-primary)];
+  }
+  
+  /* Dashboard layout */
+  .dashboard {
+    @apply flex h-screen overflow-hidden;
+  }
+  
+  .dashboard-content {
+    @apply flex-1 flex flex-col overflow-hidden;
+  }
+  
+  .dashboard-main {
+    @apply flex-1 overflow-auto bg-[var(--surface-primary)];
+  }
+  
+  /* Mobile hamburger button */
+  .hamburger-btn {
+    @apply p-2 rounded-lg hover:bg-[var(--surface-hover)] transition-colors duration-200 text-[var(--text-primary)];
+  }
+  
+  /* Backdrop overlay for mobile drawer */
+  .sidebar-backdrop {
+    @apply fixed inset-0 z-40 bg-black opacity-40 transition-opacity duration-300;
+  }
+  
+  .sidebar-backdrop.hidden {
+    @apply opacity-0 pointer-events-none;
+  }
+}
+
+/* Responsive breakpoints for sidebar */
+@media (max-width: 767px) {
+  /* Mobile: hide sidebar, show drawer */
+  .sidebar-drawer-toggle {
+    @apply block;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Tablet: show icons-only sidebar */
+  .sidebar.collapsed {
+    @apply w-[60px];
+  }
+  
+  .sidebar-nav-item {
+    @apply justify-center p-3;
+  }
+}
+
+@media (min-width: 1024px) {
+  /* Desktop: full sidebar */
+  .sidebar {
+    @apply w-[240px];
+  }
+}

@@ -5,6 +5,8 @@ import CategoryList from './components/organisms/CategoryList.jsx'
 
 import Header from './components/organisms/Header.jsx'
 import CategoryConfig from './components/organisms/CategoryConfig.jsx'
+import Sidebar from './components/sidebar/Sidebar.jsx'
+import { SidebarProvider, useSidebar } from './components/SidebarContext.jsx'
 import { extractText } from './lib/pdfParser.js'
 import { parse } from './lib/transactionExtractor.js'
 import { categorize } from './lib/categorizer.js'
@@ -25,17 +27,45 @@ function convertCategoriesFromJSON(jsonCategories) {
   return obj
 }
 
-export default function App() {
+function AppContent() {
+  const { currentView, setView } = useSidebar()
   const [rawTransactions, setRawTransactions] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [desde, setDesde] = useState('')
   const [hasta, setHasta] = useState('')
   const [fileName, setFileName] = useState('')
-  const [showConfig, setShowConfig] = useState(false)
   const [categoriesConfig, setCategoriesConfig] = useState(null)
   const [loadingCategories, setLoadingCategories] = useState(true)
   
+
+  // Initialize hash routing on mount and listen for hash changes
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.slice(1) // Remove '#'
+      if (hash === 'settings') {
+        setView('settings')
+      } else if (hash === 'transactions' || hash === '') {
+        setView('transactions')
+      }
+    }
+
+    // Set initial view from hash or default to transactions
+    const initialHash = window.location.hash.slice(1)
+    if (initialHash === 'settings') {
+      setView('settings')
+    } else {
+      // Default to transactions
+      if (!window.location.hash) {
+        window.location.hash = '#transactions'
+      }
+      setView('transactions')
+    }
+
+    // Listen for hash changes
+    window.addEventListener('hashchange', handleHashChange)
+    return () => window.removeEventListener('hashchange', handleHashChange)
+  }, [setView])
 
   // Load categories from backend on mount
   useEffect(() => {
@@ -131,18 +161,15 @@ export default function App() {
     setError('')
   }
 
-  // View toggle between main app and config
-  if (showConfig) {
-    return (
-      <div className="min-h-screen">
-<Header  
-           onConfigClick={() => setShowConfig(false)}  
-           total={0}
-           showBackButton={true}
-           onBackClick={() => setShowConfig(false)}
-         />
-        <main className="app-shell space-y-6" style={{ paddingTop: '1.25rem' }}>
+  // Render based on current view (hash routing)
+  const renderMainContent = () => {
+    if (currentView === 'settings') {
+      return (
+        <div className="space-y-6">
           <section className="panel p-5">
+            <h2 className="text-2xl font-semibold mb-4" style={{ color: 'var(--text-strong)' }}>
+              Configuración
+            </h2>
             <CategoryConfig onSaved={async () => {
               // Reload categories from backend without page reload
               try {
@@ -164,20 +191,13 @@ export default function App() {
               }
             }} />
           </section>
-        </main>
-      </div>
-    )
-  }
+        </div>
+      )
+    }
 
-  return (
-    <div className="min-h-screen">
-<Header  
-           onConfigClick={() => setShowConfig(true)}  
-           total={grandTotal}
-       />
-      
-
-      <main className="app-shell space-y-6" style={{ paddingTop: '1.25rem' }}>
+    // Default: transactions view
+    return (
+      <>
         <section className="hero-shell">
           <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl space-y-4">
@@ -312,7 +332,34 @@ export default function App() {
             <CategoryList categories={categories} />
           </section>
         )}
-      </main>
+      </>
+    )
+  }
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Header 
+        total={currentView === 'transactions' ? grandTotal : 0}
+      />
+      <div className="flex flex-1 overflow-hidden">
+        {/* Sidebar */}
+        <Sidebar logo={<span className="font-bold text-lg">📊</span>} />
+        
+        {/* Main Content */}
+        <main className="flex-1 overflow-auto">
+          <div className="app-shell space-y-6" style={{ paddingTop: '1.25rem' }}>
+            {renderMainContent()}
+          </div>
+        </main>
+      </div>
     </div>
+  )
+}
+
+export default function App() {
+  return (
+    <SidebarProvider>
+      <AppContent />
+    </SidebarProvider>
   )
 }

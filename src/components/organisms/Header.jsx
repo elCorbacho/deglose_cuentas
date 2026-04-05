@@ -2,39 +2,18 @@
 import { APP_TITLE } from '../../data/config.js'
 import { formatCLP } from '../../lib/formatters.js'
 
-export default function Header({ onConfigClick, showBackButton, onBackClick, total }) {
+export default function Header({ total }) {
   return (
-    <header className="header-shell fixed top-0 left-0 right-0 z-30 border-b">
-      <div className="mx-auto flex h-auto min-h-14 w-full max-w-[1100px] items-center justify-between gap-4 px-4 py-2 flex-col sm:flex-row">
+    <header className="header-shell sticky top-0 z-20 border-b bg-[var(--surface-secondary)]">
+      <div className="mx-auto flex h-auto min-h-14 w-full items-center justify-between gap-4 px-4 py-2 flex-col sm:flex-row">
         <div className="flex items-center gap-3">
-           {showBackButton && onBackClick && (
-             <button 
-               onClick={onBackClick}
-               className="text-sm font-medium px-3 py-2 rounded min-h-[44px]"
-               style={{ color: 'var(--color-opencode-light)' }}
-               title="Volver"
-             >
-               ← Volver
-             </button>
-           )}
            <h1 className="text-lg font-semibold" style={{ color: 'var(--color-opencode-light)' }}>
              {APP_TITLE}
            </h1>
         </div>
         <div className="flex items-center gap-3">
-           {onConfigClick && (
-             <button 
-               onClick={onConfigClick}
-               className="text-sm font-medium px-3 py-2 rounded min-h-[44px]"
-               style={{ color: 'var(--color-opencode-light)' }}
-               title="Configurar categorías"
-             >
-               ⚙️ Config
-             </button>
-           )}
-          
            {total !== undefined && (
-             <div className="text-right ml-4 pl-4 border-l border-gray-300">
+             <div className="text-right ml-4 pl-4 border-l" style={{ borderColor: 'var(--color-border-gray)' }}>
                <p className="text-xs uppercase tracking-[0.18em]" style={{ color: 'var(--color-gray-secondary)' }}>
                  Total general
                </p>
