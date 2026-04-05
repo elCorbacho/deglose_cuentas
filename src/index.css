@@ -178,6 +178,7 @@
     border-radius: 4px;
     background: var(--color-light-surface);
     padding: 16px;
+    color: var(--color-text-strong);
   }
 
   /* Header */
@@ -199,6 +200,7 @@
     border: 1px solid var(--border-warm);
     border-radius: 4px;
     background: var(--color-light-surface);
+    color: var(--color-text-strong);
   }
 
   /* Status Cards */
@@ -212,6 +214,7 @@
     background: var(--color-light-surface);
     border-radius: 4px;
     border: 1px solid var(--border-warm);
+    color: var(--color-text-strong);
   }
 
   .status-card--error {
