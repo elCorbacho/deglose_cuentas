@@ -37,18 +37,18 @@ export default function FileUpload({ onFileLoaded }) {
   return (
     <div className="space-y-4">
       <style>{`
-        .upload-zone {
-          border-width: 2px;
-          border-style: dashed;
-          border-radius: 24px;
-          padding: 1.25rem;
-          transition: all 200ms;
-        }
-        @media (min-width: 640px) {
-          .upload-zone {
-            padding: 1.75rem;
-          }
-        }
+         .upload-zone {
+           border-width: 2px;
+           border-style: dashed;
+           border-radius: 6px;
+           padding: 1.5rem;
+           transition: all 200ms;
+         }
+         @media (min-width: 640px) {
+           .upload-zone {
+             padding: 2rem;
+           }
+         }
         .upload-zone-default {
           border-color: var(--border-soft);
           background: var(--bg-panel);
@@ -67,18 +67,18 @@ export default function FileUpload({ onFileLoaded }) {
           color: var(--bg-panel-strong);
           border: 2px solid var(--color-accent-blue);
         }
-        .upload-tip {
-          border-radius: 16px;
-          border: 1px solid var(--border-soft);
-          background: var(--bg-shell);
-          color: var(--text-soft);
-        }
-        .upload-feedback {
-          border-radius: 16px;
-          border: 1px solid var(--border-soft);
-          background: var(--bg-shell);
-          color: var(--text-soft);
-        }
+         .upload-tip {
+           border-radius: 4px;
+           border: 1px solid var(--border-soft);
+           background: var(--bg-shell);
+           color: var(--text-soft);
+         }
+         .upload-feedback {
+           border-radius: 4px;
+           border: 1px solid var(--border-soft);
+           background: var(--bg-shell);
+           color: var(--text-soft);
+         }
         .upload-feedback-error {
           border-color: var(--border-strong);
           background: var(--bg-danger-soft);
@@ -100,7 +100,7 @@ export default function FileUpload({ onFileLoaded }) {
           />
 
           <div className="flex flex-col gap-4 text-center">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl text-3xl upload-icon">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded text-3xl upload-icon">
               📄
             </div>
 
