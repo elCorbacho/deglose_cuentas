@@ -64,8 +64,8 @@
   --spacing-24: 96px;
 
   /* Legacy text colors (for backward compatibility) */
-  --text-base: #201d1d;
-  --text-strong: #201d1d;
+  --text-base: #fdfcfc;
+  --text-strong: #fdfcfc;
   --text-soft: #9a9898;
   --text-accent: #007aff;
   --text-danger: #ff3b30;
