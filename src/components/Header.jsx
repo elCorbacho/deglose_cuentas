@@ -10,7 +10,7 @@ export default function Header({ onConfigClick, showBackButton, onBackClick, tot
            {showBackButton && onBackClick && (
              <button 
                onClick={onBackClick}
-               className="text-sm font-medium px-2 py-1 rounded"
+               className="text-sm font-medium px-3 py-2 rounded min-h-[44px]"
                style={{ color: 'var(--color-opencode-light)' }}
                title="Volver"
              >
@@ -25,7 +25,7 @@ export default function Header({ onConfigClick, showBackButton, onBackClick, tot
            {onConfigClick && (
              <button 
                onClick={onConfigClick}
-               className="text-sm font-medium px-3 py-1.5 rounded"
+               className="text-sm font-medium px-3 py-2 rounded min-h-[44px]"
                style={{ color: 'var(--color-opencode-light)' }}
                title="Configurar categorías"
              >
