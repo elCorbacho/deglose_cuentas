@@ -7,27 +7,23 @@ import { formatCLP } from '../../lib/formatters.js'
 
 export default function TransactionRow({ tx }) {
   return (
-    <div className="flex flex-col gap-2 px-4 py-2 transition-colors tx-row sm:flex-row sm:items-center sm:justify-between sm:gap-4">
-      <div className="min-w-0 flex items-center gap-2">
-        <p 
-          className="break-words text-sm font-medium leading-6 sm:text[0.95rem]" 
-          style={{ color: 'var(--text-base)' }}
-        >
+    <div className="tx-row tx-row--table">
+      <div className="tx-col tx-col--merchant min-w-0">
+        <p className="tx-merchant truncate" style={{ color: 'var(--text-base)' }} title={tx.comercio}>
           {tx.comercio}
         </p>
-        <span className="tx-separator" style={{ color: 'var(--border-soft)' }}>•</span>
-        <p 
-          className="text-xs font-semibold tracking-[0.18em]" 
-          style={{ color: 'var(--text-soft)' }}
-        >
+      </div>
+
+      <div className="tx-col tx-col--date">
+        <p className="tx-date" style={{ color: 'var(--text-soft)' }}>
           {tx.fecha}
         </p>
       </div>
 
-      <div className="sm:pl-4 shrink-0">
-        <p 
-          className={`mono-num text-base font-semibold sm:text-right ${tx.monto < 0 ? 'tx-amount-negative' : ''}`}
-          style={tx.monto < 0 ? { color: 'var(--text-danger)' } : { color: 'var(--text-base)' }}
+      <div className="tx-col tx-col--amount">
+        <p
+          className={`mono-num tx-amount ${tx.monto < 0 ? 'tx-amount-negative' : ''}`}
+          style={tx.monto < 0 ? { color: 'var(--text-danger)' } : { color: 'var(--text-strong)' }}
         >
           {formatCLP(tx.monto)}
         </p>

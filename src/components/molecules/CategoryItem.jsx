@@ -3,7 +3,7 @@
  * Displays a category with expandable transaction list
  */
 
-import { useState, useMemo } from 'react'
+import { useState } from 'react'
 import TransactionRow from './TransactionRow.jsx'
 import { formatCLP } from '../../lib/formatters.js'
 import { DEFAULT_CATEGORY_ICON } from '../../data/categories.js'
@@ -26,39 +26,28 @@ export default function CategoryItem({ category }) {
   const [expanded, setExpanded] = useState(false)
   const icon = category.icon || DEFAULT_CATEGORY_ICON
 
-  // Pre-compute keys outside render to avoid mutation during render
-  const transactionKeys = useMemo(() => {
-    const keyCounts = new Map()
-    return category.transactions.map((tx) => {
-      const baseKey = `${tx.fecha}-${tx.comercio}-${tx.monto}-${tx.ciudad}`
-      const count = keyCounts.get(baseKey) || 0
-      keyCounts.set(baseKey, count + 1)
-      return `${baseKey}-${count}`
-    })
-  }, [category.transactions])
-
   return (
-    <div className="panel overflow-hidden">
+    <div className="panel overflow-hidden category-panel">
       <button
         onClick={() => setExpanded(!expanded)}
-        className="flex w-full items-center justify-between gap-4 px-4 py-3 text-left transition-colors sm:px-5 category-item-button cursor-pointer"
+        className="flex w-full items-center justify-between gap-3 px-3 py-2.5 text-left transition-colors sm:px-4 category-item-button cursor-pointer"
         type="button"
         aria-expanded={expanded}
       >
-        <div className="flex min-w-0 flex-1 items-start gap-3">
+        <div className="flex min-w-0 flex-1 items-start gap-2.5">
           <span
-            className={`mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-slate-100 text-xs arrow-icon transition-colors duration-200`}
+            className={`mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md text-[10px] arrow-icon transition-colors duration-200`}
           >
             <ChevronIcon expanded={expanded} />
           </span>
 
-          <div className="min-w-0 space-y-1">
+          <div className="min-w-0 space-y-0.5">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-lg">{icon}</span>
-              <span className="text-base font-semibold sm:text-lg" style={{ color: 'var(--text-strong)' }}>
+              <span className="text-base">{icon}</span>
+              <span className="text-sm font-semibold sm:text-base" style={{ color: 'var(--text-strong)' }}>
                 {category.name}
               </span>
-              <span className="badge-soft">
+              <span className="badge-soft badge-soft--compact">
                 {category.count} {category.count === 1 ? 'movimiento' : 'movimientos'}
               </span>
             </div>
@@ -66,21 +55,29 @@ export default function CategoryItem({ category }) {
         </div>
 
         <div className="shrink-0 text-right">
-          <p className="text-xs uppercase tracking-[0.18em]" style={{ color: 'var(--text-soft)' }}>
+          <p className="text-[10px] uppercase tracking-[0.16em]" style={{ color: 'var(--text-soft)' }}>
             Total
           </p>
-          <span className="mono-num text-lg font-bold" style={{ color: 'var(--text-strong)' }}>
+          <span className="mono-num text-base font-bold" style={{ color: 'var(--text-strong)' }}>
             {formatCLP(category.total)}
           </span>
         </div>
       </button>
 
       {expanded && (
-        <div className="expanded-content px-3 py-3 sm:px-4">
+        <div className="expanded-content px-2.5 py-2 sm:px-3">
+          <div className="tx-table-header">
+            <div className="tx-table-columns">
+              <span>Nombre transacción</span>
+              <span>Fecha</span>
+              <span>Monto</span>
+            </div>
+          </div>
+
           <div className="transaction-divider-container">
             {category.transactions.map((tx, index) => (
               <div
-                key={transactionKeys[index]}
+                key={`${tx.fecha}-${tx.comercio}-${tx.monto}-${tx.ciudad}-${index}`}
                 className={index > 0 ? 'transaction-divider' : ''}
               >
                 <TransactionRow tx={tx} />

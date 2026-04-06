@@ -284,10 +284,10 @@ export default function App() {
       : 'conic-gradient(var(--bg-shell) 0 100%)'
 
     return (
-    <section className="space-y-4 view-panel">
+    <section className="analysis-body view-panel">
       {hasTransactions ? (
         <>
-          <div className="analysis-widgets-grid analysis-widgets-grid--three">
+          <div className="analysis-row analysis-widgets-grid analysis-widgets-grid--three">
             <div className="panel widget-card p-3 sm:p-4">
               <DateFilter
                 desde={desde}
@@ -336,7 +336,9 @@ export default function App() {
             </div>
           </div>
 
-          <CategoryList categories={categories} />
+          <div className="analysis-row analysis-row--content">
+            <CategoryList categories={categories} />
+          </div>
         </>
       ) : (
         <section className="panel status-card status-card--empty">
@@ -399,7 +401,7 @@ export default function App() {
         />
 
         <main className="content-area">
-          <div className="app-shell app-shell--compact space-y-4">
+          <div className="app-shell app-shell--compact">
             {renderCurrentView()}
           </div>
         </main>
