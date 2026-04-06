@@ -11,7 +11,7 @@ import { extractText } from './lib/pdfParser.js'
 import { parse } from './lib/transactionExtractor.js'
 import { categorize } from './lib/categorizer.js'
 import { group } from './lib/aggregator.js'
-import { parseDate } from './lib/formatters.js'
+import { parseDate, formatCLP } from './lib/formatters.js'
 import { getCategories } from './services/api.js'
 import { CATEGORIES as DEFAULT_CATEGORIES } from './data/categories.js'
 
@@ -254,48 +254,85 @@ export default function App() {
     </>
   )
 
-  const renderAnalysisView = () => (
+  const renderAnalysisView = () => {
+    const filteredRangeTotal = filteredTransactions.reduce((sum, tx) => sum + tx.monto, 0)
+    const visibleCategories = categories.filter(category => category.count > 0)
+    const topChartCategories = visibleCategories.slice(0, 5)
+    const topChartTotal = topChartCategories.reduce((sum, category) => sum + category.total, 0)
+    const otherTotal = Math.max(filteredRangeTotal - topChartTotal, 0)
+
+    const chartItems = [
+      ...topChartCategories.map((category) => ({
+        name: category.name,
+        icon: category.icon,
+        total: category.total,
+      })),
+      ...(otherTotal > 0 ? [{ name: 'Otros', icon: '·', total: otherTotal }] : []),
+    ]
+
+    const chartColors = ['#22D3EE', '#38BDF8', '#818CF8', '#A78BFA', '#F472B6', '#94A3B8']
+    let progress = 0
+    const donutGradient = chartItems.length
+      ? `conic-gradient(${chartItems
+          .map((item, index) => {
+            const start = progress
+            const end = progress + (item.total / filteredRangeTotal) * 100
+            progress = end
+            return `${chartColors[index % chartColors.length]} ${start}% ${end}%`
+          })
+          .join(', ')})`
+      : 'conic-gradient(var(--bg-shell) 0 100%)'
+
+    return (
     <section className="space-y-4 view-panel">
       {hasTransactions ? (
         <>
-          <div className="panel p-4 sm:p-5">
-            <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-              <div className="space-y-3">
-                <div className="space-y-1">
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: 'var(--text-soft)' }}>
-                    Archivo procesado
-                  </p>
-                  <h2 className="text-xl font-semibold tracking-tight" style={{ color: 'var(--text-strong)' }}>
-                    Tus resultados ya están listos
-                  </h2>
-                  <p className="max-w-2xl text-sm leading-5" style={{ color: 'var(--text-base)' }}>
-                    Revisa el resumen, ajusta fechas y expande categorías para ver transacciones.
-                  </p>
-                </div>
-
-                <div className="flex flex-wrap gap-1.5">
-                  <span className="badge-soft">📄 {fileName}</span>
-                  <span className="badge-soft">{rawTransactions.length} transacciones detectadas</span>
-                  {hasActiveFilters && (
-                    <span className="badge-soft">
-                      {filteredTransactions.length} visibles en el rango actual
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              <button onClick={resetResults} className="btn-secondary shrink-0" type="button">
-                Cargar otro PDF
-              </button>
-            </div>
-
-            <div className="mt-4">
+          <div className="analysis-widgets-grid analysis-widgets-grid--three">
+            <div className="panel widget-card p-3 sm:p-4">
               <DateFilter
                 desde={desde}
                 hasta={hasta}
                 onDesdeChange={setDesde}
                 onHastaChange={setHasta}
               />
+            </div>
+
+            <div className="panel widget-card p-4">
+              <p className="widget-kicker text-[11px] font-semibold uppercase tracking-[0.16em]">Total del rango</p>
+              <p className="widget-total-amount mono-num mt-2" style={{ color: 'var(--text-strong)' }}>
+                {formatCLP(filteredRangeTotal)}
+              </p>
+              <p className="mt-2 text-xs" style={{ color: 'var(--text-soft)' }}>
+                {filteredTransactions.length} movimientos · {visibleCategories.length} categorías
+              </p>
+              <button onClick={resetResults} className="btn-secondary btn-secondary--compact mt-3 w-full" type="button">
+                Cargar otro PDF
+              </button>
+            </div>
+
+            <div className="panel widget-card p-4">
+              <p className="widget-kicker text-[11px] font-semibold uppercase tracking-[0.16em]">Distribución de gastos</p>
+              <div className="distribution-widget mt-3">
+                <div className="distribution-donut" style={{ background: donutGradient }}>
+                  <div className="distribution-donut-center" />
+                </div>
+                <div className="distribution-legend">
+                  {chartItems.slice(0, 4).map((item, index) => (
+                    <div key={item.name} className="distribution-legend-item">
+                      <span
+                        className="distribution-legend-dot"
+                        style={{ backgroundColor: chartColors[index % chartColors.length] }}
+                      />
+                      <span className="truncate" style={{ color: 'var(--text-base)' }}>
+                        {item.icon} {item.name}
+                      </span>
+                      <span className="mono-num" style={{ color: 'var(--text-strong)' }}>
+                        {Math.round((item.total / filteredRangeTotal) * 100) || 0}%
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
 
@@ -312,7 +349,8 @@ export default function App() {
         </section>
       )}
     </section>
-  )
+    )
+  }
 
   const renderConfigView = () => (
     <section className="panel p-5 view-panel">
@@ -351,7 +389,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen">
-      <Header total={activeView === 'analysis' ? grandTotal : undefined} />
+      <Header />
 
       <div className="app-layout">
         <Sidebar

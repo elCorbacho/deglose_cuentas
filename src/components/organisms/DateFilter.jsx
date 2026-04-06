@@ -118,13 +118,13 @@ export default function DateFilter({ desde, hasta, onDesdeChange, onHastaChange 
   }
 
   return (
-    <div className="filter-container rounded-[22px] p-4">
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-        <div className="space-y-1">
+    <div className="filter-container filter-container--compact">
+      <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+        <div className="space-y-0.5">
           <p className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: 'var(--text-soft)' }}>
             Filtrar por fecha
           </p>
-          <p className="text-sm" style={{ color: 'var(--text-base)' }}>
+          <p className="text-xs" style={{ color: 'var(--text-base)' }}>
             Acota el período para revisar movimientos específicos.
           </p>
         </div>
@@ -132,7 +132,7 @@ export default function DateFilter({ desde, hasta, onDesdeChange, onHastaChange 
         {isFiltered && (
           <button
             onClick={handleClear}
-            className="btn-filter-clear inline-flex items-center gap-1.5 text-sm font-medium"
+            className="btn-filter-clear btn-filter-clear--compact inline-flex items-center gap-1 text-xs font-medium"
             type="button"
           >
             <ClearIcon />
@@ -142,12 +142,12 @@ export default function DateFilter({ desde, hasta, onDesdeChange, onHastaChange 
       </div>
 
       {/* Quick Presets */}
-      <div className="mt-4 flex flex-wrap gap-2">
+      <div className="mt-2.5 flex flex-wrap gap-1.5">
         {PRESETS.map((preset) => (
           <button
             key={preset.id}
             onClick={() => handlePresetClick(preset)}
-            className={`preset-btn ${currentPreset === preset.id ? 'preset-btn--active' : ''}`}
+            className={`preset-btn preset-btn--compact ${currentPreset === preset.id ? 'preset-btn--active' : ''}`}
             type="button"
           >
             {preset.label}
@@ -156,9 +156,9 @@ export default function DateFilter({ desde, hasta, onDesdeChange, onHastaChange 
       </div>
 
       {/* Date Inputs */}
-      <div className="mt-4 grid gap-3 md:grid-cols-2">
-        <label className="space-y-2 text-sm" style={{ color: 'var(--text-base)' }}>
-          <span className="block font-medium">Desde</span>
+      <div className="mt-3 grid gap-2 md:grid-cols-2">
+        <label className="space-y-1 text-xs" style={{ color: 'var(--text-base)' }}>
+          <span className="block font-semibold uppercase tracking-[0.08em]">Desde</span>
           <div className="date-input-wrapper">
             <CalendarIcon />
             <input
@@ -170,8 +170,8 @@ export default function DateFilter({ desde, hasta, onDesdeChange, onHastaChange 
           </div>
         </label>
 
-        <label className="space-y-2 text-sm" style={{ color: 'var(--text-base)' }}>
-          <span className="block font-medium">Hasta</span>
+        <label className="space-y-1 text-xs" style={{ color: 'var(--text-base)' }}>
+          <span className="block font-semibold uppercase tracking-[0.08em]">Hasta</span>
           <div className="date-input-wrapper">
             <CalendarIcon />
             <input
