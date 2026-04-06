@@ -2,76 +2,85 @@
 @import "tailwindcss";
 
 :root {
-  /* OpenCode - Light equivalent */
-  --color-primary: #007aff;
-  --color-secondary: #9a9898;
-  --color-tertiary: #646262;
-  --color-neutral: #f1eeee;
+  /* VoltAgent - Light equivalent */
+  --color-primary: #00d992;
+  --color-secondary: #8b949e;
+  --color-tertiary: #b8b3b0;
+  --color-neutral: #f2f2f2;
 
   /* Text */
-  --text-strong: #201d1d;
-  --text-base: #2f2b2b;
-  --text-soft: #6e6e73;
-  --text-accent: #007aff;
-  --text-danger: #ff3b30;
+  --text-strong: #050507;
+  --text-base: #3d3a39;
+  --text-soft: #8b949e;
+  --text-accent: #00b67c;
+  --text-danger: #fb565b;
 
   /* Surfaces */
-  --bg-canvas: #f1eeee;
-  --bg-shell: #f8f7f7;
-  --bg-panel: #f8f7f7;
-  --bg-panel-strong: #fdfcfc;
-  --bg-accent-soft: rgba(0, 122, 255, 0.08);
-  --bg-accent-strong: #007aff;
-  --bg-danger-soft: rgba(255, 59, 48, 0.12);
+  --bg-canvas: #f2f2f2;
+  --bg-shell: #eeeeee;
+  --bg-panel: #f2f2f2;
+  --bg-panel-strong: #ffffff;
+  --bg-accent-soft: rgba(16, 185, 129, 0.14);
+  --bg-accent-strong: #008b60;
+  --bg-danger-soft: rgba(251, 86, 91, 0.14);
 
   /* Borders */
   --border-soft: rgba(15, 0, 0, 0.12);
-  --border-strong: #646262;
+  --border-strong: rgba(0, 217, 146, 0.45);
 
   /* Flat depth */
   --shadow-soft: none;
   --shadow-card: none;
 
   /* Surface tokens */
-  --surface: #f1eeee;
-  --surface-container-low: #f8f7f7;
-  --surface-container-lowest: #fdfcfc;
+  --surface: #f2f2f2;
+  --surface-container-low: #eeeeee;
+  --surface-container-lowest: #ffffff;
   --surface-bright: #fdfcfc;
-  --outline-variant: #646262;
-  --primary-dark: #0056b3;
-  --primary: #007aff;
+  --outline-variant: #8b949e;
+  --primary-dark: #00b67c;
+  --primary: #00d992;
+
+  /* Semantic helpers */
+  --success: #008b00;
+  --warning: #ffba00;
+  --info: #4cb3d4;
 }
 
 /* Dark Mode */
 [data-theme="dark"] {
-  /* OpenCode - Dark original */
-  --text-strong: #fdfcfc;
-  --text-base: #f1eeee;
-  --text-soft: #9a9898;
-  --text-accent: #007aff;
-  --text-danger: #ff3b30;
+  /* VoltAgent - Dark original */
+  --text-strong: #f2f2f2;
+  --text-base: #b8b3b0;
+  --text-soft: #8b949e;
+  --text-accent: #00d992;
+  --text-danger: #fb565b;
 
-  --bg-canvas: #201d1d;
-  --bg-shell: #2a2626;
-  --bg-panel: #302c2c;
-  --bg-panel-strong: #201d1d;
-  --bg-accent-soft: rgba(0, 122, 255, 0.16);
-  --bg-accent-strong: #007aff;
-  --bg-danger-soft: rgba(255, 59, 48, 0.16);
+  --bg-canvas: #050507;
+  --bg-shell: #0b0b0d;
+  --bg-panel: #101010;
+  --bg-panel-strong: #101010;
+  --bg-accent-soft: rgba(0, 217, 146, 0.16);
+  --bg-accent-strong: #00d992;
+  --bg-danger-soft: rgba(251, 86, 91, 0.16);
 
-  --border-soft: rgba(15, 0, 0, 0.12);
-  --border-strong: #646262;
+  --border-soft: #3d3a39;
+  --border-strong: rgba(0, 217, 146, 0.55);
 
   --shadow-soft: none;
   --shadow-card: none;
 
-  --surface: #201d1d;
-  --surface-container-low: #302c2c;
-  --surface-container-lowest: #2a2626;
-  --surface-bright: #302c2c;
-  --outline-variant: #646262;
-  --primary-dark: #0056b3;
-  --primary: #007aff;
+  --surface: #050507;
+  --surface-container-low: #101010;
+  --surface-container-lowest: #050507;
+  --surface-bright: #101010;
+  --outline-variant: #4f5d75;
+  --primary-dark: #00c182;
+  --primary: #00d992;
+
+  --success: #30d158;
+  --warning: #ffba00;
+  --info: #4cb3d4;
 }
 
 
@@ -96,12 +105,14 @@
 
 
   html {
-    font-family: 'Berkeley Mono', 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Ubuntu, Cantarell, 'Noto Sans', Helvetica, Arial, sans-serif;
+    font-feature-settings: "calt", "rlig";
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Berkeley Mono', 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
-    font-weight: 700;
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Ubuntu, Cantarell, 'Noto Sans', Helvetica, Arial, sans-serif;
+    font-weight: 400;
+    letter-spacing: -0.6px;
   }
 
   button,
@@ -844,7 +855,8 @@
 
   .btn-primary:hover:not(:disabled) {
     border-color: var(--primary-dark);
-    filter: brightness(0.96);
+    color: #00ffaa;
+    filter: brightness(0.98);
     transform: none;
   }
 
@@ -874,7 +886,7 @@
   }
 
   .mono-num {
-    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    font-family: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
     font-variant-numeric: tabular-nums;
     font-feature-settings: 'tnum' 1;
   }
