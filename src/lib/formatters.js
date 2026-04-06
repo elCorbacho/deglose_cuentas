@@ -33,3 +33,14 @@ export function toISODate(date) {
   const d = String(date.getDate()).padStart(2, '0')
   return `${y}-${m}-${d}`
 }
+
+/**
+ * Format a date string for display (DD/MM/YYYY)
+ * @param {string} dateStr - "YYYY-MM-DD"
+ * @returns {string}
+ */
+export function formatDate(dateStr) {
+  if (!dateStr) return ''
+  const [year, month, day] = dateStr.split('-')
+  return `${day}/${month}/${year}`
+}

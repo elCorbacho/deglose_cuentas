@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect } from 'react'
 import FileUpload from './components/organisms/FileUpload.jsx'
 import DateFilter from './components/organisms/DateFilter.jsx'
 import CategoryList from './components/organisms/CategoryList.jsx'
+import Dashboard from './components/organisms/Dashboard.jsx'
 
 import Header from './components/organisms/Header.jsx'
 import CategoryConfig from './components/organisms/CategoryConfig.jsx'
@@ -33,7 +34,7 @@ export default function App() {
   const [desde, setDesde] = useState('')
   const [hasta, setHasta] = useState('')
   const [fileName, setFileName] = useState('')
-  const [activeView, setActiveView] = useState('upload') // 'upload' | 'analysis' | 'config'
+  const [activeView, setActiveView] = useState('upload') // 'upload' | 'dashboard' | 'analysis' | 'config'
   const [categoriesConfig, setCategoriesConfig] = useState(null)
   const [loadingCategories, setLoadingCategories] = useState(true)
   
@@ -319,8 +320,31 @@ export default function App() {
     </section>
   )
 
+  const renderDashboardView = () => (
+    <section className="view-panel">
+      {hasTransactions ? (
+        <Dashboard
+          categories={categories}
+          grandTotal={grandTotal}
+          transactionCount={filteredTransactions.length}
+          dateRange={{ desde, hasta }}
+        />
+      ) : (
+        <section className="panel status-card status-card--empty">
+          <p className="text-sm" style={{ color: 'var(--text-base)' }}>
+            No hay datos para mostrar. Cargá un PDF primero.
+          </p>
+          <button onClick={() => setActiveView('upload')} className="btn-secondary" type="button">
+            Ir a Cargar PDF
+          </button>
+        </section>
+      )}
+    </section>
+  )
+
   const renderCurrentView = () => {
     if (activeView === 'config') return renderConfigView()
+    if (activeView === 'dashboard') return renderDashboardView()
     if (activeView === 'analysis') return renderAnalysisView()
     return renderUploadView()
   }

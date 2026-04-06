@@ -1,5 +1,12 @@
 import { useState } from 'react'
 
+// SVG Icons
+const DocumentIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+    <path strokeLinecap="round" strokeLinejoin="round" d="19.5 14.25v-15a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 14.25v15a2.25 2.25 0 0 0 2.25 2.25h13.5a2.25 2.25 0 0 0 2.25-2.25Z" />
+  </svg>
+)
+
 export default function FileUpload({ onFileLoaded }) {
   const [isDragging, setIsDragging] = useState(false)
   const [error, setError] = useState('')
@@ -63,8 +70,8 @@ export default function FileUpload({ onFileLoaded }) {
           box-shadow: var(--shadow-card);
         }
         .upload-icon {
-          background: var(--text-strong);
-          color: var(--bg-panel-strong);
+          background: var(--text-accent);
+          color: white;
           box-shadow: var(--shadow-card);
         }
         .upload-tip {
@@ -100,8 +107,8 @@ export default function FileUpload({ onFileLoaded }) {
           />
 
           <div className="flex flex-col gap-3 text-center">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl text-2xl upload-icon">
-              📄
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl upload-icon">
+              <DocumentIcon />
             </div>
 
             <div className="space-y-1">
