@@ -2,40 +2,41 @@
 @import "tailwindcss";
 
 :root {
-  /* Design System Colors from design.md */
-  --color-primary: #0056D2;
-  --color-secondary: #50E3C2;
-  --color-tertiary: #9B51E0;
-  --color-neutral: #F8FAFC;
-  
-  /* Light Mode: Text Colors */
-  --text-strong: #0F172A;
-  --text-base: #334155;
-  --text-soft: #64748B;
-  --text-accent: #0056D2;
-  --text-danger: #DC2626;
-  
-  /* Light Mode: Background Colors */
-  --bg-canvas: #FFFFFF;
-  --bg-shell: #F8FAFC;
-  --bg-panel: #F1F5F9;
-  --bg-panel-strong: #FFFFFF;
-  --bg-accent-soft: #EFF6FF;
-  --bg-accent-strong: #0056D2;
-  --bg-danger-soft: #FEE2E2;
-  
-  /* Borders */
-  --border-soft: rgba(71, 85, 105, 0.12);
-  --border-strong: rgba(0, 86, 210, 0.2);
-  
-  /* Shadows */
-  --shadow-soft: 0 20px 40px rgba(15, 23, 42, 0.08);
-  --shadow-card: 0 16px 32px rgba(15, 23, 42, 0.08);
+  /* Editorial Financial Intelligence - Light */
+  --color-primary: #003d9b;
+  --color-secondary: #4c5d8d;
+  --color-tertiary: #6e7ba8;
+  --color-neutral: #fcf9f8;
 
-  /* UI Redesign tokens */
+  /* Text */
+  --text-strong: #1c1b1b;
+  --text-base: #2d3342;
+  --text-soft: #4c5d8d;
+  --text-accent: #003d9b;
+  --text-danger: #b4232f;
+
+  /* Surfaces */
+  --bg-canvas: #fcf9f8;
+  --bg-shell: #f6f3f2;
+  --bg-panel: #f6f3f2;
+  --bg-panel-strong: #ffffff;
+  --bg-accent-soft: rgba(0, 82, 204, 0.08);
+  --bg-accent-strong: #0052cc;
+  --bg-danger-soft: rgba(180, 35, 47, 0.08);
+
+  /* Ghost borders (15% outline-variant) */
+  --border-soft: rgba(195, 198, 214, 0.15);
+  --border-strong: rgba(0, 61, 155, 0.28);
+
+  /* Ambient shadows */
+  --shadow-soft: 0 32px 64px rgba(28, 27, 27, 0.05);
+  --shadow-card: 0 20px 40px rgba(28, 27, 27, 0.06);
+
+  /* Surface tokens */
   --surface: #fcf9f8;
   --surface-container-low: #f6f3f2;
   --surface-container-lowest: #ffffff;
+  --surface-bright: #fcf9f8;
   --outline-variant: #c3c6d6;
   --primary-dark: #003d9b;
   --primary: #0052cc;
@@ -43,37 +44,34 @@
 
 /* Dark Mode */
 [data-theme="dark"] {
-  /* Dark Mode: Text Colors */
-  --text-strong: #F1F5F9;
-  --text-base: #CBD5E1;
-  --text-soft: #94A3B8;
-  --text-accent: #38BDF8;
-  --text-danger: #F87171;
-  
-  /* Dark Mode: Background Colors */
-  --bg-canvas: #0F172A;
-  --bg-shell: #1E293B;
-  --bg-panel: #1E293B;
-  --bg-panel-strong: #334155;
-  --bg-accent-soft: rgba(56, 189, 248, 0.15);
-  --bg-accent-strong: #0284C7;
-  --bg-danger-soft: rgba(248, 113, 113, 0.15);
-  
-  /* Borders */
-  --border-soft: rgba(148, 163, 184, 0.15);
-  --border-strong: rgba(56, 189, 248, 0.3);
-  
-  /* Shadows */
-  --shadow-soft: 0 20px 40px rgba(0, 0, 0, 0.3);
-  --shadow-card: 0 16px 32px rgba(0, 0, 0, 0.3);
+  /* Editorial Financial Intelligence - Dark equivalent */
+  --text-strong: #e8ebf2;
+  --text-base: #c7cedd;
+  --text-soft: #9aa7c7;
+  --text-accent: #7f97ff;
+  --text-danger: #ff8f98;
 
-  /* UI Redesign tokens dark */
-  --surface: #1e293b;
-  --surface-container-low: #1e293b;
-  --surface-container-lowest: #0f172a;
-  --outline-variant: #475569;
-  --primary-dark: #0369a1;
-  --primary: #0ea5e9;
+  --bg-canvas: #171b24;
+  --bg-shell: #1d2230;
+  --bg-panel: #212739;
+  --bg-panel-strong: #2a3247;
+  --bg-accent-soft: rgba(127, 151, 255, 0.16);
+  --bg-accent-strong: #5f7cff;
+  --bg-danger-soft: rgba(255, 143, 152, 0.16);
+
+  --border-soft: rgba(195, 198, 214, 0.15);
+  --border-strong: rgba(127, 151, 255, 0.32);
+
+  --shadow-soft: 0 32px 64px rgba(8, 10, 16, 0.34);
+  --shadow-card: 0 20px 40px rgba(8, 10, 16, 0.32);
+
+  --surface: #171b24;
+  --surface-container-low: #1d2230;
+  --surface-container-lowest: #2a3247;
+  --surface-bright: #1c2231;
+  --outline-variant: #6f7891;
+  --primary-dark: #3852c4;
+  --primary: #5f7cff;
 }
 
 
@@ -88,17 +86,17 @@
     margin: 0;
     color: var(--text-base);
     background:
-      radial-gradient(circle at top left, rgba(59, 130, 246, 0.12), transparent 32%),
-      radial-gradient(circle at top right, rgba(14, 165, 233, 0.1), transparent 28%),
-      linear-gradient(180deg, #f8fbff 0%, var(--bg-canvas) 45%, #eef3f9 100%);
+      radial-gradient(circle at top left, rgba(76, 93, 141, 0.08), transparent 34%),
+      radial-gradient(circle at top right, rgba(0, 61, 155, 0.06), transparent 32%),
+      linear-gradient(180deg, #fcf9f8 0%, var(--bg-canvas) 46%, #f6f3f2 100%);
     transition: background 300ms ease;
   }
 
   [data-theme="dark"] body {
     background:
-      radial-gradient(circle at top left, rgba(56, 189, 248, 0.08), transparent 32%),
-      radial-gradient(circle at top right, rgba(99, 102, 241, 0.06), transparent 28%),
-      linear-gradient(180deg, #0f172a 0%, #0b1121 45%, #0f172a 100%);
+      radial-gradient(circle at top left, rgba(95, 124, 255, 0.10), transparent 36%),
+      radial-gradient(circle at top right, rgba(154, 167, 199, 0.08), transparent 34%),
+      linear-gradient(180deg, #171b24 0%, #151a23 46%, #1a202c 100%);
   }
 
 
@@ -795,7 +793,7 @@
     border: 1px solid transparent;
     border-radius: 6px;
     background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-    box-shadow: 0 4px 12px rgba(0, 86, 210, 0.25);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 8px 20px rgba(28, 27, 27, 0.08);
     color: #fff;
     padding: 0.65rem 1rem;
     font-size: 0.92rem;
@@ -820,9 +818,9 @@
     width: 100%;
     min-height: 2.55rem;
     border: 0;
-    border-radius: 14px;
+    border-radius: 4px;
     background: var(--bg-panel-strong);
-    outline: 1px solid var(--border-soft);
+    outline: 1px solid color-mix(in srgb, var(--outline-variant) 15%, transparent);
     outline-offset: 0;
     padding: 0.78rem 0.95rem;
     color: var(--text-strong);
