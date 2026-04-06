@@ -8,7 +8,7 @@ export default function FileUpload({ onFileLoaded }) {
     setError('')
 
     if (!file || file.type !== 'application/pdf') {
-      setError('Archivo no válido. Subí un PDF de estado de cuenta para continuar.')
+      setError('Archivo no válido. Sube un PDF de estado de cuenta para continuar.')
       return
     }
 
@@ -106,10 +106,10 @@ export default function FileUpload({ onFileLoaded }) {
 
             <div className="space-y-2">
               <p className="text-lg font-semibold sm:text-xl" style={{ color: 'var(--text-strong)' }}>
-                Arrastrá tu estado de cuenta Santander acá
+                Arrastra tu estado de cuenta Santander aquí
               </p>
               <p className="text-sm leading-6" style={{ color: 'var(--text-base)' }}>
-                También podés hacer clic para seleccionar el archivo manualmente.
+                También puedes hacer clic para seleccionar el archivo manualmente.
               </p>
             </div>
 
@@ -128,11 +128,11 @@ export default function FileUpload({ onFileLoaded }) {
 
       <div className="grid gap-3 text-sm sm:grid-cols-[1.2fr_0.8fr]">
         <div className="upload-tip px-4 py-3 leading-6">
-          Consejo: usá el mismo PDF que descargás desde tu banco para mantener la lectura correcta.
+          Consejo: usa el mismo PDF que descargas desde tu banco para mantener la lectura correcta.
         </div>
 
         <div className={`upload-feedback ${error ? 'upload-feedback-error' : ''} px-4 py-3 leading-6`}>
-          {error || 'Si el archivo no es válido, te lo avisamos acá mismo antes de procesarlo.'}
+          {error || 'Si el archivo no es válido, te lo avisamos aquí mismo antes de procesarlo.'}
         </div>
       </div>
     </div>

@@ -185,10 +185,10 @@ export default function App() {
 
               <div className="space-y-2">
                 <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl" style={{ color: 'var(--text-strong)' }}>
-                  Entendé tus gastos del mes sin pelearte con el PDF.
+                  Entiende tus gastos del mes sin complicarte con el PDF.
                 </h1>
                 <p className="max-w-xl text-sm leading-5" style={{ color: 'var(--text-base)' }}>
-                  Subí tu estado y explorá gastos con una vista clara y ordenada.
+                  Sube tu estado y explora gastos con una vista clara y ordenada.
                 </p>
               </div>
             </div>
@@ -217,9 +217,9 @@ export default function App() {
           {!hasTransactions && !loading && (
             <div className="relative z-10 mt-4 panel p-4 sm:p-5">
               <div className="mb-3 flex flex-col gap-1">
-                <h2 className="text-base font-semibold" style={{ color: 'var(--text-strong)' }}>Cargá tu estado de cuenta</h2>
+                <h2 className="text-base font-semibold" style={{ color: 'var(--text-strong)' }}>Carga tu estado de cuenta</h2>
                 <p className="text-sm leading-5" style={{ color: 'var(--text-base)' }}>
-                  Elegí un PDF para ver total, filtros por fecha y gastos por categoría.
+                  Elige un PDF para ver total, filtros por fecha y gastos por categoría.
                 </p>
               </div>
 
@@ -276,7 +276,7 @@ export default function App() {
                       Tus resultados ya están listos
                     </h2>
                     <p className="max-w-2xl text-sm leading-5" style={{ color: 'var(--text-base)' }}>
-                      Revisá el resumen, ajustá fechas y expandí categorías para ver transacciones.
+                      Revisa el resumen, ajusta fechas y expande categorías para ver transacciones.
                     </p>
                   </div>
 

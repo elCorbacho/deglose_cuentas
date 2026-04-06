@@ -70,9 +70,9 @@ describe('App', () => {
   it('renders the onboarding hierarchy before any upload', () => {
     render(<App />)
 
-    expect(screen.getByRole('heading', { name: /entendé tus gastos del mes/i })).toBeInTheDocument()
-    expect(screen.getByText(/subí tu estado de cuenta, revisá el total del período/i)).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: /cargá tu estado de cuenta/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /entiende tus gastos del mes/i })).toBeInTheDocument()
+    expect(screen.getByText(/sube tu estado/i)).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /carga tu estado de cuenta/i })).toBeInTheDocument()
     expect(screen.getByText(/seleccionar pdf/i)).toBeInTheDocument()
   })
 
@@ -84,7 +84,7 @@ describe('App', () => {
     await uploadPdf(container)
 
     expect(screen.getByText(/procesando tu pdf/i)).toBeInTheDocument()
-    expect(screen.queryByRole('heading', { name: /cargá tu estado de cuenta/i })).not.toBeInTheDocument()
+    expect(screen.queryByRole('heading', { name: /carga tu estado de cuenta/i })).not.toBeInTheDocument()
 
     deferred.resolve('pdf text')
     await waitFor(() => {
@@ -103,7 +103,7 @@ describe('App', () => {
 
     await userEvent.click(screen.getByRole('button', { name: /intentar con otro pdf/i }))
 
-    expect(screen.getByRole('heading', { name: /cargá tu estado de cuenta/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /carga tu estado de cuenta/i })).toBeInTheDocument()
     expect(screen.queryByText(/no pudimos usar este archivo/i)).not.toBeInTheDocument()
   })
 
@@ -140,7 +140,7 @@ describe('App', () => {
 
     await userEvent.click(screen.getByRole('button', { name: /supermercado/i }))
 
-    expect(screen.getByText(/tocá para ocultar el detalle/i)).toBeInTheDocument()
+    expect(screen.getByText(/toca para ocultar el detalle/i)).toBeInTheDocument()
     expect(screen.getByText(/supermercado uno/i)).toBeInTheDocument()
     expect(screen.getByText(/05\/01\/24/i)).toBeInTheDocument()
 

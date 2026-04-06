@@ -9,7 +9,7 @@ export default function DateFilter({ desde, hasta, onDesdeChange, onHastaChange 
             Filtros
           </p>
           <p className="text-sm" style={{ color: 'var(--text-base)' }}>
-            Acotá el período para revisar movimientos específicos sin alterar el total original del PDF.
+            Acota el período para revisar movimientos específicos sin alterar el total original del PDF.
           </p>
         </div>
 
