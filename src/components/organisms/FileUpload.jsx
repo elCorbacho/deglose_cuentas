@@ -35,18 +35,18 @@ export default function FileUpload({ onFileLoaded }) {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <style>{`
         .upload-zone {
           border-width: 2px;
           border-style: dashed;
-          border-radius: 24px;
-          padding: 1.25rem;
+          border-radius: 18px;
+          padding: 0.9rem;
           transition: all 200ms;
         }
         @media (min-width: 640px) {
           .upload-zone {
-            padding: 1.75rem;
+            padding: 1.1rem;
           }
         }
         .upload-zone-default {
@@ -68,13 +68,13 @@ export default function FileUpload({ onFileLoaded }) {
           box-shadow: var(--shadow-card);
         }
         .upload-tip {
-          border-radius: 16px;
+          border-radius: 12px;
           border: 1px solid var(--border-soft);
           background: var(--bg-shell);
           color: var(--text-soft);
         }
         .upload-feedback {
-          border-radius: 16px;
+          border-radius: 12px;
           border: 1px solid var(--border-soft);
           background: var(--bg-shell);
           color: var(--text-soft);
@@ -99,21 +99,21 @@ export default function FileUpload({ onFileLoaded }) {
             className="hidden"
           />
 
-          <div className="flex flex-col gap-4 text-center">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl text-3xl upload-icon">
+          <div className="flex flex-col gap-3 text-center">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl text-2xl upload-icon">
               📄
             </div>
 
-            <div className="space-y-2">
-              <p className="text-lg font-semibold sm:text-xl" style={{ color: 'var(--text-strong)' }}>
+            <div className="space-y-1">
+              <p className="text-base font-semibold sm:text-lg" style={{ color: 'var(--text-strong)' }}>
                 Arrastrá tu estado de cuenta Santander acá
               </p>
-              <p className="text-sm leading-6" style={{ color: 'var(--text-base)' }}>
-                También podés hacer clic para seleccionar el archivo manualmente.
+              <p className="text-sm leading-5" style={{ color: 'var(--text-base)' }}>
+                También podés hacer clic para seleccionar el archivo.
               </p>
             </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-2 text-xs">
+            <div className="flex flex-wrap items-center justify-center gap-1.5 text-xs">
               <span className="badge-soft">PDF solamente</span>
               <span className="badge-soft">Sin cambiar tus datos</span>
               <span className="badge-soft">Vista categorizada</span>
@@ -126,12 +126,12 @@ export default function FileUpload({ onFileLoaded }) {
         </label>
       </div>
 
-      <div className="grid gap-3 text-sm sm:grid-cols-[1.2fr_0.8fr]">
-        <div className="upload-tip px-4 py-3 leading-6">
+      <div className="grid gap-2 text-sm sm:grid-cols-[1.2fr_0.8fr]">
+        <div className="upload-tip px-3 py-2 leading-5">
           Consejo: usá el mismo PDF que descargás desde tu banco para mantener la lectura correcta.
         </div>
 
-        <div className={`upload-feedback ${error ? 'upload-feedback-error' : ''} px-4 py-3 leading-6`}>
+        <div className={`upload-feedback ${error ? 'upload-feedback-error' : ''} px-3 py-2 leading-5`}>
           {error || 'Si el archivo no es válido, te lo avisamos acá mismo antes de procesarlo.'}
         </div>
       </div>

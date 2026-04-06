@@ -177,38 +177,37 @@ export default function App() {
        />
       
 
-      <main className="app-shell space-y-6" style={{ paddingTop: '1.25rem' }}>
+      <main className="app-shell app-shell--compact space-y-4">
         <section className="hero-shell">
-          <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            <div className="max-w-2xl space-y-4">
+          <div className="relative z-10 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-2xl space-y-2">
               <span className="eyebrow">Santander · visión rápida</span>
 
-              <div className="space-y-3">
-                <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl" style={{ color: 'var(--text-strong)' }}>
+              <div className="space-y-2">
+                <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl" style={{ color: 'var(--text-strong)' }}>
                   Entendé tus gastos del mes sin pelearte con el PDF.
                 </h1>
-                <p className="max-w-xl text-sm leading-6 sm:text-base" style={{ color: 'var(--text-base)' }}>
-                  Subí tu estado de cuenta, revisá el total del período y explorá categorías,
-                  comercios y movimientos con una vista más clara y ordenada.
+                <p className="max-w-xl text-sm leading-5" style={{ color: 'var(--text-base)' }}>
+                  Subí tu estado y explorá gastos con una vista clara y ordenada.
                 </p>
               </div>
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-2 lg:min-w-[320px]">
-              <div className="panel-muted px-4 py-3">
+            <div className="grid gap-2 sm:grid-cols-2 lg:min-w-[300px]">
+              <div className="panel-muted px-3 py-2">
                 <p className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: 'var(--text-soft)' }}>
                   Flujo
                 </p>
-                <p className="mt-1 text-sm font-medium" style={{ color: 'var(--text-base)' }}>
+                <p className="mt-1 text-xs font-medium" style={{ color: 'var(--text-base)' }}>
                   Subir PDF → filtrar fechas → expandir categorías
                 </p>
               </div>
 
-              <div className="panel-muted px-4 py-3">
+              <div className="panel-muted px-3 py-2">
                 <p className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: 'var(--text-soft)' }}>
                   Alcance
                 </p>
-                <p className="mt-1 text-sm font-medium" style={{ color: 'var(--text-base)' }}>
+                <p className="mt-1 text-xs font-medium" style={{ color: 'var(--text-base)' }}>
                   Solo mejora visual, sin tocar cálculos ni agrupación
                 </p>
               </div>
@@ -216,12 +215,11 @@ export default function App() {
           </div>
 
           {!hasTransactions && !loading && (
-            <div className="relative z-10 mt-6 panel p-5 sm:p-6">
-              <div className="mb-5 flex flex-col gap-2">
-                <h2 className="text-lg font-semibold" style={{ color: 'var(--text-strong)' }}>Cargá tu estado de cuenta</h2>
-                <p className="text-sm leading-6" style={{ color: 'var(--text-base)' }}>
-                  Elegí un PDF de Santander para ver el total general, aplicar filtros por fecha
-                  y navegar los gastos agrupados por categoría.
+            <div className="relative z-10 mt-4 panel p-4 sm:p-5">
+              <div className="mb-3 flex flex-col gap-1">
+                <h2 className="text-base font-semibold" style={{ color: 'var(--text-strong)' }}>Cargá tu estado de cuenta</h2>
+                <p className="text-sm leading-5" style={{ color: 'var(--text-base)' }}>
+                  Elegí un PDF para ver total, filtros por fecha y gastos por categoría.
                 </p>
               </div>
 
@@ -266,24 +264,23 @@ export default function App() {
         )}
 
         {hasTransactions && !loading && (
-          <section className="space-y-5">
-            <div className="panel p-5 sm:p-6">
-              <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                <div className="space-y-4">
-                  <div className="space-y-2">
+          <section className="space-y-4">
+            <div className="panel p-4 sm:p-5">
+              <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+                <div className="space-y-3">
+                  <div className="space-y-1">
                     <p className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: 'var(--text-soft)' }}>
                       Archivo procesado
                     </p>
-                    <h2 className="text-2xl font-semibold tracking-tight" style={{ color: 'var(--text-strong)' }}>
+                    <h2 className="text-xl font-semibold tracking-tight" style={{ color: 'var(--text-strong)' }}>
                       Tus resultados ya están listos
                     </h2>
-                    <p className="max-w-2xl text-sm leading-6" style={{ color: 'var(--text-base)' }}>
-                      Revisá el resumen general, ajustá el rango de fechas si hace falta y expandí
-                      cada categoría para ver las transacciones en detalle.
+                    <p className="max-w-2xl text-sm leading-5" style={{ color: 'var(--text-base)' }}>
+                      Revisá el resumen, ajustá fechas y expandí categorías para ver transacciones.
                     </p>
                   </div>
 
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-1.5">
                     <span className="badge-soft">📄 {fileName}</span>
                     <span className="badge-soft">{rawTransactions.length} transacciones detectadas</span>
                     {hasActiveFilters && (
@@ -299,7 +296,7 @@ export default function App() {
                 </button>
               </div>
 
-              <div className="mt-5">
+              <div className="mt-4">
                 <DateFilter
                   desde={desde}
                   hasta={hasta}
