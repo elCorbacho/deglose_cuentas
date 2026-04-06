@@ -12,10 +12,10 @@ export default function Button({
   type = 'button',
   ...props
 }) {
-  const baseStyles = 'inline-flex items-center justify-center gap-0.5rem rounded px-3 py-1.5 font-medium transition-all duration-160 ease'
+  const baseStyles = 'inline-flex items-center justify-center px-3 py-1.5 font-medium transition-all duration-160 ease'
 
   const variantStyles = {
-    primary: 'bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800',
+    primary: 'btn-primary',
     secondary: 'border border-blue-200 bg-white text-blue-600 hover:bg-blue-50 active:bg-blue-100',
     default: 'text-base hover:bg-gray-100 active:bg-gray-200'
   }

@@ -5,7 +5,7 @@ export default function CategoryList({ categories }) {
 
   if (visible.length === 0) {
     return (
-      <section className="panel empty-state">
+      <section className="surface-container-low empty-state rounded-2xl">
         <div className="category-list-empty-icon flex h-12 w-12 items-center justify-center rounded-full text-2xl">
           ↺
         </div>

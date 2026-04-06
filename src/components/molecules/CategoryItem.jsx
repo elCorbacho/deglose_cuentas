@@ -3,7 +3,7 @@
  * Displays a category with expandable transaction list
  */
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import TransactionRow from './TransactionRow.jsx'
 import { formatCLP } from '../../lib/formatters.js'
 import { DEFAULT_CATEGORY_ICON } from '../../data/categories.js'
@@ -11,7 +11,17 @@ import { DEFAULT_CATEGORY_ICON } from '../../data/categories.js'
 export default function CategoryItem({ category }) {
   const [expanded, setExpanded] = useState(false)
   const icon = category.icon || DEFAULT_CATEGORY_ICON
-  const keyCounts = new Map()
+
+  // Pre-compute keys outside render to avoid mutation during render
+  const transactionKeys = useMemo(() => {
+    const keyCounts = new Map()
+    return category.transactions.map((tx) => {
+      const baseKey = `${tx.fecha}-${tx.comercio}-${tx.monto}-${tx.ciudad}`
+      const count = keyCounts.get(baseKey) || 0
+      keyCounts.set(baseKey, count + 1)
+      return `${baseKey}-${count}`
+    })
+  }, [category.transactions])
 
   return (
     <div className="panel overflow-hidden">
@@ -44,7 +54,7 @@ export default function CategoryItem({ category }) {
           <p className="text-xs uppercase tracking-[0.18em]" style={{ color: 'var(--text-soft)' }}>
             Total
           </p>
-          <span className="font-mono text-lg font-bold" style={{ color: 'var(--text-strong)' }}>
+          <span className="mono-num text-lg font-bold" style={{ color: 'var(--text-strong)' }}>
             {formatCLP(category.total)}
           </span>
         </div>
@@ -55,12 +65,7 @@ export default function CategoryItem({ category }) {
           <div className="transaction-divider-container">
             {category.transactions.map((tx, index) => (
               <div
-                key={(() => {
-                  const baseKey = `${tx.fecha}-${tx.comercio}-${tx.monto}-${tx.ciudad}`
-                  const count = keyCounts.get(baseKey) || 0
-                  keyCounts.set(baseKey, count + 1)
-                  return `${baseKey}-${count}`
-                })()}
+                key={transactionKeys[index]}
                 className={index > 0 ? 'transaction-divider' : ''}
               >
                 <TransactionRow tx={tx} />

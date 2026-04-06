@@ -26,7 +26,7 @@ export default function TransactionRow({ tx }) {
 
       <div className="sm:pl-4 shrink-0">
         <p 
-          className={`font-mono text-base font-semibold sm:text-right ${tx.monto < 0 ? 'tx-amount-negative' : ''}`}
+          className={`mono-num text-base font-semibold sm:text-right ${tx.monto < 0 ? 'tx-amount-negative' : ''}`}
           style={tx.monto < 0 ? { color: 'var(--text-danger)' } : { color: 'var(--text-base)' }}
         >
           {formatCLP(tx.monto)}

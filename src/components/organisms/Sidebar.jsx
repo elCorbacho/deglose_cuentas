@@ -5,19 +5,26 @@ export default function Sidebar({ activeView, hasTransactions, onNavigate }) {
     { id: 'config', label: 'Config', icon: '⚙️', disabled: false },
   ]
 
+  const handleNavigate = (id) => {
+    if (onNavigate && !buttons.find(b => b.id === id)?.disabled) {
+      onNavigate(id)
+    }
+  }
+
   return (
     <aside className="sidebar">
       {buttons.map((btn) => (
-        <button
-          key={btn.id}
-          className={`sidebar-btn ${activeView === btn.id ? 'active' : ''}`}
-          onClick={() => !btn.disabled && onNavigate(btn.id)}
-          disabled={btn.disabled}
-          title={btn.label}
-        >
-          <span className="sidebar-icon">{btn.icon}</span>
-          <span className="sidebar-label">{btn.label}</span>
-        </button>
+        <div key={btn.id} className={`selection-item ${activeView === btn.id ? 'is-active' : ''}`}>
+          <button
+            className={`sidebar-btn ${activeView === btn.id ? 'active' : ''}`}
+            onClick={() => handleNavigate(btn.id)}
+            disabled={btn.disabled}
+            title={btn.label}
+          >
+            <span className="sidebar-icon">{btn.icon}</span>
+            <span className="sidebar-label">{btn.label}</span>
+          </button>
+        </div>
       ))}
     </aside>
   )
