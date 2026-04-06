@@ -1,6 +1,7 @@
 
 import { APP_TITLE } from '../../data/config.js'
 import { formatCLP } from '../../lib/formatters.js'
+import ThemeToggle from '../molecules/ThemeToggle.jsx'
 
 // Logo icon
 const WalletLogo = () => (
@@ -22,8 +23,9 @@ export default function Header({ total }) {
           </h1>
         </div>
         <div className="flex items-center gap-3">
+          <ThemeToggle />
           {total !== undefined && (
-            <div className="text-right ml-4 pl-4 border-l border-slate-200">
+            <div className="text-right ml-2 pl-3 border-l border-slate-200 dark:border-slate-700">
               <p className="text-xs uppercase tracking-[0.18em]" style={{ color: 'var(--text-soft)' }}>
                 Total general
               </p>
