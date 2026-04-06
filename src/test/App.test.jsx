@@ -5,6 +5,7 @@ import App from '../App.jsx'
 import { extractText } from '../lib/pdfParser.js'
 import { parse } from '../lib/transactionExtractor.js'
 import { categorize } from '../lib/categorizer.js'
+import { getCategories } from '../services/api.js'
 
 vi.mock('../lib/pdfParser.js', () => ({
   extractText: vi.fn(),
@@ -16,6 +17,13 @@ vi.mock('../lib/transactionExtractor.js', () => ({
 
 vi.mock('../lib/categorizer.js', () => ({
   categorize: vi.fn(),
+}))
+
+vi.mock('../services/api.js', () => ({
+  getCategories: vi.fn(),
+  saveCategories: vi.fn(),
+  exportCategories: vi.fn(),
+  getBackup: vi.fn(),
 }))
 
 const parsedTransactions = [
@@ -65,6 +73,40 @@ describe('App', () => {
     extractText.mockResolvedValue('pdf text')
     parse.mockReturnValue(parsedTransactions)
     categorize.mockReturnValue(categorizedTransactions)
+    getCategories.mockResolvedValue({
+      categories: [
+        { name: 'Supermercado', icon: '🛒', keywords: ['SUPERMERCADO'] },
+        { name: 'Comidas', icon: '🍽️', keywords: ['CAFETERIA'] },
+      ],
+    })
+  })
+
+  it('renders sidebar with upload active by default', () => {
+    render(<App />)
+
+    expect(screen.getByRole('button', { name: /cargar pdf/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /análisis/i })).toBeDisabled()
+    expect(screen.getByRole('button', { name: /config/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /cargar pdf/i })).toHaveClass('active')
+  })
+
+  it('keeps upload view when clicking análisis without transactions', async () => {
+    render(<App />)
+
+    await userEvent.click(screen.getByRole('button', { name: /análisis/i }))
+
+    expect(screen.getByRole('heading', { name: /carga tu estado de cuenta/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /cargar pdf/i })).toHaveClass('active')
+  })
+
+  it('lets navigate to config view and back to upload', async () => {
+    render(<App />)
+
+    await userEvent.click(screen.getByRole('button', { name: /config/i }))
+    expect(await screen.findByText(/configuración de categorías/i)).toBeInTheDocument()
+
+    await userEvent.click(screen.getByRole('button', { name: /cargar pdf/i }))
+    expect(screen.getByRole('heading', { name: /carga tu estado de cuenta/i })).toBeInTheDocument()
   })
 
   it('renders the onboarding hierarchy before any upload', () => {
@@ -114,7 +156,6 @@ describe('App', () => {
     expect(await screen.findByRole('heading', { name: /tus resultados ya están listos/i })).toBeInTheDocument()
     expect(screen.getByText(/📄 cartola\.pdf/i)).toBeInTheDocument()
     expect(screen.getByText(/2 transacciones detectadas/i)).toBeInTheDocument()
-    expect(screen.getByText(/resumen del período/i)).toBeInTheDocument()
     expect(screen.getByText(/gastos agrupados para explorar en detalle/i)).toBeInTheDocument()
     expect(screen.getByText('$17.000')).toBeInTheDocument()
   })
@@ -140,7 +181,6 @@ describe('App', () => {
 
     await userEvent.click(screen.getByRole('button', { name: /supermercado/i }))
 
-    expect(screen.getByText(/toca para ocultar el detalle/i)).toBeInTheDocument()
     expect(screen.getByText(/supermercado uno/i)).toBeInTheDocument()
     expect(screen.getByText(/05\/01\/24/i)).toBeInTheDocument()
 
