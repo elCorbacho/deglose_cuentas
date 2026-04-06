@@ -5,7 +5,7 @@ import { formatCLP } from '../lib/formatters.js'
 export default function Header({ onConfigClick, showBackButton, onBackClick, total }) {
   return (
     <header className="header-shell fixed top-0 left-0 right-0 z-30 border-b backdrop-blur-sm">
-      <div className="mx-auto flex h-auto min-h-14 w-full max-w-[1100px] items-center justify-between gap-4 px-4 py-2 flex-col sm:flex-row">
+      <div className="mx-auto flex h-auto min-h-10 w-full max-w-[1100px] items-center justify-between gap-4 px-4 py-1.5 flex-col sm:flex-row">
         <div className="flex items-center gap-3">
           {showBackButton && onBackClick && (
             <button 

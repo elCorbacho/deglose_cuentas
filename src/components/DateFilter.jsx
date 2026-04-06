@@ -27,9 +27,9 @@ export default function DateFilter({ desde, hasta, onDesdeChange, onHastaChange 
         )}
       </div>
 
-      <div className="mt-4 grid gap-3 md:grid-cols-2">
-        <label className="space-y-2 text-sm" style={{ color: 'var(--text-base)' }}>
-          <span className="block font-medium">Desde</span>
+      <div className="mt-4 grid gap-2 md:grid-cols-2">
+         <label className="space-y-2 text-sm" style={{ color: 'var(--text-base)' }}>
+           <span className="hidden md:inline-block font-medium">Desde</span>
           <input
             type="date"
             value={desde}
@@ -38,8 +38,8 @@ export default function DateFilter({ desde, hasta, onDesdeChange, onHastaChange 
           />
         </label>
 
-        <label className="space-y-2 text-sm" style={{ color: 'var(--text-base)' }}>
-          <span className="block font-medium">Hasta</span>
+         <label className="space-y-2 text-sm" style={{ color: 'var(--text-base)' }}>
+           <span className="hidden md:inline-block font-medium">Hasta</span>
           <input
             type="date"
             value={hasta}

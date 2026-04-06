@@ -69,9 +69,9 @@
 
 @layer components {
   .app-shell {
-    width: min(1100px, calc(100% - 1.5rem));
+    width: min(1100px, calc(100% - 4rem));
     margin: 0 auto;
-    padding: 1.25rem 0 3rem;
+    padding: 1.25rem 2rem 3rem;
   }
 
   .hero-shell {
@@ -332,7 +332,7 @@
 
 @media (max-width: 640px) {
   .app-shell {
-    width: min(100% - 1rem, 1100px);
+    width: min(100% - 4rem, 1100px);
     padding-top: 0.75rem;
   }
 
