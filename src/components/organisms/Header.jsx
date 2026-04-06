@@ -12,16 +12,16 @@ const WalletLogo = () => (
 export default function Header() {
   return (
     <header className="header-shell fixed top-0 left-0 right-0 z-30">
-      <div className="mx-auto flex h-auto min-h-10 w-full max-w-[1100px] items-center justify-between gap-3 px-4 py-1.5 flex-col sm:flex-row">
-        <div className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-50">
+      <div className="header-inner">
+        <div className="header-brand">
+          <div className="header-logo-box" aria-hidden="true">
             <WalletLogo />
           </div>
-          <h1 className="text-lg font-semibold tracking-tight" style={{ color: 'var(--text-strong)' }}>
+          <h1 className="header-title" style={{ color: 'var(--text-strong)' }}>
             {APP_TITLE}
           </h1>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="header-actions">
           <ThemeToggle />
         </div>
       </div>

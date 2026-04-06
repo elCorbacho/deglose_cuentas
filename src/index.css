@@ -334,11 +334,65 @@
     border-color: transparent;
     backdrop-filter: none;
     background: var(--surface);
+    border-bottom: 1px solid var(--border-soft);
+    min-height: 3.4rem;
   }
 
   [data-theme="dark"] .header-shell {
     background: var(--surface);
     border-bottom: 1px solid var(--border-soft);
+  }
+
+  .header-inner {
+    width: 100%;
+    min-height: 3.4rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.45rem 1rem;
+  }
+
+  .header-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    min-width: 0;
+  }
+
+  .header-logo-box {
+    width: 1.9rem;
+    height: 1.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    background: var(--surface-container-lowest);
+    border: 1px solid var(--border-soft);
+    flex-shrink: 0;
+  }
+
+  .header-logo-box svg {
+    width: 1rem;
+    height: 1rem;
+    color: var(--text-accent);
+  }
+
+  .header-title {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .header-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 
   .theme-toggle-btn {
@@ -348,7 +402,7 @@
     border: 1px solid var(--border-soft);
     border-radius: 999px;
     background: var(--bg-panel);
-    padding: 0.25rem;
+    padding: 0.15rem;
     cursor: pointer;
     transition: all 200ms ease;
   }
@@ -362,8 +416,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 2rem;
-    height: 2rem;
+    width: 1.65rem;
+    height: 1.65rem;
     border-radius: 999px;
     color: var(--text-soft);
     transition: all 200ms ease;
@@ -540,14 +594,14 @@
   .distribution-donut {
     width: 80px;
     height: 80px;
-    border-radius: 999px;
+    border-radius: 4px;
     position: relative;
   }
 
   .distribution-donut-center {
     position: absolute;
     inset: 14px;
-    border-radius: 999px;
+    border-radius: 4px;
     background: var(--bg-panel);
   }
 
@@ -569,7 +623,7 @@
   .distribution-legend-dot {
     width: 8px;
     height: 8px;
-    border-radius: 999px;
+    border-radius: 4px;
   }
 
   .btn-filter-clear {
