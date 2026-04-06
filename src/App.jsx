@@ -13,6 +13,7 @@ import { categorize } from './lib/categorizer.js'
 import { group } from './lib/aggregator.js'
 import { parseDate, formatCLP } from './lib/formatters.js'
 import { getCategories } from './services/api.js'
+import { savePdfState, loadPdfState, clearPdfState } from './services/pdfState.js'
 import { CATEGORIES as DEFAULT_CATEGORIES } from './data/categories.js'
 
 // Convert JSON format to object format used by categorizer
@@ -65,6 +66,16 @@ export default function App() {
     loadCategories()
   }, [])
 
+  // Restore PDF state from storage on mount
+  useEffect(() => {
+    const savedState = loadPdfState()
+    if (savedState && savedState.rawTransactions?.length > 0) {
+      setRawTransactions(savedState.rawTransactions)
+      setFileName(savedState.fileName || '')
+      setActiveView('analysis')
+    }
+  }, [])
+
   
 
   const parseInputDateLocal = (dateStr, endOfDay = false) => {
@@ -90,12 +101,15 @@ export default function App() {
         setError('No se encontraron transacciones en el PDF.')
         setRawTransactions([])
         setActiveView('upload')
-      } else {
+} else {
         // Use categories from config or default
         const cats = categoriesConfig || DEFAULT_CATEGORIES
         const categorized = categorize(transactions, cats)
         setRawTransactions(categorized)
         setActiveView('analysis')
+        
+        // Persist PDF state
+        savePdfState({ rawTransactions: categorized, fileName: file.name })
       }
     } catch (err) {
       console.error('PDF Error:', err)
@@ -128,13 +142,14 @@ export default function App() {
 
   const hasTransactions = rawTransactions.length > 0
   const hasActiveFilters = Boolean(desde || hasta)
-  const resetResults = () => {
+const resetResults = () => {
     setRawTransactions([])
     setFileName('')
     setDesde('')
     setHasta('')
     setError('')
     setActiveView('upload')
+    clearPdfState()
   }
 
   // Navigation handler with guard - redirect to upload if no PDF loaded
@@ -146,7 +161,12 @@ export default function App() {
     }
   }
 
-  const handleCategoriesSaved = async () => {
+const handleCategoriesSaved = async () => {
+    // Save PDF state BEFORE reloading (if reload happens)
+    if (rawTransactions.length > 0) {
+      savePdfState({ rawTransactions, fileName })
+    }
+
     try {
       const data = await getCategories()
       const converted = convertCategoriesFromJSON(data.categories)
