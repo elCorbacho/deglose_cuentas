@@ -1,12 +1,12 @@
 /**
  * DateFilter Molecule
- * Enhanced date filtering with quick presets and native date picker
+ * Enhanced date filtering with quick presets and calendar date picker
  */
 
 import { useState, useMemo } from 'react'
-import { Calendar, X } from 'lucide-react'
+import { X } from 'lucide-react'
 import Button from '../atoms/Button.jsx'
-import Input from '../atoms/Input.jsx'
+import DatePicker from '../molecules/DatePicker.jsx'
 
 // Get current date info
 function getDateInfo() {
@@ -147,26 +147,26 @@ export default function DateFilter({ desde, hasta, onDesdeChange, onHastaChange 
         ))}
       </div>
 
-      {/* Date Inputs */}
-      <div className="mt-3 grid gap-2 md:grid-cols-2">
-         <label className="space-y-1 text-xs" style={{ color: 'var(--text-base)' }}>
-           <span className="block font-semibold uppercase tracking-[0.08em]">Desde</span>
-           <Input
-             type="date"
-             value={desde}
-             onChange={(e) => handleManualChange('desde', e.target.value)}
-           />
-         </label>
+       {/* Date Inputs with Calendar Picker */}
+       <div className="mt-3 grid gap-2 md:grid-cols-2">
+          <label className="space-y-1 text-xs" style={{ color: 'var(--text-base)' }}>
+            <span className="block font-semibold uppercase tracking-[0.08em]">Desde</span>
+            <DatePicker
+              value={desde}
+              onChange={(value) => handleManualChange('desde', value)}
+              placeholder="dd-mm-aaaa"
+            />
+          </label>
 
-         <label className="space-y-1 text-xs" style={{ color: 'var(--text-base)' }}>
-           <span className="block font-semibold uppercase tracking-[0.08em]">Hasta</span>
-           <Input
-             type="date"
-             value={hasta}
-             onChange={(e) => handleManualChange('hasta', e.target.value)}
-           />
-         </label>
-      </div>
+          <label className="space-y-1 text-xs" style={{ color: 'var(--text-base)' }}>
+            <span className="block font-semibold uppercase tracking-[0.08em]">Hasta</span>
+            <DatePicker
+              value={hasta}
+              onChange={(value) => handleManualChange('hasta', value)}
+              placeholder="dd-mm-aaaa"
+            />
+          </label>
+       </div>
     </div>
   )
 }

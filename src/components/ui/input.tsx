@@ -3,9 +3,13 @@ import { Input as InputPrimitive } from "@base-ui/react/input"
 
 import { cn } from "@/lib/utils"
 
-function Input({ className, type, ...props }: React.ComponentProps<"input">) {
+function Input(
+  { className, type, ...props }: React.ComponentProps<"input">,
+  ref?: React.Ref<HTMLInputElement>
+) {
   return (
     <InputPrimitive
+      ref={ref}
       type={type}
       data-slot="input"
       className={cn(
@@ -17,4 +21,7 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
   )
 }
 
-export { Input }
+const InputForwarded = React.forwardRef(Input)
+InputForwarded.displayName = "Input"
+
+export { InputForwarded as Input }
