@@ -1,3 +1,6 @@
+import Button from './atoms/Button.jsx'
+import Input from './atoms/Input.jsx'
+
 export default function DateFilter({ desde, hasta, onDesdeChange, onHastaChange }) {
   const isFiltered = Boolean(desde || hasta)
 
@@ -14,37 +17,35 @@ export default function DateFilter({ desde, hasta, onDesdeChange, onHastaChange 
         </div>
 
         {isFiltered && (
-          <button
+          <Button
             onClick={() => {
               onDesdeChange('')
               onHastaChange('')
             }}
-            className="btn-secondary"
+            variant="outline"
             type="button"
           >
             Limpiar filtro
-          </button>
+          </Button>
         )}
       </div>
 
       <div className="mt-4 grid gap-2 md:grid-cols-2">
          <label className="space-y-2 text-sm" style={{ color: 'var(--text-base)' }}>
            <span className="hidden md:inline-block font-medium">Desde</span>
-          <input
+          <Input
             type="date"
             value={desde}
             onChange={(event) => onDesdeChange(event.target.value)}
-            className="input-base"
           />
         </label>
 
          <label className="space-y-2 text-sm" style={{ color: 'var(--text-base)' }}>
            <span className="hidden md:inline-block font-medium">Hasta</span>
-          <input
+          <Input
             type="date"
             value={hasta}
             onChange={(event) => onHastaChange(event.target.value)}
-            className="input-base"
           />
         </label>
       </div>

@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { toast } from 'sonner';
+import Input from '../atoms/Input.jsx';
+import Button from '../atoms/Button.jsx';
 import { getCategories, saveCategories, exportCategories, getBackup } from '../../services/api';
 
 const CategoryConfig = ({ onSaved }) => {
@@ -221,35 +223,27 @@ const CategoryConfig = ({ onSaved }) => {
          </h2>
        </div>
 
-      {/* Buscador */}
-      <div className="mb-4">
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Buscar categorías o palabras clave..."
-          className="w-full p-3 rounded-lg border"
-          style={{ 
-            background: 'var(--bg-panel)',
-            borderColor: 'var(--border-soft)',
-            color: 'var(--text-base)'
-          }}
-        />
-      </div>
+       {/* Buscador */}
+       <div className="mb-4">
+         <Input
+           type="text"
+           value={searchTerm}
+           onChange={(e) => setSearchTerm(e.target.value)}
+           placeholder="Buscar categorías o palabras clave..."
+         />
+       </div>
 
       <div className="flex flex-1 min-h-0 gap-4">
         {/* Lista de categorías */}
         <div className="w-1/3 flex flex-col">
-          <div className="flex gap-2 mb-3">
-            <input
-              type="text"
-              value={newCategoryName}
-              onChange={(e) => setNewCategoryName(e.target.value)}
-              placeholder="Nueva categoría"
-              className="flex-1 p-2 rounded border text-sm"
-              style={{ 
-                background: 'var(--bg-panel)',
-                borderColor: 'var(--border-soft)',
+           <div className="flex gap-2 mb-3">
+             <Input
+               type="text"
+               value={newCategoryName}
+               onChange={(e) => setNewCategoryName(e.target.value)}
+               placeholder="Nueva categoría"
+               className="flex-1 text-sm"
+               style={{
                 color: 'var(--text-base)'
               }}
               onKeyDown={(e) => e.key === 'Enter' && handleAddCategory()}
