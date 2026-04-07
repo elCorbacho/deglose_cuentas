@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { toast } from 'sonner';
 import { getCategories, saveCategories, exportCategories, getBackup } from '../../services/api';
 
 const CategoryConfig = ({ onSaved }) => {
@@ -11,26 +12,28 @@ const CategoryConfig = ({ onSaved }) => {
   const [newCategoryName, setNewCategoryName] = useState('');
   const [newKeyword, setNewKeyword] = useState('');
   const [saving, setSaving] = useState(false);
-  const [statusMessage, setStatusMessage] = useState(null);
 
   useEffect(() => {
     const loadCategories = async () => {
       try {
-        const data = await getCategories();
-        setCategories(data.categories);
-      } catch (err) {
-        console.error('Error loading categories:', err);
-        showMessage('Error cargando categorías', 'error');
-      } finally {
-        setLoading(false)
-      }
+         const data = await getCategories();
+         setCategories(data.categories);
+       } catch (err) {
+         console.error('Error loading categories:', err);
+         toast.error('Error cargando categorías');
+       } finally {
+         setLoading(false)
+       }
     };
     loadCategories();
   }, []);
 
   const showMessage = (message, type = 'success') => {
-    setStatusMessage({ message, type });
-    setTimeout(() => setStatusMessage(null), 3000);
+    if (type === 'error') {
+      toast.error(message);
+    } else {
+      toast.success(message);
+    }
   };
 
   // Filtrar categorías por búsqueda
@@ -213,21 +216,10 @@ const CategoryConfig = ({ onSaved }) => {
     <div className="flex flex-col" style={{ minHeight: '500px' }}>
       {/* Header */}
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-xl font-semibold" style={{ color: 'var(--text-strong)' }}>
-          Configuración de Categorías
-        </h2>
-        {statusMessage && (
-          <span 
-            className="px-3 py-1 rounded text-sm"
-            style={{ 
-              background: statusMessage.type === 'error' ? 'var(--bg-danger-soft)' : 'var(--bg-accent-soft)',
-              color: statusMessage.type === 'error' ? 'var(--text-danger)' : 'var(--text-accent)'
-            }}
-          >
-            {statusMessage.message}
-          </span>
-        )}
-      </div>
+         <h2 className="text-xl font-semibold" style={{ color: 'var(--text-strong)' }}>
+           Configuración de Categorías
+         </h2>
+       </div>
 
       {/* Buscador */}
       <div className="mb-4">

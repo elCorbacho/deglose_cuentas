@@ -1,26 +1,6 @@
 /**
  * Input Atom
- * A reusable input component with design system styling
+ * Re-export of shadcn/ui Input component
  */
 
-export default function Input({
-  type = 'text',
-  value,
-  onChange,
-  placeholder = '',
-  disabled = false,
-  className = '',
-  ...props
-}) {
-  return (
-    <input
-      type={type}
-      value={value}
-      onChange={onChange}
-      placeholder={placeholder}
-      disabled={disabled}
-      className={`input-base ${className}`}
-      {...props}
-    />
-  )
-}
+export { Input as default } from '@/components/ui/input.tsx'

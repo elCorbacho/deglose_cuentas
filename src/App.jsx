@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from 'react'
+import { Toaster, toast } from 'sonner'
 import FileUpload from './components/organisms/FileUpload.jsx'
 import DateFilter from './components/organisms/DateFilter.jsx'
 import CategoryList from './components/organisms/CategoryList.jsx'
@@ -179,7 +180,7 @@ const handleCategoriesSaved = async () => {
         setRawTransactions(categorized)
       }
 
-      alert('Categorías actualizadas correctamente')
+      toast.success('Categorías actualizadas correctamente')
     } catch (err) {
       console.error('Error reloading categories:', err)
       window.location.reload()
@@ -412,6 +413,7 @@ const handleCategoriesSaved = async () => {
 
   return (
     <div className="min-h-screen">
+      <Toaster position="top-right" theme="system" />
       <Header />
 
       <div className="app-layout">
