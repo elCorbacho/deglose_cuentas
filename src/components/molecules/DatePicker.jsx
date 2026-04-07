@@ -93,6 +93,7 @@ export default function DatePicker({ value, onChange, placeholder = 'dd-mm-aaaa'
           selected={value ? new Date(value) : undefined}
           onSelect={handleDateSelect}
           disabled={disabled}
+          className="rounded-lg border"
         />
       </PopoverContent>
     </Popover>
