@@ -9,4 +9,4 @@ export {
   TooltipTrigger,
   TooltipContent,
   TooltipProvider,
-} from '@/components/ui/tooltip.tsx'
+} from '@/components/ui/tooltip'

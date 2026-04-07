@@ -9,4 +9,4 @@ export {
   TabsList,
   TabsTrigger,
   TabsContent,
-} from '@/components/ui/tabs.tsx'
+} from '@/components/ui/tabs'
