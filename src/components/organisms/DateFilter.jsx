@@ -4,18 +4,8 @@
  */
 
 import { useState, useMemo } from 'react'
-
-const CalendarIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
-  </svg>
-)
-
-const ClearIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-  </svg>
-)
+import { Calendar, X } from 'lucide-react'
+import Button from '../atoms/Button.jsx'
 
 // Get current date info
 function getDateInfo() {
@@ -130,14 +120,15 @@ export default function DateFilter({ desde, hasta, onDesdeChange, onHastaChange 
         </div>
 
         {isFiltered && (
-          <button
+          <Button
             onClick={handleClear}
-            className="btn-filter-clear btn-filter-clear--compact inline-flex items-center gap-1 text-xs font-medium"
+            variant="ghost"
+            size="sm"
             type="button"
           >
-            <ClearIcon />
+            <X className="w-4 h-4 mr-1" />
             Limpiar
-          </button>
+          </Button>
         )}
       </div>
 
@@ -158,30 +149,30 @@ export default function DateFilter({ desde, hasta, onDesdeChange, onHastaChange 
       {/* Date Inputs */}
       <div className="mt-3 grid gap-2 md:grid-cols-2">
         <label className="space-y-1 text-xs" style={{ color: 'var(--text-base)' }}>
-          <span className="block font-semibold uppercase tracking-[0.08em]">Desde</span>
-          <div className="date-input-wrapper">
-            <CalendarIcon />
-            <input
-              type="date"
-              value={desde}
-              onChange={(e) => handleManualChange('desde', e.target.value)}
-              className="input-base date-input"
-            />
-          </div>
-        </label>
+           <span className="block font-semibold uppercase tracking-[0.08em]">Desde</span>
+           <div className="date-input-wrapper">
+             <Calendar className="w-4 h-4" />
+             <input
+               type="date"
+               value={desde}
+               onChange={(e) => handleManualChange('desde', e.target.value)}
+               className="input-base date-input"
+             />
+           </div>
+         </label>
 
-        <label className="space-y-1 text-xs" style={{ color: 'var(--text-base)' }}>
-          <span className="block font-semibold uppercase tracking-[0.08em]">Hasta</span>
-          <div className="date-input-wrapper">
-            <CalendarIcon />
-            <input
-              type="date"
-              value={hasta}
-              onChange={(e) => handleManualChange('hasta', e.target.value)}
-              className="input-base date-input"
-            />
-          </div>
-        </label>
+         <label className="space-y-1 text-xs" style={{ color: 'var(--text-base)' }}>
+           <span className="block font-semibold uppercase tracking-[0.08em]">Hasta</span>
+           <div className="date-input-wrapper">
+             <Calendar className="w-4 h-4" />
+             <input
+               type="date"
+               value={hasta}
+               onChange={(e) => handleManualChange('hasta', e.target.value)}
+               className="input-base date-input"
+             />
+           </div>
+         </label>
       </div>
     </div>
   )

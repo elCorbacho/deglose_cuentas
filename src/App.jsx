@@ -3,6 +3,7 @@ import FileUpload from './components/organisms/FileUpload.jsx'
 import DateFilter from './components/organisms/DateFilter.jsx'
 import CategoryList from './components/organisms/CategoryList.jsx'
 import Dashboard from './components/organisms/Dashboard.jsx'
+import Button from './components/atoms/Button.jsx'
 
 import Header from './components/organisms/Header.jsx'
 import CategoryConfig from './components/organisms/CategoryConfig.jsx'
@@ -262,9 +263,9 @@ const handleCategoriesSaved = async () => {
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <button onClick={resetResults} className="btn-secondary" type="button">
+            <Button onClick={resetResults} variant="outline" type="button">
               Intentar con otro PDF
-            </button>
+            </Button>
             <span className="text-xs" style={{ color: 'var(--text-soft)' }}>
               La zona de carga vuelve a quedar disponible arriba.
             </span>
@@ -325,9 +326,9 @@ const handleCategoriesSaved = async () => {
               <p className="mt-2 text-xs" style={{ color: 'var(--text-soft)' }}>
                 {filteredTransactions.length} movimientos · {visibleCategories.length} categorías
               </p>
-              <button onClick={resetResults} className="btn-secondary btn-secondary--compact mt-3 w-full" type="button">
+              <Button onClick={resetResults} variant="outline" size="sm" className="mt-3 w-full" type="button">
                 Cargar otro PDF
-              </button>
+              </Button>
             </div>
 
             <div className="panel widget-card p-4">
@@ -365,9 +366,9 @@ const handleCategoriesSaved = async () => {
           <p className="text-sm" style={{ color: 'var(--text-base)' }}>
             Todavía no hay transacciones para analizar. Cargá un PDF primero.
           </p>
-          <button onClick={() => setActiveView('upload')} className="btn-secondary" type="button">
+          <Button onClick={() => setActiveView('upload')} variant="outline" type="button">
             Ir a Cargar PDF
-          </button>
+          </Button>
         </section>
       )}
     </section>
@@ -394,9 +395,9 @@ const handleCategoriesSaved = async () => {
           <p className="text-sm" style={{ color: 'var(--text-base)' }}>
             No hay datos para mostrar. Cargá un PDF primero.
           </p>
-          <button onClick={() => setActiveView('upload')} className="btn-secondary" type="button">
+          <Button onClick={() => setActiveView('upload')} variant="outline" type="button">
             Ir a Cargar PDF
-          </button>
+          </Button>
         </section>
       )}
     </section>
