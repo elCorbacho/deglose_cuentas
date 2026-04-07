@@ -4,6 +4,7 @@
  */
 
 export {
+  Tooltip as default,
   Tooltip,
   TooltipTrigger,
   TooltipContent,

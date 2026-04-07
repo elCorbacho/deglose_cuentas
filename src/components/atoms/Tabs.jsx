@@ -4,6 +4,7 @@
  */
 
 export {
+  Tabs as default,
   Tabs,
   TabsList,
   TabsTrigger,
