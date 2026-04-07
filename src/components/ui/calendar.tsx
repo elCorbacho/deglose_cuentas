@@ -41,51 +41,49 @@ export function Calendar({
           "relative flex flex-col gap-4 sm:flex-row sm:space-x-4 sm:space-y-0",
           defaultClassNames.months
         ),
-        month: cn("space-y-4", defaultClassNames.month),
+        month: cn("space-y-3", defaultClassNames.month),
         caption: cn(
-          "flex items-center justify-between pt-1",
+          "flex items-center justify-between px-2 py-3 mb-2",
           defaultClassNames.caption
         ),
         caption_label: cn(
-          "text-sm font-medium",
+          "text-sm font-semibold tracking-wide",
           defaultClassNames.caption_label
         ),
         nav: cn(
-          "space-x-1 flex items-center",
+          "flex items-center justify-between w-full absolute inset-x-0 top-3",
           defaultClassNames.nav
         ),
         nav_button: cn(
-          buttonVariants({ variant: buttonVariant, size: "icon-sm" }),
-          "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100",
+          "h-6 w-6 p-0 opacity-60 hover:opacity-100 transition-opacity",
           defaultClassNames.nav_button
         ),
-        nav_button_previous: "absolute left-1",
-        nav_button_next: "absolute right-1",
-        table: "w-full border-collapse space-y-1",
-        head_row: "flex",
+        nav_button_previous: "",
+        nav_button_next: "",
+        table: "w-full border-collapse",
+        head_row: "flex gap-0 mb-2",
         head_cell: cn(
-          "text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]",
+          "text-xs font-medium text-muted-foreground/70 w-10 h-8 flex items-center justify-center uppercase tracking-wide",
           defaultClassNames.head_cell
         ),
-        row: "flex w-full mt-2",
+        row: "flex w-full gap-0 mb-2",
         cell: cn(
-          "h-9 w-9 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+          "relative p-0 text-center text-sm",
           defaultClassNames.cell
         ),
         day: cn(
-          buttonVariants({ variant: "ghost", size: "sm" }),
-          "h-9 w-9 p-0 font-normal aria-selected:opacity-100",
+          "h-10 w-10 p-0 font-semibold rounded-md hover:bg-input/20 transition-colors",
           defaultClassNames.day
         ),
         day_range_end: "day-range-end",
         day_selected:
-          "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
-        day_today: "bg-accent text-accent-foreground",
+          "bg-input/30 border border-primary/50 text-foreground rounded-md font-semibold",
+        day_today: "border border-primary/40 text-primary font-bold",
         day_outside:
-          "day-outside text-muted-foreground opacity-50 aria-selected:bg-accent/50 aria-selected:text-muted-foreground aria-selected:opacity-30",
-        day_disabled: "text-muted-foreground opacity-50",
+          "text-muted-foreground/50",
+        day_disabled: "text-muted-foreground/30 cursor-not-allowed",
         day_range_middle:
-          "aria-selected:bg-accent aria-selected:text-accent-foreground",
+          "bg-accent/15 rounded-none",
         day_hidden: "invisible",
         ...classNames,
       }}
