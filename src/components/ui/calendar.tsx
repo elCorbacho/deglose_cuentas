@@ -3,7 +3,6 @@ import { DayPicker } from "react-day-picker"
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
-import { buttonVariants } from "@/components/ui/button"
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>
 
@@ -16,47 +15,41 @@ function Calendar({
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
-      className={cn("p-3", className)}
+      className={cn("w-full", className)}
       classNames={{
-        months: "flex flex-col space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0",
-        month: "space-y-4",
-        caption: "flex items-center justify-between pt-1",
-        caption_label: "text-sm font-medium",
-        nav: "space-x-1 flex items-center",
-        nav_button: cn(
-          buttonVariants({ variant: "outline", size: "icon-sm" }),
-          "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100"
-        ),
-        nav_button_previous: "absolute left-1",
-        nav_button_next: "absolute right-1",
-        table: "w-full border-collapse space-y-1",
-        head_row: "flex",
+        months: "flex flex-col space-y-3",
+        month: "space-y-3",
+        caption: "flex items-center justify-between px-1 py-2 mb-2",
+        caption_label: "text-xs font-semibold uppercase tracking-wider",
+        nav: "flex gap-1",
+        nav_button: "h-6 w-6 rounded-md border border-input/50 hover:bg-input/30 transition-colors flex items-center justify-center hover:text-foreground text-muted-foreground p-0",
+        nav_button_previous: "justify-start",
+        nav_button_next: "justify-end",
+        table: "w-full border-collapse",
+        head_row: "flex mb-2",
         head_cell:
-          "text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]",
-        row: "flex w-full mt-2",
-        cell: "h-9 w-9 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
-        day: cn(
-          buttonVariants({ variant: "ghost", size: "sm" }),
-          "h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-        ),
-        day_range_end: "day-range-end",
+          "text-xs font-medium uppercase tracking-wide text-muted-foreground w-7 h-7 flex items-center justify-center",
+        row: "flex gap-0 mb-1",
+        cell: "relative p-0 text-center text-xs",
+        day: "h-7 w-7 rounded-md border border-transparent hover:border-input/30 hover:bg-input/20 transition-all text-foreground",
         day_selected:
-          "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
-        day_today: "bg-accent text-accent-foreground",
+          "border-primary/60 bg-primary/20 text-primary font-semibold hover:bg-primary/30",
+        day_today:
+          "border-primary/40 text-primary font-semibold",
         day_outside:
-          "day-outside text-muted-foreground opacity-50 aria-selected:bg-accent/50 aria-selected:text-muted-foreground aria-selected:opacity-30",
-        day_disabled: "text-muted-foreground opacity-50",
+          "text-muted-foreground/40",
+        day_disabled: "text-muted-foreground/30 cursor-not-allowed",
         day_range_middle:
-          "aria-selected:bg-accent aria-selected:text-accent-foreground",
+          "rounded-none border-l-0 border-r-0 bg-input/15",
         day_hidden: "invisible",
         ...classNames,
       }}
       components={{
         IconLeft: ({ ...props }) => (
-          <ChevronLeftIcon className="h-4 w-4" />
+          <ChevronLeftIcon className="h-3.5 w-3.5" />
         ),
         IconRight: ({ ...props }) => (
-          <ChevronRightIcon className="h-4 w-4" />
+          <ChevronRightIcon className="h-3.5 w-3.5" />
         ),
       }}
       {...props}
