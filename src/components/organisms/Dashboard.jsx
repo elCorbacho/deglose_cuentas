@@ -4,31 +4,44 @@
  */
 
 import { formatCLP, formatDate, parseDate } from '../../lib/formatters.js'
-import { TrendingUp, Calendar, Receipt, Wallet } from 'lucide-react'
+import { TrendingUp, Calendar, Receipt, Wallet, Info } from 'lucide-react'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip.tsx'
 
-function MetricCard({ icon: Icon, label, value, subValue, highlight }) {
-  return (
+function MetricCard({ icon: Icon, label, value, subValue, highlight, tooltip }) {
+  const cardContent = (
     <div className="dashboard-metric-card panel p-4">
       <div className="flex items-start gap-3">
-        <div className={`dashboard-metric-icon flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${highlight ? 'bg-blue-50' : 'bg-slate-100'}`}>
-          <Icon />
-        </div>
-        <div className="min-w-0 flex-1">
-          <p className="dashboard-metric-label text-xs font-semibold uppercase tracking-[0.16em]" style={{ color: 'var(--text-soft)' }}>
-            {label}
-          </p>
-          <p className="dashboard-metric-value text-xl font-bold tracking-tight" style={{ color: 'var(--text-strong)' }}>
-            {value}
-          </p>
-          {subValue && (
-            <p className="dashboard-metric-sub text-xs mt-1" style={{ color: 'var(--text-soft)' }}>
-              {subValue}
-            </p>
-          )}
-        </div>
-      </div>
+         <div className={`dashboard-metric-icon flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${highlight ? 'bg-blue-50' : 'bg-slate-100'}`}>
+           <Icon />
+         </div>
+         <div className="min-w-0 flex-1">
+           <div className="flex items-center gap-1">
+             <p className="dashboard-metric-label text-xs font-semibold uppercase tracking-[0.16em]" style={{ color: 'var(--text-soft)' }}>
+               {label}
+             </p>
+             {tooltip && (
+               <Tooltip>
+                 <TooltipTrigger asChild>
+                   <Info className="w-3 h-3" style={{ color: 'var(--text-soft)', cursor: 'help' }} />
+                 </TooltipTrigger>
+                 <TooltipContent>{tooltip}</TooltipContent>
+               </Tooltip>
+             )}
+           </div>
+           <p className="dashboard-metric-value text-xl font-bold tracking-tight" style={{ color: 'var(--text-strong)' }}>
+             {value}
+           </p>
+           {subValue && (
+             <p className="dashboard-metric-sub text-xs mt-1" style={{ color: 'var(--text-soft)' }}>
+               {subValue}
+             </p>
+           )}
+         </div>
+       </div>
     </div>
   )
+
+  return cardContent
 }
 
 function CategoryBar({ category, maxTotal, index }) {
@@ -111,17 +124,20 @@ export default function Dashboard({ categories, grandTotal, transactionCount, da
            value={transactionCount}
            subValue={`${categories.length} categorías`}
            highlight
+           tooltip="Número total de transacciones en el período seleccionado"
          />
          <MetricCard
            icon={Calendar}
            label="Período"
            value={dateRangeText}
+           tooltip="Rango de fechas aplicado al análisis"
          />
          <MetricCard
            icon={TrendingUp}
            label="Categoría Principal"
            value={topCategories[0]?.name || 'N/A'}
            subValue={topCategories[0] ? formatCLP(topCategories[0].total) : ''}
+           tooltip="La categoría con mayor gasto en el período"
          />
       </div>
 

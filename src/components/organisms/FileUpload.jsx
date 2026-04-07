@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { FileText } from 'lucide-react'
+import { FileText, Info } from 'lucide-react'
 import Button from '../atoms/Button.jsx'
+import { Tooltip, TooltipTrigger, TooltipContent } from '../atoms/Tooltip.jsx'
 
 export default function FileUpload({ onFileLoaded }) {
   const [isDragging, setIsDragging] = useState(false)
@@ -107,19 +108,42 @@ export default function FileUpload({ onFileLoaded }) {
             </div>
 
             <div className="space-y-1">
-              <p className="text-base font-semibold sm:text-lg" style={{ color: 'var(--text-strong)' }}>
-                Arrastra tu estado de cuenta Santander aquí
-              </p>
-              <p className="text-sm leading-5" style={{ color: 'var(--text-base)' }}>
-                También puedes hacer clic para seleccionar el archivo.
-              </p>
-            </div>
+               <div className="flex items-center justify-center gap-2">
+                 <p className="text-base font-semibold sm:text-lg" style={{ color: 'var(--text-strong)' }}>
+                   Arrastra tu estado de cuenta Santander aquí
+                 </p>
+                 <Tooltip>
+                   <TooltipTrigger asChild>
+                     <Info className="w-4 h-4" style={{ color: 'var(--text-soft)', cursor: 'help' }} />
+                   </TooltipTrigger>
+                   <TooltipContent>Solo PDFs de estados de cuenta Santander</TooltipContent>
+                 </Tooltip>
+               </div>
+               <p className="text-sm leading-5" style={{ color: 'var(--text-base)' }}>
+                 También puedes hacer clic para seleccionar el archivo.
+               </p>
+             </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-1.5 text-xs">
-              <span className="badge-soft">PDF solamente</span>
-              <span className="badge-soft">Sin cambiar tus datos</span>
-              <span className="badge-soft">Vista categorizada</span>
-            </div>
+             <div className="flex flex-wrap items-center justify-center gap-1.5 text-xs">
+               <Tooltip>
+                 <TooltipTrigger asChild>
+                   <span className="badge-soft cursor-help">PDF solamente</span>
+                 </TooltipTrigger>
+                 <TooltipContent>Solo archivos PDF son soportados</TooltipContent>
+               </Tooltip>
+               <Tooltip>
+                 <TooltipTrigger asChild>
+                   <span className="badge-soft cursor-help">Sin cambiar tus datos</span>
+                 </TooltipTrigger>
+                 <TooltipContent>Tu información no se guarda en servidores</TooltipContent>
+               </Tooltip>
+               <Tooltip>
+                 <TooltipTrigger asChild>
+                   <span className="badge-soft cursor-help">Vista categorizada</span>
+                 </TooltipTrigger>
+                 <TooltipContent>Los gastos se agrupan automáticamente</TooltipContent>
+               </Tooltip>
+             </div>
 
             <div>
               <Button variant="outline" size="sm" asChild>

@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect } from 'react'
 import { Toaster, toast } from 'sonner'
+import { TooltipProvider } from '@/components/ui/tooltip.tsx'
 import FileUpload from './components/organisms/FileUpload.jsx'
 import DateFilter from './components/organisms/DateFilter.jsx'
 import CategoryList from './components/organisms/CategoryList.jsx'
@@ -412,23 +413,25 @@ const handleCategoriesSaved = async () => {
   }
 
   return (
-    <div className="min-h-screen">
-      <Toaster position="top-right" theme="system" />
-      <Header />
+    <TooltipProvider>
+      <div className="min-h-screen">
+        <Toaster position="top-right" theme="system" />
+        <Header />
 
-      <div className="app-layout">
-        <Sidebar
-          activeView={activeView}
-          hasTransactions={hasTransactions}
-          onNavigate={handleNavigate}
-        />
+        <div className="app-layout">
+          <Sidebar
+            activeView={activeView}
+            hasTransactions={hasTransactions}
+            onNavigate={handleNavigate}
+          />
 
-        <main className="content-area">
-          <div className="app-shell app-shell--compact">
-            {renderCurrentView()}
-          </div>
-        </main>
+          <main className="content-area">
+            <div className="app-shell app-shell--compact">
+              {renderCurrentView()}
+            </div>
+          </main>
+        </div>
       </div>
-    </div>
+    </TooltipProvider>
   )
 }
