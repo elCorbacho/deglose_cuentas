@@ -311,17 +311,40 @@ const handleCategoriesSaved = async () => {
       {hasTransactions ? (
         <>
           <div className="analysis-row analysis-widgets-grid analysis-widgets-grid--two">
-            <div className="panel widget-card p-4">
-              <p className="widget-kicker text-[11px] font-semibold uppercase tracking-[0.16em]">Total del rango</p>
-              <p className="widget-total-amount mono-num mt-2" style={{ color: 'var(--text-strong)' }}>
+            <div className="panel widget-card total-card">
+              {/* Header row */}
+              <div className="total-card__header">
+                <span className="widget-kicker text-[10px] font-semibold uppercase tracking-[0.18em]">
+                  Total del rango
+                </span>
+                <Button
+                  onClick={resetResults}
+                  variant="ghost"
+                  size="sm"
+                  type="button"
+                  className="total-card__reset-btn"
+                >
+                  Nuevo PDF
+                </Button>
+              </div>
+
+              {/* Main amount */}
+              <p className="widget-total-amount mono-num total-card__amount" style={{ color: 'var(--text-strong)' }}>
                 {formatCLP(filteredRangeTotal)}
               </p>
-              <p className="mt-2 text-xs" style={{ color: 'var(--text-soft)' }}>
-                {filteredTransactions.length} movimientos · {visibleCategories.length} categorías
-              </p>
-              <Button onClick={resetResults} variant="outline" size="sm" className="mt-3 w-full" type="button">
-                Cargar otro PDF
-              </Button>
+
+              {/* Stats row */}
+              <div className="total-card__stats">
+                <div className="total-card__stat">
+                  <span className="total-card__stat-value">{filteredTransactions.length}</span>
+                  <span className="total-card__stat-label">movimientos</span>
+                </div>
+                <div className="total-card__divider" />
+                <div className="total-card__stat">
+                  <span className="total-card__stat-value">{visibleCategories.length}</span>
+                  <span className="total-card__stat-label">categorías</span>
+                </div>
+              </div>
             </div>
 
             <div className="panel widget-card p-4">

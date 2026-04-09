@@ -612,6 +612,81 @@
     }
   }
 
+  /* ── Total Card Widget ───────────────────────────────────── */
+  .total-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 1rem 1.1rem;
+  }
+
+  .total-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.55rem;
+  }
+
+  .total-card__reset-btn {
+    font-size: 0.72rem !important;
+    height: auto !important;
+    padding: 0.2rem 0.55rem !important;
+    border-radius: 999px !important;
+    border: 1px solid var(--border-soft) !important;
+    color: var(--text-soft) !important;
+    background: transparent !important;
+    transition: border-color 160ms ease, color 160ms ease !important;
+  }
+
+  .total-card__reset-btn:hover {
+    border-color: var(--border-strong) !important;
+    color: var(--text-base) !important;
+    background: var(--bg-shell) !important;
+  }
+
+  .total-card__amount {
+    margin: 0 0 0.75rem 0;
+    line-height: 1;
+  }
+
+  .total-card__stats {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding-top: 0.65rem;
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .total-card__stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .total-card__stat-value {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--text-strong);
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .total-card__stat-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-soft);
+  }
+
+  .total-card__divider {
+    width: 1px;
+    height: 1.5rem;
+    background: var(--border-soft);
+    flex-shrink: 0;
+  }
+  /* ── /Total Card Widget ──────────────────────────────────── */
+
   /* ── DatePicker input ────────────────────────────────────── */
   .rdp-input {
     width: 130px;
