@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 const SunIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
@@ -45,13 +46,21 @@ export default function ThemeToggle() {
       className="theme-toggle-btn"
       title={theme === 'light' ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro'}
       aria-label={`Cambiar a modo ${theme === 'light' ? 'oscuro' : 'claro'}`}
+      style={{ position: 'relative', overflow: 'hidden' }}
     >
-      <span className={`theme-icon-wrapper ${theme === 'light' ? 'theme-icon--active' : ''}`}>
-        <SunIcon />
-      </span>
-      <span className={`theme-icon-wrapper ${theme === 'dark' ? 'theme-icon--active' : ''}`}>
-        <MoonIcon />
-      </span>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.span
+          key={theme}
+          initial={{ opacity: 0, rotate: -30, scale: 0.8 }}
+          animate={{ opacity: 1, rotate: 0, scale: 1 }}
+          exit={{ opacity: 0, rotate: 30, scale: 0.8 }}
+          transition={{ duration: 0.2, ease: 'easeInOut' }}
+          className="theme-icon-wrapper theme-icon--active"
+          style={{ display: 'flex' }}
+        >
+          {theme === 'light' ? <SunIcon /> : <MoonIcon />}
+        </motion.span>
+      </AnimatePresence>
     </button>
   )
 }

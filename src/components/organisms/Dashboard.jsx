@@ -6,6 +6,7 @@
 import { formatCLP, formatDate, parseDate } from '../../lib/formatters.js'
 import { TrendingUp, Calendar, Receipt, Wallet, Info } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip.tsx'
+import { motion } from 'framer-motion'
 
 function MetricCard({ icon: Icon, label, value, subValue, highlight, tooltip }) {
   const cardContent = (
@@ -63,16 +64,17 @@ function CategoryBar({ category, maxTotal, index }) {
   const color = colors[index % colors.length]
 
   return (
-    <div className="space-y-2
-      hover:opacity-75
-      dark:hover:opacity-90
-      transition-opacity duration-200
-      cursor-pointer"
+    <motion.div
+      className="space-y-2 hover:opacity-75 dark:hover:opacity-90 transition-opacity duration-200 cursor-pointer"
+      initial={{ opacity: 0, x: -12 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: 0.25 + index * 0.07, duration: 0.3, ease: 'easeOut' }}
       role="progressbar"
       aria-label={`${category.name}: ${formatCLP(category.total)}`}
       aria-valuenow={Math.round((category.total / maxTotal) * 100) || 0}
       aria-valuemin={0}
-      aria-valuemax={100}>
+      aria-valuemax={100}
+    >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-base">{category.icon}</span>
@@ -90,7 +92,7 @@ function CategoryBar({ category, maxTotal, index }) {
           style={{ width: `${percentage}%` }}
         />
       </div>
-    </div>
+    </motion.div>
   )
 }
 
@@ -110,7 +112,13 @@ export default function Dashboard({ categories, grandTotal, transactionCount, da
   return (
     <section className="space-y-6" aria-label="Resumen financiero">
        {/* Main Total Card */}
-       <article className="panel dashboard-total-card p-6" aria-label={`Total gastado ${formatCLP(grandTotal)} en ${transactionCount} ${transactionCount === 1 ? 'transacción' : 'transacciones'}`}>
+       <motion.article
+         className="panel dashboard-total-card p-6"
+         aria-label={`Total gastado ${formatCLP(grandTotal)} en ${transactionCount} ${transactionCount === 1 ? 'transacción' : 'transacciones'}`}
+         initial={{ opacity: 0, y: 16, scale: 0.98 }}
+         animate={{ opacity: 1, y: 0, scale: 1 }}
+         transition={{ duration: 0.35, ease: 'easeOut' }}
+       >
          <div className="flex flex-col items-center justify-center gap-4 text-center">
            <div className="dashboard-total-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 shadow-lg shadow-cyan-500/25">
              <Wallet className="w-7 h-7 text-white" />
@@ -127,31 +135,24 @@ export default function Dashboard({ categories, grandTotal, transactionCount, da
             </p>
           </div>
         </div>
-      </article>
+      </motion.article>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" aria-label="Métricas de resumen">
-         <MetricCard
-           icon={Receipt}
-           label="Movimientos"
-           value={transactionCount}
-           subValue={`${categories.length} categorías`}
-           highlight
-           tooltip="Número total de transacciones en el período seleccionado"
-         />
-         <MetricCard
-           icon={Calendar}
-           label="Período"
-           value={dateRangeText}
-           tooltip="Rango de fechas aplicado al análisis"
-         />
-         <MetricCard
-           icon={TrendingUp}
-           label="Categoría Principal"
-           value={topCategories[0]?.name || 'N/A'}
-           subValue={topCategories[0] ? formatCLP(topCategories[0].total) : ''}
-           tooltip="La categoría con mayor gasto en el período"
-         />
+        {[
+          { icon: Receipt, label: 'Movimientos', value: transactionCount, subValue: `${categories.length} categorías`, highlight: true, tooltip: 'Número total de transacciones en el período seleccionado' },
+          { icon: Calendar, label: 'Período', value: dateRangeText, tooltip: 'Rango de fechas aplicado al análisis' },
+          { icon: TrendingUp, label: 'Categoría Principal', value: topCategories[0]?.name || 'N/A', subValue: topCategories[0] ? formatCLP(topCategories[0].total) : '', tooltip: 'La categoría con mayor gasto en el período' },
+        ].map((props, i) => (
+          <motion.div
+            key={props.label}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 + i * 0.08, duration: 0.3, ease: 'easeOut' }}
+          >
+            <MetricCard {...props} />
+          </motion.div>
+        ))}
       </div>
 
       {/* Top Categories */}

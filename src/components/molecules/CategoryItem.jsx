@@ -4,22 +4,25 @@
  */
 
 import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import TransactionRow from './TransactionRow.jsx'
 import { formatCLP } from '../../lib/formatters.js'
 import { DEFAULT_CATEGORY_ICON } from '../../data/categories.js'
 
 // Chevron icon for expand/collapse
 const ChevronIcon = ({ expanded }) => (
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    fill="none" 
-    viewBox="0 0 24 24" 
-    strokeWidth={2} 
-    stroke="currentColor" 
-    className={`w-4 h-4 transition-transform duration-200 ${expanded ? 'rotate-90' : ''}`}
+  <motion.svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={2}
+    stroke="currentColor"
+    className="w-4 h-4"
+    animate={{ rotate: expanded ? 90 : 0 }}
+    transition={{ duration: 0.2, ease: 'easeInOut' }}
   >
     <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-  </svg>
+  </motion.svg>
 )
 
 export default function CategoryItem({ category }) {
@@ -59,28 +62,42 @@ export default function CategoryItem({ category }) {
         </div>
       </button>
 
-      {expanded && (
-        <div className="expanded-content px-2.5 py-2 sm:px-3">
-          <div className="tx-table-header">
-            <div className="tx-table-columns">
-              <span>Nombre transacción</span>
-              <span>Fecha</span>
-              <span>Monto</span>
-            </div>
-          </div>
-
-          <div className="transaction-divider-container">
-            {category.transactions.map((tx, index) => (
-              <div
-                key={`${tx.fecha}-${tx.comercio}-${tx.monto}-${tx.ciudad}-${index}`}
-                className={index > 0 ? 'transaction-divider' : ''}
-              >
-                <TransactionRow tx={tx} />
+      <AnimatePresence initial={false}>
+        {expanded && (
+          <motion.div
+            key="content"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: 'easeInOut' }}
+            style={{ overflow: 'hidden' }}
+          >
+            <div className="expanded-content px-2.5 py-2 sm:px-3">
+              <div className="tx-table-header">
+                <div className="tx-table-columns">
+                  <span>Nombre transacción</span>
+                  <span>Fecha</span>
+                  <span>Monto</span>
+                </div>
               </div>
-            ))}
-          </div>
-        </div>
-      )}
+
+              <div className="transaction-divider-container">
+                {category.transactions.map((tx, index) => (
+                  <motion.div
+                    key={`${tx.fecha}-${tx.comercio}-${tx.monto}-${tx.ciudad}-${index}`}
+                    className={index > 0 ? 'transaction-divider' : ''}
+                    initial={{ opacity: 0, x: -8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.04, duration: 0.2 }}
+                  >
+                    <TransactionRow tx={tx} />
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

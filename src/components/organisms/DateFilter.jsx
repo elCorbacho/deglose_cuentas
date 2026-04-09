@@ -5,6 +5,7 @@
 
 import { useState, useMemo } from 'react'
 import { X } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 import Button from '../atoms/Button.jsx'
 import DatePicker from '../molecules/DatePicker.jsx'
 
@@ -157,20 +158,28 @@ export default function DateFilter({ desde, hasta, onDesdeChange, onHastaChange 
       </div>
 
       {/* Clear */}
-      {isFiltered && (
-        <>
-          <div className="date-filter-bar__divider" />
-          <button
-            onClick={handleClear}
-            className="date-filter-bar__clear"
-            type="button"
-            aria-label="Limpiar filtros"
+      <AnimatePresence>
+        {isFiltered && (
+          <motion.div
+            style={{ display: 'contents' }}
+            initial={{ opacity: 0, x: 8 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 8 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
           >
-            <X className="w-3.5 h-3.5" />
-            <span>Limpiar</span>
-          </button>
-        </>
-      )}
+            <div className="date-filter-bar__divider" />
+            <button
+              onClick={handleClear}
+              className="date-filter-bar__clear"
+              type="button"
+              aria-label="Limpiar filtros"
+            >
+              <X className="w-3.5 h-3.5" />
+              <span>Limpiar</span>
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   )
 }
