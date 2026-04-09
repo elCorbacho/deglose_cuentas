@@ -109,32 +109,9 @@ export default function DateFilter({ desde, hasta, onDesdeChange, onHastaChange 
   }
 
   return (
-    <div className="filter-container filter-container--compact">
-      <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-        <div className="space-y-0.5">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: 'var(--text-soft)' }}>
-            Filtrar por fecha
-          </p>
-          <p className="text-xs" style={{ color: 'var(--text-base)' }}>
-            Acota el período para revisar movimientos específicos.
-          </p>
-        </div>
-
-        {isFiltered && (
-          <Button
-            onClick={handleClear}
-            variant="ghost"
-            size="sm"
-            type="button"
-          >
-            <X className="w-4 h-4 mr-1" />
-            Limpiar
-          </Button>
-        )}
-      </div>
-
+    <div className="date-filter-bar">
       {/* Quick Presets */}
-      <div className="mt-2.5 flex flex-wrap gap-1.5">
+      <div className="date-filter-bar__presets">
         {PRESETS.map((preset) => (
           <button
             key={preset.id}
@@ -147,26 +124,47 @@ export default function DateFilter({ desde, hasta, onDesdeChange, onHastaChange 
         ))}
       </div>
 
-       {/* Date Inputs with Calendar Picker */}
-       <div className="mt-3 grid gap-2 md:grid-cols-2">
-          <label className="space-y-1 text-xs" style={{ color: 'var(--text-base)' }}>
-            <span className="block font-semibold uppercase tracking-[0.08em]">Desde</span>
-            <DatePicker
-              value={desde}
-              onChange={(value) => handleManualChange('desde', value)}
-              placeholder="dd-mm-aaaa"
-            />
-          </label>
+      {/* Divider */}
+      <div className="date-filter-bar__divider" />
 
-          <label className="space-y-1 text-xs" style={{ color: 'var(--text-base)' }}>
-            <span className="block font-semibold uppercase tracking-[0.08em]">Hasta</span>
-            <DatePicker
-              value={hasta}
-              onChange={(value) => handleManualChange('hasta', value)}
-              placeholder="dd-mm-aaaa"
-            />
-          </label>
-       </div>
+      {/* Date pickers */}
+      <div className="date-filter-bar__pickers">
+        <div className="date-filter-bar__picker-group">
+          <span className="date-filter-bar__label">Desde</span>
+          <DatePicker
+            value={desde}
+            onChange={(value) => handleManualChange('desde', value)}
+            placeholder="dd-mm-aaaa"
+          />
+        </div>
+
+        <span className="date-filter-bar__separator">→</span>
+
+        <div className="date-filter-bar__picker-group">
+          <span className="date-filter-bar__label">Hasta</span>
+          <DatePicker
+            value={hasta}
+            onChange={(value) => handleManualChange('hasta', value)}
+            placeholder="dd-mm-aaaa"
+          />
+        </div>
+      </div>
+
+      {/* Clear */}
+      {isFiltered && (
+        <>
+          <div className="date-filter-bar__divider" />
+          <button
+            onClick={handleClear}
+            className="date-filter-bar__clear"
+            type="button"
+            aria-label="Limpiar filtros"
+          >
+            <X className="w-3.5 h-3.5" />
+            <span>Limpiar</span>
+          </button>
+        </>
+      )}
     </div>
   )
 }

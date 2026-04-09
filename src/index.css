@@ -588,6 +588,10 @@
     grid-template-columns: 1fr;
   }
 
+  .analysis-widgets-grid--two {
+    grid-template-columns: 1fr;
+  }
+
   .analysis-widgets-grid--three {
     grid-template-columns: 1fr;
   }
@@ -597,10 +601,107 @@
       grid-template-columns: 280px 1fr 1fr;
     }
 
+    .analysis-widgets-grid--two {
+      grid-template-columns: minmax(220px, 0.8fr) minmax(260px, 1fr);
+      align-items: stretch;
+    }
+
     .analysis-widgets-grid--three {
       grid-template-columns: minmax(320px, 1.25fr) minmax(220px, 0.75fr) minmax(260px, 1fr);
       align-items: stretch;
     }
+  }
+
+  /* Date Filter Bar */
+  .date-filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.55rem 0.9rem;
+    border: 1px solid var(--border-soft);
+    border-radius: 4px;
+    background: var(--bg-panel);
+    flex-wrap: wrap;
+  }
+
+  [data-theme="dark"] .date-filter-bar {
+    background: var(--bg-panel);
+    border-color: var(--border-soft);
+  }
+
+  .date-filter-bar__presets {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+
+  .date-filter-bar__divider {
+    width: 1px;
+    height: 1.25rem;
+    background: var(--border-soft);
+    flex-shrink: 0;
+  }
+
+  .date-filter-bar__pickers {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .date-filter-bar__picker-group {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .date-filter-bar__picker-group > div {
+    width: 130px;
+  }
+
+  .date-filter-bar__picker-group input {
+    height: 2rem;
+    min-height: 2rem;
+    padding-top: 0.35rem;
+    padding-bottom: 0.35rem;
+    font-size: 0.8rem;
+  }
+
+  .date-filter-bar__label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-soft);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .date-filter-bar__separator {
+    font-size: 0.75rem;
+    color: var(--text-soft);
+    flex-shrink: 0;
+  }
+
+  .date-filter-bar__clear {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-danger);
+    background: transparent;
+    border: none;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 150ms ease;
+    white-space: nowrap;
+  }
+
+  .date-filter-bar__clear:hover {
+    background: var(--bg-danger-soft);
   }
 
   .widget-card {

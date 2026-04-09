@@ -310,16 +310,7 @@ const handleCategoriesSaved = async () => {
     <section className="analysis-body view-panel">
       {hasTransactions ? (
         <>
-          <div className="analysis-row analysis-widgets-grid analysis-widgets-grid--three">
-            <div className="panel widget-card p-3 sm:p-4">
-              <DateFilter
-                desde={desde}
-                hasta={hasta}
-                onDesdeChange={setDesde}
-                onHastaChange={setHasta}
-              />
-            </div>
-
+          <div className="analysis-row analysis-widgets-grid analysis-widgets-grid--two">
             <div className="panel widget-card p-4">
               <p className="widget-kicker text-[11px] font-semibold uppercase tracking-[0.16em]">Total del rango</p>
               <p className="widget-total-amount mono-num mt-2" style={{ color: 'var(--text-strong)' }}>
@@ -357,6 +348,15 @@ const handleCategoriesSaved = async () => {
                 </div>
               </div>
             </div>
+          </div>
+
+          <div className="analysis-row">
+            <DateFilter
+              desde={desde}
+              hasta={hasta}
+              onDesdeChange={setDesde}
+              onHastaChange={setHasta}
+            />
           </div>
 
           <div className="analysis-row analysis-row--content">
