@@ -103,25 +103,10 @@ export default function DatePicker({
           placeholder={placeholder}
           disabled={disabled}
           autoComplete="off"
+          className="rdp-input"
           style={{
-            width: '130px',
-            height: '2rem',
-            paddingLeft: '1.75rem',
             paddingRight: value ? '1.6rem' : '0.6rem',
-            paddingTop: '0',
-            paddingBottom: '0',
-            fontSize: '0.78rem',
-            fontWeight: 500,
-            color: 'var(--text-strong)',
-            background: 'var(--bg-panel-strong)',
-            border: '1px solid var(--border-soft)',
-            borderRadius: '4px',
-            outline: 'none',
-            transition: 'border-color 150ms ease',
-            cursor: 'text',
           }}
-          onMouseEnter={e => e.target.style.borderColor = 'var(--border-strong)'}
-          onMouseLeave={e => !open && (e.target.style.borderColor = 'var(--border-soft)')}
         />
         {value && (
           <button
