@@ -6,6 +6,7 @@ import DateFilter from './components/organisms/DateFilter.jsx'
 import CategoryList from './components/organisms/CategoryList.jsx'
 import Dashboard from './components/organisms/Dashboard.jsx'
 import Button from './components/atoms/Button.jsx'
+import { DonutChart } from './components/ui/donut-chart.jsx'
 
 import Header from './components/organisms/Header.jsx'
 import CategoryConfig from './components/organisms/CategoryConfig.jsx'
@@ -316,9 +317,20 @@ const handleCategoriesSaved = async () => {
                 <span className="widget-kicker text-[10px] font-semibold uppercase tracking-[0.18em]">Distribución</span>
               </div>
               <div className="distribution-widget">
-                <div className="distribution-donut" style={{ background: donutGradient }}>
-                  <div className="distribution-donut-center" />
-                </div>
+                <DonutChart
+                  data={chartItems.map((item, index) => ({
+                    value: item.total,
+                    color: chartColors[index % chartColors.length],
+                    label: item.name,
+                  }))}
+                  size={120}
+                  strokeWidth={18}
+                  centerContent={
+                    <span className="mono-num text-xs font-bold" style={{ color: 'var(--text-strong)' }}>
+                      {chartItems.length > 0 ? `${chartItems.length} cat.` : '—'}
+                    </span>
+                  }
+                />
                 <div className="distribution-legend">
                   {chartItems.slice(0, 4).map((item, index) => (
                     <div key={item.name} className="distribution-legend-item">
