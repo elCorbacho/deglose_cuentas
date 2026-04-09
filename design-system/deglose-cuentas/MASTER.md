@@ -7,7 +7,7 @@
 ---
 
 **Project:** Deglose Cuentas
-**Generated:** 2026-04-06 00:07:46
+**Generated:** 2026-04-08 21:34:16
 **Category:** Fintech/Crypto
 
 ---
@@ -18,13 +18,13 @@
 
 | Role | Hex | CSS Variable |
 |------|-----|--------------|
-| Primary | `#0891B2` | `--color-primary` |
-| Secondary | `#22D3EE` | `--color-secondary` |
-| CTA/Accent | `#22C55E` | `--color-cta` |
-| Background | `#ECFEFF` | `--color-background` |
-| Text | `#164E63` | `--color-text` |
+| Primary | `#0F172A` | `--color-primary` |
+| Secondary | `#1E3A8A` | `--color-secondary` |
+| CTA/Accent | `#CA8A04` | `--color-cta` |
+| Background | `#F8FAFC` | `--color-background` |
+| Text | `#020617` | `--color-text` |
 
-**Color Notes:** Fresh cyan + clean green
+**Color Notes:** Trust navy + premium gold
 
 ### Typography
 
@@ -68,7 +68,7 @@
 ```css
 /* Primary Button */
 .btn-primary {
-  background: #22C55E;
+  background: #CA8A04;
   color: white;
   padding: 12px 24px;
   border-radius: 8px;
@@ -85,8 +85,8 @@
 /* Secondary Button */
 .btn-secondary {
   background: transparent;
-  color: #0891B2;
-  border: 2px solid #0891B2;
+  color: #0F172A;
+  border: 2px solid #0F172A;
   padding: 12px 24px;
   border-radius: 8px;
   font-weight: 600;
@@ -99,7 +99,7 @@
 
 ```css
 .card {
-  background: #ECFEFF;
+  background: #F8FAFC;
   border-radius: 12px;
   padding: 24px;
   box-shadow: var(--shadow-md);
@@ -125,9 +125,9 @@
 }
 
 .input:focus {
-  border-color: #0891B2;
+  border-color: #0F172A;
   outline: none;
-  box-shadow: 0 0 0 3px #0891B220;
+  box-shadow: 0 0 0 3px #0F172A20;
 }
 ```
 
@@ -163,11 +163,10 @@
 
 ### Page Pattern
 
-**Pattern Name:** Minimal Single Column
+**Pattern Name:** Conversion-Optimized
 
-- **Conversion Strategy:** Single CTA focus. Large typography. Lots of whitespace. No nav clutter. Mobile-first.
-- **CTA Placement:** Center, large CTA button
-- **Section Order:** 1. Hero headline, 2. Short description, 3. Benefit bullets (3 max), 4. CTA, 5. Footer
+- **CTA Placement:** Above fold
+- **Section Order:** Hero > Features > CTA
 
 ---
 

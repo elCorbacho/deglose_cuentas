@@ -15,6 +15,9 @@ export default function DatePicker({
   onChange,
   placeholder = 'dd-mm-aaaa',
   disabled = false,
+  id,
+  ariaLabel,
+  ariaLabelledBy,
 }) {
   const [open, setOpen] = useState(false)
   const [inputValue, setInputValue] = useState(
@@ -96,6 +99,7 @@ export default function DatePicker({
           }}
         />
         <input
+          id={id}
           type="text"
           value={inputValue}
           onChange={handleInputChange}
@@ -103,6 +107,10 @@ export default function DatePicker({
           placeholder={placeholder}
           disabled={disabled}
           autoComplete="off"
+          aria-label={ariaLabel}
+          aria-labelledby={ariaLabelledBy}
+          aria-haspopup="dialog"
+          aria-expanded={open}
           className="rdp-input"
           style={{
             paddingRight: value ? '1.6rem' : '0.6rem',
@@ -112,6 +120,7 @@ export default function DatePicker({
           <button
             onClick={handleClear}
             type="button"
+            aria-label="Limpiar fecha"
             style={{
               position: 'absolute',
               right: '0.4rem',
@@ -133,6 +142,8 @@ export default function DatePicker({
       {/* Calendar popover */}
       {open && (
         <div
+          role="dialog"
+          aria-label="Selector de fecha"
           style={{
             position: 'absolute',
             top: 'calc(100% + 6px)',

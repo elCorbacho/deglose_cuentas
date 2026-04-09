@@ -109,7 +109,7 @@ export default function DateFilter({ desde, hasta, onDesdeChange, onHastaChange 
   }
 
   return (
-    <div className="date-filter-bar">
+    <section className="date-filter-bar" aria-label="Filtro por rango de fechas">
       {/* Quick Presets */}
       <div className="date-filter-bar__presets">
         {PRESETS.map((preset) => (
@@ -118,6 +118,8 @@ export default function DateFilter({ desde, hasta, onDesdeChange, onHastaChange 
             onClick={() => handlePresetClick(preset)}
             className={`preset-btn preset-btn--compact ${currentPreset === preset.id ? 'preset-btn--active' : ''}`}
             type="button"
+            aria-pressed={currentPreset === preset.id}
+            aria-label={`Aplicar filtro: ${preset.label}`}
           >
             {preset.label}
           </button>
@@ -130,8 +132,10 @@ export default function DateFilter({ desde, hasta, onDesdeChange, onHastaChange 
       {/* Date pickers */}
       <div className="date-filter-bar__pickers">
         <div className="date-filter-bar__picker-group">
-          <span className="date-filter-bar__label">Desde</span>
+          <label id="desde-label" htmlFor="date-desde" className="date-filter-bar__label">Desde</label>
           <DatePicker
+            id="date-desde"
+            ariaLabelledBy="desde-label"
             value={desde}
             onChange={(value) => handleManualChange('desde', value)}
             placeholder="dd-mm-aaaa"
@@ -141,8 +145,10 @@ export default function DateFilter({ desde, hasta, onDesdeChange, onHastaChange 
         <span className="date-filter-bar__separator">→</span>
 
         <div className="date-filter-bar__picker-group">
-          <span className="date-filter-bar__label">Hasta</span>
+          <label id="hasta-label" htmlFor="date-hasta" className="date-filter-bar__label">Hasta</label>
           <DatePicker
+            id="date-hasta"
+            ariaLabelledBy="hasta-label"
             value={hasta}
             onChange={(value) => handleManualChange('hasta', value)}
             placeholder="dd-mm-aaaa"
@@ -165,6 +171,6 @@ export default function DateFilter({ desde, hasta, onDesdeChange, onHastaChange 
           </button>
         </>
       )}
-    </div>
+    </section>
   )
 }

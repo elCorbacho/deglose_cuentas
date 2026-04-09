@@ -9,7 +9,11 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 
 function MetricCard({ icon: Icon, label, value, subValue, highlight, tooltip }) {
   const cardContent = (
-    <div className="dashboard-metric-card panel p-4">
+    <div className="dashboard-metric-card panel p-4 
+      hover:shadow-lg hover:border-blue-200
+      dark:hover:border-blue-800 dark:hover:shadow-blue-900/20
+      transition-all duration-200
+      cursor-pointer">
       <div className="flex items-start gap-3">
          <div className={`dashboard-metric-icon flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${highlight ? 'bg-blue-50' : 'bg-slate-100'}`}>
            <Icon />
@@ -59,7 +63,16 @@ function CategoryBar({ category, maxTotal, index }) {
   const color = colors[index % colors.length]
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2
+      hover:opacity-75
+      dark:hover:opacity-90
+      transition-opacity duration-200
+      cursor-pointer"
+      role="progressbar"
+      aria-label={`${category.name}: ${formatCLP(category.total)}`}
+      aria-valuenow={Math.round((category.total / maxTotal) * 100) || 0}
+      aria-valuemin={0}
+      aria-valuemax={100}>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-base">{category.icon}</span>
@@ -95,9 +108,9 @@ export default function Dashboard({ categories, grandTotal, transactionCount, da
   })()
 
   return (
-    <div className="space-y-6">
+    <section className="space-y-6" aria-label="Resumen financiero">
        {/* Main Total Card */}
-       <div className="panel dashboard-total-card p-6">
+       <article className="panel dashboard-total-card p-6" aria-label={`Total gastado ${formatCLP(grandTotal)} en ${transactionCount} ${transactionCount === 1 ? 'transacción' : 'transacciones'}`}>
          <div className="flex flex-col items-center justify-center gap-4 text-center">
            <div className="dashboard-total-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 shadow-lg shadow-cyan-500/25">
              <Wallet className="w-7 h-7 text-white" />
@@ -114,10 +127,10 @@ export default function Dashboard({ categories, grandTotal, transactionCount, da
             </p>
           </div>
         </div>
-      </div>
+      </article>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" aria-label="Métricas de resumen">
          <MetricCard
            icon={Receipt}
            label="Movimientos"
@@ -143,7 +156,7 @@ export default function Dashboard({ categories, grandTotal, transactionCount, da
 
       {/* Top Categories */}
       {topCategories.length > 0 && (
-        <div className="panel p-5">
+        <article className="panel p-5" aria-label="Top categorías por gasto">
           <div className="mb-4">
             <p className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: 'var(--text-soft)' }}>
               Desglose Principal
@@ -162,8 +175,8 @@ export default function Dashboard({ categories, grandTotal, transactionCount, da
               />
             ))}
           </div>
-        </div>
+        </article>
       )}
-    </div>
+    </section>
   )
 }
