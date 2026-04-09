@@ -191,50 +191,18 @@ const handleCategoriesSaved = async () => {
   const renderUploadView = () => (
     <>
       <section className="hero-shell view-panel">
-        <div className="relative z-10 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-2xl space-y-2">
-            <span className="eyebrow">Santander · visión rápida</span>
-
-            <div className="space-y-2">
-              <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl" style={{ color: 'var(--text-strong)' }}>
-                Entiende tus gastos del mes sin complicarte con el PDF.
-              </h1>
-              <p className="max-w-xl text-sm leading-5" style={{ color: 'var(--text-base)' }}>
-                Sube tu estado y explora gastos con una vista clara y ordenada.
-              </p>
-            </div>
-          </div>
-
-          <div className="grid gap-2 sm:grid-cols-2 lg:min-w-[300px]">
-            <div className="panel-muted px-3 py-2">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: 'var(--text-soft)' }}>
-                Flujo
-              </p>
-              <p className="mt-1 text-xs font-medium" style={{ color: 'var(--text-base)' }}>
-                Subir PDF → filtrar fechas → expandir categorías
-              </p>
-            </div>
-
-            <div className="panel-muted px-3 py-2">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: 'var(--text-soft)' }}>
-                Alcance
-              </p>
-              <p className="mt-1 text-xs font-medium" style={{ color: 'var(--text-base)' }}>
-                Solo mejora visual, sin tocar cálculos ni agrupación
-              </p>
-            </div>
-          </div>
+        <div className="relative z-10 flex flex-col gap-2">
+          <span className="eyebrow">Santander · visión rápida</span>
+          <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl" style={{ color: 'var(--text-strong)' }}>
+            Entiende tus gastos sin complicarte.
+          </h1>
+          <p className="max-w-lg text-sm leading-6" style={{ color: 'var(--text-soft)' }}>
+            Subí tu estado de cuenta Santander y explorá tus movimientos por categoría, con filtros de fecha y totales al instante.
+          </p>
         </div>
 
         {!loading && (
-          <div className="relative z-10 mt-4 panel p-4 sm:p-5">
-            <div className="mb-3 flex flex-col gap-1">
-              <h2 className="text-base font-semibold" style={{ color: 'var(--text-strong)' }}>Carga tu estado de cuenta</h2>
-              <p className="text-sm leading-5" style={{ color: 'var(--text-base)' }}>
-                Elige un PDF para ver total, filtros por fecha y gastos por categoría.
-              </p>
-            </div>
-
+          <div className="relative z-10 mt-5 panel p-4 sm:p-5">
             <FileUpload onFileLoaded={handleFile} />
           </div>
         )}
@@ -242,12 +210,11 @@ const handleCategoriesSaved = async () => {
 
       {loading && (
         <section className="panel status-card status-card--loading view-panel">
-          <div className="inline-block h-12 w-12 animate-spin rounded-full spinner-ring"></div>
-
-          <div className="space-y-2">
-            <p className="text-lg font-semibold" style={{ color: 'var(--text-strong)' }}>Procesando tu PDF</p>
-            <p className="max-w-md text-sm leading-6" style={{ color: 'var(--text-base)' }}>
-              Estamos leyendo el archivo y reorganizando tus movimientos para mostrarlos por categoría.
+          <div className="inline-block h-10 w-10 animate-spin rounded-full spinner-ring" />
+          <div className="space-y-1">
+            <p className="text-base font-semibold" style={{ color: 'var(--text-strong)' }}>Procesando tu PDF…</p>
+            <p className="max-w-sm text-sm" style={{ color: 'var(--text-soft)' }}>
+              Estamos leyendo y clasificando tus movimientos.
             </p>
           </div>
         </section>
@@ -255,23 +222,20 @@ const handleCategoriesSaved = async () => {
 
       {error && !loading && (
         <section className="panel status-card status-card--error view-panel">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full text-2xl error-icon">
-            !
+          <div className="flex h-10 w-10 items-center justify-center rounded-full error-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" style={{ width: '1.25rem', height: '1.25rem' }}>
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
           </div>
-
-          <div className="space-y-2">
-            <p className="text-lg font-semibold" style={{ color: 'var(--text-strong)' }}>No pudimos usar este archivo</p>
-            <p className="max-w-xl text-sm leading-6" style={{ color: 'var(--text-base)' }}>{error}</p>
+          <div className="space-y-1">
+            <p className="text-base font-semibold" style={{ color: 'var(--text-strong)' }}>No pudimos leer este archivo</p>
+            <p className="max-w-md text-sm" style={{ color: 'var(--text-soft)' }}>{error}</p>
           </div>
-
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            <Button onClick={resetResults} variant="outline" type="button">
-              Intentar con otro PDF
-            </Button>
-            <span className="text-xs" style={{ color: 'var(--text-soft)' }}>
-              La zona de carga vuelve a quedar disponible arriba.
-            </span>
-          </div>
+          <Button onClick={resetResults} variant="outline" size="sm" type="button">
+            Intentar con otro PDF
+          </Button>
         </section>
       )}
     </>
@@ -347,9 +311,11 @@ const handleCategoriesSaved = async () => {
               </div>
             </div>
 
-            <div className="panel widget-card p-4">
-              <p className="widget-kicker text-[11px] font-semibold uppercase tracking-[0.16em]">Distribución de gastos</p>
-              <div className="distribution-widget mt-3">
+            <div className="panel widget-card dist-card">
+              <div className="dist-card__header">
+                <span className="widget-kicker text-[10px] font-semibold uppercase tracking-[0.18em]">Distribución</span>
+              </div>
+              <div className="distribution-widget">
                 <div className="distribution-donut" style={{ background: donutGradient }}>
                   <div className="distribution-donut-center" />
                 </div>
@@ -361,9 +327,9 @@ const handleCategoriesSaved = async () => {
                         style={{ backgroundColor: chartColors[index % chartColors.length] }}
                       />
                       <span className="truncate" style={{ color: 'var(--text-base)' }}>
-                        {item.icon} {item.name}
+                        {item.name}
                       </span>
-                      <span className="mono-num" style={{ color: 'var(--text-strong)' }}>
+                      <span className="mono-num font-semibold" style={{ color: 'var(--text-strong)' }}>
                         {Math.round((item.total / filteredRangeTotal) * 100) || 0}%
                       </span>
                     </div>

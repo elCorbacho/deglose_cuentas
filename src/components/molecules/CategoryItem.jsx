@@ -30,35 +30,30 @@ export default function CategoryItem({ category }) {
     <div className="panel overflow-hidden category-panel">
       <button
         onClick={() => setExpanded(!expanded)}
-        className="flex w-full items-center justify-between gap-3 px-3 py-2.5 text-left transition-colors sm:px-4 category-item-button cursor-pointer"
+        className="flex w-full items-center justify-between gap-4 px-4 py-3 text-left category-item-button cursor-pointer"
         type="button"
         aria-expanded={expanded}
       >
-        <div className="flex min-w-0 flex-1 items-start gap-2.5">
-          <span
-            className={`mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md text-[10px] arrow-icon transition-colors duration-200`}
-          >
+        {/* Left: chevron + name + count */}
+        <div className="flex min-w-0 flex-1 items-center gap-3">
+          <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded arrow-icon transition-colors duration-200">
             <ChevronIcon expanded={expanded} />
           </span>
-
-          <div className="min-w-0 space-y-0.5">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-base">{icon}</span>
-              <span className="text-sm font-semibold sm:text-base" style={{ color: 'var(--text-strong)' }}>
-                {category.name}
-              </span>
-              <span className="badge-soft badge-soft--compact">
-                {category.count} {category.count === 1 ? 'movimiento' : 'movimientos'}
-              </span>
-            </div>
-          </div>
+          <span className="text-base shrink-0">{icon}</span>
+          <span className="text-sm font-semibold truncate" style={{ color: 'var(--text-strong)' }}>
+            {category.name}
+          </span>
+          <span className="badge-soft badge-soft--compact shrink-0">
+            {category.count} {category.count === 1 ? 'mov.' : 'movs.'}
+          </span>
         </div>
 
+        {/* Right: total amount */}
         <div className="shrink-0 text-right">
-          <p className="text-[10px] uppercase tracking-[0.16em]" style={{ color: 'var(--text-soft)' }}>
+          <p className="text-[9px] font-bold uppercase tracking-[0.14em] mb-0.5" style={{ color: 'var(--text-soft)' }}>
             Total
           </p>
-          <span className="mono-num text-base font-bold" style={{ color: 'var(--text-strong)' }}>
+          <span className="mono-num text-sm font-bold" style={{ color: 'var(--text-strong)' }}>
             {formatCLP(category.total)}
           </span>
         </div>
