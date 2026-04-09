@@ -612,6 +612,142 @@
     }
   }
 
+  /* ── Custom DayPicker Calendar ───────────────────────────── */
+  .rdp-custom {
+    font-size: 0.78rem;
+    color: var(--text-base);
+  }
+
+  .rdp-months {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .rdp-month {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .rdp-caption {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.25rem;
+  }
+
+  .rdp-caption-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-strong);
+    letter-spacing: -0.01em;
+  }
+
+  .rdp-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+  }
+
+  .rdp-nav-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 4px;
+    border: 1px solid var(--border-soft);
+    background: transparent;
+    color: var(--text-soft);
+    cursor: pointer;
+    transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+    padding: 0;
+  }
+
+  .rdp-nav-btn:hover {
+    background: var(--bg-shell);
+    color: var(--text-strong);
+    border-color: var(--border-strong);
+  }
+
+  .rdp-table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  .rdp-head-row {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin-bottom: 0.15rem;
+  }
+
+  .rdp-head-cell {
+    text-align: center;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-soft);
+    padding: 0.2rem 0;
+  }
+
+  .rdp-row {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+  }
+
+  .rdp-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.1rem;
+  }
+
+  .rdp-day {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 4px;
+    border: none;
+    background: transparent;
+    color: var(--text-base);
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 120ms ease, color 120ms ease;
+    padding: 0;
+  }
+
+  .rdp-day:hover:not(.rdp-day--selected):not(.rdp-day--disabled) {
+    background: var(--bg-shell);
+    color: var(--text-strong);
+  }
+
+  .rdp-day--selected {
+    background: var(--text-accent) !important;
+    color: #fff !important;
+    font-weight: 700;
+  }
+
+  .rdp-day--today:not(.rdp-day--selected) {
+    color: var(--text-accent);
+    font-weight: 700;
+  }
+
+  .rdp-day--outside {
+    color: var(--text-soft);
+    opacity: 0.4;
+  }
+
+  .rdp-day--disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+  /* ── /Custom DayPicker Calendar ──────────────────────────── */
+
   /* Date Filter Bar */
   .date-filter-bar {
     display: flex;

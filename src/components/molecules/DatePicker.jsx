@@ -1,59 +1,74 @@
 /**
  * DatePicker Molecule
- * Combines Input + Popover + Calendar for date selection
+ * Input + floating calendar built directly on react-day-picker v9
+ * Fully respects design system CSS tokens, no shadcn Calendar dependency
  */
 
-import { useState, useRef, useEffect } from 'react'
-import { format, parse } from 'date-fns'
-import { X } from 'lucide-react'
-import { Popover, PopoverTrigger, PopoverContent } from '@/components/atoms/Popover'
-import { Calendar as CalendarComponent } from '@/components/atoms/Calendar'
-import Button from '@/components/atoms/Button'
-import Input from '@/components/atoms/Input'
+import { useState, useRef, useEffect, useCallback } from 'react'
+import { format, parse, isValid } from 'date-fns'
+import { es } from 'date-fns/locale'
+import { DayPicker } from 'react-day-picker'
+import { ChevronLeft, ChevronRight, X, CalendarDays } from 'lucide-react'
 
-/**
- * DatePicker with calendar popup
- * @param {string} value - ISO date string (YYYY-MM-DD)
- * @param {function} onChange - Callback with ISO date string
- * @param {string} placeholder - Placeholder text
- * @param {boolean} disabled - Disabled state
- */
-export default function DatePicker({ value, onChange, placeholder = 'dd-mm-aaaa', disabled = false }) {
+export default function DatePicker({
+  value,
+  onChange,
+  placeholder = 'dd-mm-aaaa',
+  disabled = false,
+}) {
   const [open, setOpen] = useState(false)
-  const [inputValue, setInputValue] = useState(value ? format(new Date(value), 'dd-MM-yyyy') : '')
-  const inputRef = useRef(null)
+  const [inputValue, setInputValue] = useState(
+    value ? format(new Date(value + 'T12:00:00'), 'dd-MM-yyyy') : ''
+  )
+  const containerRef = useRef(null)
 
-  // Sync input value with external value changes
+  // Sync input when external value changes (e.g. preset buttons)
   useEffect(() => {
     if (value) {
-      setInputValue(format(new Date(value), 'dd-MM-yyyy'))
+      setInputValue(format(new Date(value + 'T12:00:00'), 'dd-MM-yyyy'))
     } else {
       setInputValue('')
     }
   }, [value])
 
-  const handleDateSelect = (date) => {
-    if (date) {
-      const isoString = format(date, 'yyyy-MM-dd')
-      onChange(isoString)
-      setInputValue(format(date, 'dd-MM-yyyy'))
-      setOpen(false)
+  // Close on outside click
+  useEffect(() => {
+    if (!open) return
+    const handleClick = (e) => {
+      if (containerRef.current && !containerRef.current.contains(e.target)) {
+        setOpen(false)
+      }
     }
-  }
+    document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [open])
+
+  // Close on Escape
+  useEffect(() => {
+    if (!open) return
+    const handleKey = (e) => { if (e.key === 'Escape') setOpen(false) }
+    document.addEventListener('keydown', handleKey)
+    return () => document.removeEventListener('keydown', handleKey)
+  }, [open])
+
+  const handleDateSelect = useCallback((date) => {
+    if (!date) return
+    const iso = format(date, 'yyyy-MM-dd')
+    onChange(iso)
+    setInputValue(format(date, 'dd-MM-yyyy'))
+    setOpen(false)
+  }, [onChange])
 
   const handleInputChange = (e) => {
     const typed = e.target.value
     setInputValue(typed)
-    
-    // Try to parse as dd-MM-yyyy or dd/MM/yyyy
     try {
       const parsed = parse(typed, 'dd-MM-yyyy', new Date())
-      if (!isNaN(parsed.getTime())) {
-        const isoString = format(parsed, 'yyyy-MM-dd')
-        onChange(isoString)
+      if (isValid(parsed)) {
+        onChange(format(parsed, 'yyyy-MM-dd'))
       }
     } catch {
-      // Invalid format, don't update
+      // invalid — ignore
     }
   }
 
@@ -63,39 +78,126 @@ export default function DatePicker({ value, onChange, placeholder = 'dd-mm-aaaa'
     setInputValue('')
   }
 
+  const selectedDate = value ? new Date(value + 'T12:00:00') : undefined
+
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <div className="relative w-full">
-          <Input
-            ref={inputRef}
-            type="text"
-            placeholder={placeholder}
-            value={inputValue}
-            onChange={handleInputChange}
-            disabled={disabled}
-            className="pr-9"
-          />
-          {value && (
-            <button
-              onClick={handleClear}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-              type="button"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          )}
-        </div>
-      </PopoverTrigger>
-      <PopoverContent className="w-auto p-0" align="start">
-        <CalendarComponent
-          mode="single"
-          selected={value ? new Date(value) : undefined}
-          onSelect={handleDateSelect}
-          disabled={disabled}
-          className="rounded-lg border"
+    <div ref={containerRef} style={{ position: 'relative', display: 'inline-block' }}>
+      {/* Input trigger */}
+      <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+        <CalendarDays
+          style={{
+            position: 'absolute',
+            left: '0.55rem',
+            width: '0.85rem',
+            height: '0.85rem',
+            color: 'var(--text-soft)',
+            pointerEvents: 'none',
+            flexShrink: 0,
+          }}
         />
-      </PopoverContent>
-    </Popover>
+        <input
+          type="text"
+          value={inputValue}
+          onChange={handleInputChange}
+          onFocus={() => setOpen(true)}
+          placeholder={placeholder}
+          disabled={disabled}
+          autoComplete="off"
+          style={{
+            width: '130px',
+            height: '2rem',
+            paddingLeft: '1.75rem',
+            paddingRight: value ? '1.6rem' : '0.6rem',
+            paddingTop: '0',
+            paddingBottom: '0',
+            fontSize: '0.78rem',
+            fontWeight: 500,
+            color: 'var(--text-strong)',
+            background: 'var(--bg-panel-strong)',
+            border: '1px solid var(--border-soft)',
+            borderRadius: '4px',
+            outline: 'none',
+            transition: 'border-color 150ms ease',
+            cursor: 'text',
+          }}
+          onMouseEnter={e => e.target.style.borderColor = 'var(--border-strong)'}
+          onMouseLeave={e => !open && (e.target.style.borderColor = 'var(--border-soft)')}
+        />
+        {value && (
+          <button
+            onClick={handleClear}
+            type="button"
+            style={{
+              position: 'absolute',
+              right: '0.4rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              background: 'none',
+              border: 'none',
+              padding: 0,
+              cursor: 'pointer',
+              color: 'var(--text-soft)',
+            }}
+          >
+            <X style={{ width: '0.75rem', height: '0.75rem' }} />
+          </button>
+        )}
+      </div>
+
+      {/* Calendar popover */}
+      {open && (
+        <div
+          style={{
+            position: 'absolute',
+            top: 'calc(100% + 6px)',
+            left: 0,
+            zIndex: 9999,
+            background: 'var(--bg-panel-strong)',
+            border: '1px solid var(--border-soft)',
+            borderRadius: '6px',
+            boxShadow: '0 8px 24px rgba(0,0,0,0.18)',
+            padding: '0.6rem',
+            minWidth: '220px',
+          }}
+        >
+          <DayPicker
+            mode="single"
+            selected={selectedDate}
+            onSelect={handleDateSelect}
+            locale={es}
+            weekStartsOn={1}
+            showOutsideDays
+            components={{
+              Chevron: ({ orientation }) =>
+                orientation === 'left'
+                  ? <ChevronLeft style={{ width: '0.85rem', height: '0.85rem' }} />
+                  : <ChevronRight style={{ width: '0.85rem', height: '0.85rem' }} />,
+            }}
+            classNames={{
+              root: 'rdp-custom',
+              months: 'rdp-months',
+              month: 'rdp-month',
+              month_caption: 'rdp-caption',
+              caption_label: 'rdp-caption-label',
+              nav: 'rdp-nav',
+              button_previous: 'rdp-nav-btn',
+              button_next: 'rdp-nav-btn',
+              month_grid: 'rdp-table',
+              weekdays: 'rdp-head-row',
+              weekday: 'rdp-head-cell',
+              week: 'rdp-row',
+              day: 'rdp-cell',
+              day_button: 'rdp-day',
+              selected: 'rdp-day--selected',
+              today: 'rdp-day--today',
+              outside: 'rdp-day--outside',
+              disabled: 'rdp-day--disabled',
+              range_middle: 'rdp-day--range-middle',
+            }}
+          />
+        </div>
+      )}
+    </div>
   )
 }
