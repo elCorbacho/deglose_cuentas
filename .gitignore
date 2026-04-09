@@ -30,5 +30,8 @@ npm-debug.log*
 # Misc
 .desktop.ini
 
+# Claude Code local config
+.claude/settings.local.json
+
 # ui 
 .opencode
