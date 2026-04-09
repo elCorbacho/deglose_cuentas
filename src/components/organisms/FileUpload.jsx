@@ -94,64 +94,65 @@ export default function FileUpload({ onFileLoaded }) {
         onDragLeave={handleDragLeave}
         className={`upload-zone ${isDragging ? 'upload-zone-dragging' : 'upload-zone-default'}`}
       >
-        <label className="block cursor-pointer">
-          <input
-            type="file"
-            accept="application/pdf"
-            onChange={handleInputChange}
-            className="hidden"
-          />
+        <input
+          id="pdf-upload-input"
+          type="file"
+          accept="application/pdf"
+          onChange={handleInputChange}
+          className="hidden"
+        />
 
-          <div className="flex flex-col gap-3 text-center">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl upload-icon">
-              <FileText className="w-6 h-6" />
-            </div>
-
-            <div className="space-y-1">
-               <div className="flex items-center justify-center gap-2">
-                 <p className="text-base font-semibold sm:text-lg" style={{ color: 'var(--text-strong)' }}>
-                   Arrastra tu estado de cuenta Santander aquí
-                 </p>
-                 <Tooltip>
-                   <TooltipTrigger asChild>
-                     <Info className="w-4 h-4" style={{ color: 'var(--text-soft)', cursor: 'help' }} />
-                   </TooltipTrigger>
-                   <TooltipContent>Solo PDFs de estados de cuenta Santander</TooltipContent>
-                 </Tooltip>
-               </div>
-               <p className="text-sm leading-5" style={{ color: 'var(--text-base)' }}>
-                 También puedes hacer clic para seleccionar el archivo.
-               </p>
-             </div>
-
-             <div className="flex flex-wrap items-center justify-center gap-1.5 text-xs">
-               <Tooltip>
-                 <TooltipTrigger asChild>
-                   <span className="badge-soft cursor-help">PDF solamente</span>
-                 </TooltipTrigger>
-                 <TooltipContent>Solo archivos PDF son soportados</TooltipContent>
-               </Tooltip>
-               <Tooltip>
-                 <TooltipTrigger asChild>
-                   <span className="badge-soft cursor-help">Sin cambiar tus datos</span>
-                 </TooltipTrigger>
-                 <TooltipContent>Tu información no se guarda en servidores</TooltipContent>
-               </Tooltip>
-               <Tooltip>
-                 <TooltipTrigger asChild>
-                   <span className="badge-soft cursor-help">Vista categorizada</span>
-                 </TooltipTrigger>
-                 <TooltipContent>Los gastos se agrupan automáticamente</TooltipContent>
-               </Tooltip>
-             </div>
-
-            <div>
-              <Button variant="outline" size="sm" asChild>
-                <span>Seleccionar PDF</span>
-              </Button>
-            </div>
+        <div className="flex flex-col gap-3 text-center">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl upload-icon">
+            <FileText className="w-6 h-6" />
           </div>
-        </label>
+
+          <div className="space-y-1">
+            <div className="flex items-center justify-center gap-2">
+              <p className="text-base font-semibold sm:text-lg" style={{ color: 'var(--text-strong)' }}>
+                Arrastra tu estado de cuenta Santander aquí
+              </p>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Info className="w-4 h-4" style={{ color: 'var(--text-soft)', cursor: 'help' }} />
+                </TooltipTrigger>
+                <TooltipContent>Solo PDFs de estados de cuenta Santander</TooltipContent>
+              </Tooltip>
+            </div>
+            <p className="text-sm leading-5" style={{ color: 'var(--text-base)' }}>
+              También puedes hacer clic para seleccionar el archivo.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-1.5 text-xs">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span className="badge-soft cursor-help">PDF solamente</span>
+              </TooltipTrigger>
+              <TooltipContent>Solo archivos PDF son soportados</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span className="badge-soft cursor-help">Sin cambiar tus datos</span>
+              </TooltipTrigger>
+              <TooltipContent>Tu información no se guarda en servidores</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span className="badge-soft cursor-help">Vista categorizada</span>
+              </TooltipTrigger>
+              <TooltipContent>Los gastos se agrupan automáticamente</TooltipContent>
+            </Tooltip>
+          </div>
+
+          <div>
+            <Button variant="outline" size="sm" asChild>
+              <label htmlFor="pdf-upload-input" className="cursor-pointer">
+                Seleccionar PDF
+              </label>
+            </Button>
+          </div>
+        </div>
       </div>
 
       <div className="grid gap-2 text-sm sm:grid-cols-[1.2fr_0.8fr]">
