@@ -41,8 +41,7 @@ export default function App() {
   const [hasta, setHasta] = useState('')
   const [fileName, setFileName] = useState('')
   const [activeView, setActiveView] = useState<'upload' | 'dashboard' | 'analysis' | 'config'>('upload')
-  const [categoriesConfig, setCategoriesConfig] = useState<CategoriesMap | null>(null)
-  const [loadingCategories, setLoadingCategories] = useState(true)
+  const [categoriesConfig, setCategoriesConfig] = useState<CategoriesMap>(DEFAULT_CATEGORIES)
   
 
   // Load categories from backend on mount
@@ -52,20 +51,13 @@ export default function App() {
         const data = await getCategories()
         const converted = convertCategoriesFromJSON(data.categories)
         setCategoriesConfig(converted)
-        // Cache in localStorage
         localStorage.setItem('cachedCategories', JSON.stringify(converted))
       } catch (err) {
         console.warn('Could not load categories from backend, using cached/default:', err)
-        // Try localStorage cache
         const cached = localStorage.getItem('cachedCategories')
         if (cached) {
           setCategoriesConfig(JSON.parse(cached))
-        } else {
-          // Fall back to default
-          setCategoriesConfig(DEFAULT_CATEGORIES)
         }
-      } finally {
-        setLoadingCategories(false)
       }
     }
     loadCategories()
@@ -167,7 +159,7 @@ const resetResults = () => {
     }
   }
 
-const handleCategoriesSaved = async () => {
+  const handleCategoriesSaved = async () => {
     // Save PDF state BEFORE reloading (if reload happens)
     if (rawTransactions.length > 0) {
       savePdfState({ rawTransactions, fileName })

@@ -11,6 +11,7 @@ import { Plus, Trash2, Download, Upload, Search, Tag, CheckCircle2 } from 'lucid
 import Input from '../atoms/Input'
 import Button from '../atoms/Button'
 import { getCategories, saveCategories, exportCategories } from '../../services/api'
+import { CATEGORIES as DEFAULT_CATEGORIES } from '../../data/categories'
 import type { CategoriesPayload, CategoryJson } from '../../types'
 
 // ── Animation variants ────────────────────────────────────────────────────────
@@ -131,13 +132,21 @@ const CategoryConfig = ({ onSaved }: CategoryConfigProps) => {
   const [saving, setSaving]                   = useState(false)
 
   useEffect(() => {
+    setCategories(
+      Object.entries(DEFAULT_CATEGORIES).map(([name, config]) => ({
+        name,
+        icon: config.icon,
+        keywords: config.keywords,
+      }))
+    )
+
     const loadCategories = async () => {
       try {
         const data = await getCategories()
         setCategories(data.categories)
       } catch (err) {
         console.error('Error loading categories:', err)
-        toast.error('Error cargando categorías')
+        toast.error('No se pudo cargar desde backend; usando categorías locales')
       } finally {
         setLoading(false)
       }
