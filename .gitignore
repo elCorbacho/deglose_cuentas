@@ -33,6 +33,6 @@ npm-debug.log*
 # Claude Code local config
 .claude/settings.local.json
 
-# ui 
-.opencode
-.claude
+# ui
+.opencode/
+.claude/
