@@ -1,7 +1,9 @@
-# Deglose Cuentas ui 4.0 esta es la nueva UI
+# Deglose Cuentas ui 5.0
 
 
 Aplicación web para analizar estados de cuenta Santander en PDF, clasificar movimientos por categoría y revisar el gasto de forma más clara.
+
+La rama `ui_5.0` acompaña la base ya migrada a TypeScript y deja el proyecto listo para seguir iterando sobre la UI.
 
 ## Qué hace
 
