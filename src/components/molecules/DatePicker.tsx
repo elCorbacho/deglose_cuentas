@@ -4,21 +4,21 @@
  * Fully respects design system CSS tokens, no shadcn Calendar dependency
  */
 
-import { useState, useRef, useEffect, useCallback } from 'react'
-import type { ChangeEvent, MouseEvent as ReactMouseEvent } from 'react'
-import { format, parse, isValid } from 'date-fns'
-import { es } from 'date-fns/locale'
-import { DayPicker } from 'react-day-picker'
-import { ChevronLeft, ChevronRight, X, CalendarDays } from 'lucide-react'
+import { useState, useRef, useEffect, useCallback } from 'react';
+import type { ChangeEvent, MouseEvent as ReactMouseEvent } from 'react';
+import { format, parse, isValid } from 'date-fns';
+import { es } from 'date-fns/locale';
+import { DayPicker } from 'react-day-picker';
+import { ChevronLeft, ChevronRight, X, CalendarDays } from 'lucide-react';
 
 interface DatePickerProps {
-  value: string
-  onChange: (value: string) => void
-  placeholder?: string
-  disabled?: boolean
-  id?: string
-  ariaLabel?: string
-  ariaLabelledBy?: string
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+  disabled?: boolean;
+  id?: string;
+  ariaLabel?: string;
+  ariaLabelledBy?: string;
 }
 
 export default function DatePicker({
@@ -30,70 +30,81 @@ export default function DatePicker({
   ariaLabel,
   ariaLabelledBy,
 }: DatePickerProps) {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
   const [inputValue, setInputValue] = useState(
     value ? format(new Date(value + 'T12:00:00'), 'dd-MM-yyyy') : ''
-  )
-  const containerRef = useRef<HTMLDivElement | null>(null)
+  );
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   // Sync input when external value changes (e.g. preset buttons)
   useEffect(() => {
     if (value) {
-      setInputValue(format(new Date(value + 'T12:00:00'), 'dd-MM-yyyy'))
+      setInputValue(format(new Date(value + 'T12:00:00'), 'dd-MM-yyyy'));
     } else {
-      setInputValue('')
+      setInputValue('');
     }
-  }, [value])
+    // Disable exhaustive-deps as value is intentional external sync
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value]);
 
   // Close on outside click
   useEffect(() => {
-    if (!open) return
+    if (!open) return;
     const handleClick = (e: globalThis.MouseEvent) => {
-      const target = e.target
-      if (containerRef.current && target instanceof Node && !containerRef.current.contains(target)) {
-        setOpen(false)
+      const target = e.target;
+      if (
+        containerRef.current &&
+        target instanceof Node &&
+        !containerRef.current.contains(target)
+      ) {
+        setOpen(false);
       }
-    }
-    document.addEventListener('mousedown', handleClick)
-    return () => document.removeEventListener('mousedown', handleClick)
-  }, [open])
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [open]);
 
   // Close on Escape
   useEffect(() => {
-    if (!open) return
-    const handleKey = (e: globalThis.KeyboardEvent) => { if (e.key === 'Escape') setOpen(false) }
-    document.addEventListener('keydown', handleKey)
-    return () => document.removeEventListener('keydown', handleKey)
-  }, [open])
+    if (!open) return;
+    const handleKey = (e: globalThis.KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+    document.addEventListener('keydown', handleKey);
+    return () => document.removeEventListener('keydown', handleKey);
+  }, [open]);
 
-  const handleDateSelect = useCallback((date: Date | undefined) => {
-    if (!date) return
-    const iso = format(date, 'yyyy-MM-dd')
-    onChange(iso)
-    setInputValue(format(date, 'dd-MM-yyyy'))
-    setOpen(false)
-  }, [onChange])
+  const handleDateSelect = useCallback(
+    (date: Date | undefined) => {
+      if (!date) return;
+      const iso = format(date, 'yyyy-MM-dd');
+      onChange(iso);
+      setInputValue(format(date, 'dd-MM-yyyy'));
+      setOpen(false);
+    },
+    [onChange]
+  );
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const typed = e.target.value
-    setInputValue(typed)
+    const typed = e.target.value;
+    setInputValue(typed);
     try {
-      const parsed = parse(typed, 'dd-MM-yyyy', new Date())
+      const parsed = parse(typed, 'dd-MM-yyyy', new Date());
       if (isValid(parsed)) {
-        onChange(format(parsed, 'yyyy-MM-dd'))
+        onChange(format(parsed, 'yyyy-MM-dd'));
       }
     } catch {
       // invalid — ignore
     }
-  }
+  };
 
   const handleClear = (e: ReactMouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation()
-    onChange('')
-    setInputValue('')
-  }
+    e.stopPropagation();
+    onChange('');
+    setInputValue('');
+  };
 
-  const selectedDate = value ? new Date(value + 'T12:00:00') : undefined
+  const selectedDate = value ? new Date(value + 'T12:00:00') : undefined;
 
   return (
     <div ref={containerRef} style={{ position: 'relative', display: 'inline-block' }}>
@@ -122,7 +133,6 @@ export default function DatePicker({
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledBy}
           aria-haspopup="dialog"
-          aria-expanded={open}
           className="rdp-input"
           style={{
             paddingRight: value ? '1.6rem' : '0.6rem',
@@ -178,9 +188,11 @@ export default function DatePicker({
             showOutsideDays
             components={{
               Chevron: ({ orientation }) =>
-                orientation === 'left'
-                  ? <ChevronLeft style={{ width: '0.85rem', height: '0.85rem' }} />
-                  : <ChevronRight style={{ width: '0.85rem', height: '0.85rem' }} />,
+                orientation === 'left' ? (
+                  <ChevronLeft style={{ width: '0.85rem', height: '0.85rem' }} />
+                ) : (
+                  <ChevronRight style={{ width: '0.85rem', height: '0.85rem' }} />
+                ),
             }}
             classNames={{
               root: 'rdp-custom',
@@ -207,5 +219,5 @@ export default function DatePicker({
         </div>
       )}
     </div>
-  )
+  );
 }

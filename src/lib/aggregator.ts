@@ -1,18 +1,23 @@
-import { CATEGORIES as DEFAULT_CATEGORIES } from '../data/categories'
-import type { CategoriesMap, CategoryGroup, GroupedTransactions, PersistedTransaction } from '../types'
-import { parseDate } from './formatters'
+import { CATEGORIES as DEFAULT_CATEGORIES } from '../data/categories';
+import type {
+  CategoriesMap,
+  CategoryGroup,
+  GroupedTransactions,
+  PersistedTransaction,
+} from '../types';
+import { parseDate } from './formatters';
 
 function getTransactionTimestamp(fecha: string): number {
-  if (typeof fecha !== 'string') return Number.NEGATIVE_INFINITY
+  if (typeof fecha !== 'string') return Number.NEGATIVE_INFINITY;
 
   if (fecha.includes('/')) {
-    const slashTimestamp = parseDate(fecha).getTime()
-    return Number.isNaN(slashTimestamp) ? Number.NEGATIVE_INFINITY : slashTimestamp
+    const slashTimestamp = parseDate(fecha).getTime();
+    return Number.isNaN(slashTimestamp) ? Number.NEGATIVE_INFINITY : slashTimestamp;
   }
 
-  const shortMonthMatch = fecha.trim().match(/^(\d{1,2})\s+([A-Za-z]{3})$/)
+  const shortMonthMatch = fecha.trim().match(/^(\d{1,2})\s+([A-Za-z]{3})$/);
   if (shortMonthMatch) {
-    const [, dayValue, monthValue] = shortMonthMatch
+    const [, dayValue, monthValue] = shortMonthMatch;
     const monthMap = {
       jan: 0,
       feb: 1,
@@ -26,15 +31,15 @@ function getTransactionTimestamp(fecha: string): number {
       oct: 9,
       nov: 10,
       dec: 11,
-    }
-    const monthIndex = monthMap[monthValue.toLowerCase() as keyof typeof monthMap]
+    };
+    const monthIndex = monthMap[monthValue.toLowerCase() as keyof typeof monthMap];
     if (monthIndex !== undefined) {
-      return new Date(2000, monthIndex, parseInt(dayValue, 10)).getTime()
+      return new Date(2000, monthIndex, parseInt(dayValue, 10)).getTime();
     }
   }
 
-  const fallback = new Date(fecha).getTime()
-  return Number.isNaN(fallback) ? Number.NEGATIVE_INFINITY : fallback
+  const fallback = new Date(fecha).getTime();
+  return Number.isNaN(fallback) ? Number.NEGATIVE_INFINITY : fallback;
 }
 
 /**
@@ -45,46 +50,46 @@ function getTransactionTimestamp(fecha: string): number {
  */
 export function group(
   transactions: PersistedTransaction[],
-  categories: CategoriesMap | null = null,
+  categories: CategoriesMap | null = null
 ): GroupedTransactions {
-  const cats = categories || DEFAULT_CATEGORIES
-  const categoryMap: Record<string, CategoryGroup> = {}
+  const cats = categories || DEFAULT_CATEGORIES;
+  const categoryMap: Record<string, CategoryGroup> = {};
 
   // Group by category
   for (const tx of transactions) {
-    const cat = tx.categoria || 'Otros'
+    const cat = tx.categoria || 'Otros';
     if (!categoryMap[cat]) {
-      const categoryData = cats[cat]
-      const icon = categoryData?.icon || '📋'
-      categoryMap[cat] = { name: cat, icon, total: 0, count: 0, transactions: [] }
+      const categoryData = cats[cat];
+      const icon = categoryData?.icon || '📋';
+      categoryMap[cat] = { name: cat, icon, total: 0, count: 0, transactions: [] };
     }
-    categoryMap[cat].total += tx.monto
-    categoryMap[cat].count += 1
-    categoryMap[cat].transactions.push(tx)
+    categoryMap[cat].total += tx.monto;
+    categoryMap[cat].count += 1;
+    categoryMap[cat].transactions.push(tx);
   }
 
   // Within each category, sort transactions by date descending
-  const result = Object.values(categoryMap).map(cat => {
+  const result = Object.values(categoryMap).map((cat) => {
     // Sort transactions by date descending (most recent first)
     const sortedTransactions = [...cat.transactions].sort((a, b) => {
-      const timestampA = getTransactionTimestamp(a.fecha)
-      const timestampB = getTransactionTimestamp(b.fecha)
+      const timestampA = getTransactionTimestamp(a.fecha);
+      const timestampB = getTransactionTimestamp(b.fecha);
 
-      if (timestampB === timestampA) return 0
-      if (timestampB < timestampA) return -1
-      return 1
-    })
-    
+      if (timestampB === timestampA) return 0;
+      if (timestampB < timestampA) return -1;
+      return 1;
+    });
+
     return {
       ...cat,
       transactions: sortedTransactions,
-    }
-  })
+    };
+  });
 
   // Sort categories by total descending
-  result.sort((a, b) => b.total - a.total)
+  result.sort((a, b) => b.total - a.total);
 
-  const grandTotal = transactions.reduce((sum, tx) => sum + tx.monto, 0)
+  const grandTotal = transactions.reduce((sum, tx) => sum + tx.monto, 0);
 
-  return { categories: result, grandTotal }
+  return { categories: result, grandTotal };
 }

@@ -3,14 +3,18 @@
  * Displays a single transaction in a row format
  */
 
-import { formatCLP } from '../../lib/formatters'
-import type { PersistedTransaction } from '../../types'
+import { formatCLP } from '../../lib/formatters';
+import type { PersistedTransaction } from '../../types';
 
 export default function TransactionRow({ tx }: { tx: PersistedTransaction }) {
   return (
     <div className="tx-row tx-row--table">
       <div className="tx-col tx-col--merchant min-w-0">
-        <p className="tx-merchant truncate" style={{ color: 'var(--text-base)' }} title={tx.comercio}>
+        <p
+          className="tx-merchant truncate"
+          style={{ color: 'var(--text-base)' }}
+          title={tx.comercio}
+        >
           {tx.comercio}
         </p>
       </div>
@@ -30,5 +34,5 @@ export default function TransactionRow({ tx }: { tx: PersistedTransaction }) {
         </p>
       </div>
     </div>
-  )
+  );
 }

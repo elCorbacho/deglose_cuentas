@@ -60,44 +60,46 @@ function createHttpError(status, message) {
 // Logger helper
 const log = (level, message, data = null) => {
   const timestamp = new Date().toISOString();
-  const logEntry = { timestamp, level, message, ...data };
-  console.log(`[${timestamp}] [${level.toUpperCase()}] ${message}`, data ? JSON.stringify(data) : '');
+  console.warn(
+    `[${timestamp}] [${level.toUpperCase()}] ${message}`,
+    data ? JSON.stringify(data) : ''
+  );
 };
 
 // Validar estructura del JSON
 function validateCategories(data) {
   const errors = [];
-  
+
   if (!data) {
     errors.push('Datos vacíos');
     return { valid: false, errors };
   }
-  
+
   if (!data.version || typeof data.version !== 'string') {
     errors.push('Falta campo "version" o es inválido');
   }
-  
+
   if (!Array.isArray(data.categories)) {
     errors.push('Falta campo "categories" o no es un array');
     return { valid: false, errors };
   }
-  
+
   for (let i = 0; i < data.categories.length; i++) {
     const cat = data.categories[i];
-    
+
     if (!cat.name || typeof cat.name !== 'string') {
       errors.push(`Categoría ${i}: falta "name" o es inválido`);
     }
-    
+
     if (!cat.icon || typeof cat.icon !== 'string') {
       errors.push(`Categoría "${cat.name || i}": falta "icon" o es inválido`);
     }
-    
+
     if (!Array.isArray(cat.keywords)) {
       errors.push(`Categoría "${cat.name || i}": "keywords" debe ser un array`);
     }
   }
-  
+
   return { valid: errors.length === 0, errors };
 }
 
@@ -118,13 +120,13 @@ function createBackup() {
 // GET /api/categories - Obtener todas
 router.get('/', (req, res) => {
   log('info', 'GET /api/categories');
-  
+
   fs.readFile(categoriesFilePath, 'utf8', (err, data) => {
     if (err) {
       log('error', 'Error leyendo categorías', { error: err.message });
       return res.status(500).json({ error: 'Failed to read categories' });
     }
-    
+
     try {
       const json = JSON.parse(data);
       log('info', 'Categorías obtenidas', { count: json.categories?.length });
@@ -140,17 +142,17 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
   const categories = req.body;
   log('info', 'POST /api/categories', { version: categories?.version });
-  
+
   // Validar estructura
   const validation = validateCategories(categories);
   if (!validation.valid) {
     log('warn', 'Validación fallida', { errors: validation.errors });
-    return res.status(400).json({ 
-      error: 'Validación fallida', 
-      details: validation.errors 
+    return res.status(400).json({
+      error: 'Validación fallida',
+      details: validation.errors,
     });
   }
-  
+
   runMutation(async () => {
     createBackup();
     await writeFileAtomicAsync(categoriesFilePath, JSON.stringify(categories, null, 2));
@@ -182,7 +184,7 @@ router.put('/:name', (req, res) => {
       throw createHttpError(500, 'Invalid JSON format');
     }
 
-    const index = json.categories.findIndex(c => c.name === name);
+    const index = json.categories.findIndex((c) => c.name === name);
     if (index === -1) {
       throw createHttpError(404, 'Categoría no encontrada');
     }
@@ -225,7 +227,7 @@ router.delete('/:name', (req, res) => {
       throw createHttpError(500, 'Invalid JSON format');
     }
 
-    const index = json.categories.findIndex(c => c.name === name);
+    const index = json.categories.findIndex((c) => c.name === name);
     if (index === -1) {
       throw createHttpError(404, 'Categoría no encontrada');
     }
@@ -256,14 +258,14 @@ router.delete('/:name', (req, res) => {
 // POST /api/categories/reload - Recargar desde archivo
 router.post('/reload', (req, res) => {
   log('info', 'POST /api/categories/reload');
-  
+
   // Simplemente releemos el archivo
   fs.readFile(categoriesFilePath, 'utf8', (err, data) => {
     if (err) {
       log('error', 'Error recargando categorías', { error: err.message });
       return res.status(500).json({ error: 'Failed to reload categories' });
     }
-    
+
     try {
       const json = JSON.parse(data);
       log('info', 'Categorías recargadas', { count: json.categories.length });
@@ -284,11 +286,11 @@ router.get('/export', (req, res) => {
 // GET /api/categories/backup - Descargar backup
 router.get('/backup', (req, res) => {
   log('info', 'GET /api/categories/backup');
-  
+
   if (!fs.existsSync(backupFilePath)) {
     return res.status(404).json({ error: 'No hay backup disponible' });
   }
-  
+
   res.download(backupFilePath, 'categories.backup.json');
 });
 
@@ -296,22 +298,22 @@ router.get('/backup', (req, res) => {
 router.get('/:name', (req, res) => {
   const { name } = req.params;
   log('info', 'GET /api/categories/:name', { name });
-  
+
   fs.readFile(categoriesFilePath, 'utf8', (err, data) => {
     if (err) {
       log('error', 'Error leyendo categorías', { error: err.message });
       return res.status(500).json({ error: 'Failed to read categories' });
     }
-    
+
     try {
       const json = JSON.parse(data);
-      const category = json.categories.find(c => c.name === name);
-      
+      const category = json.categories.find((c) => c.name === name);
+
       if (!category) {
         log('warn', 'Categoría no encontrada', { name });
         return res.status(404).json({ error: 'Categoría no encontrada' });
       }
-      
+
       res.json(category);
     } catch (parseErr) {
       log('error', 'Error parseando JSON', { error: parseErr.message });

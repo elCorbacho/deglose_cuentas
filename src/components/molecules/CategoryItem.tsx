@@ -3,50 +3,50 @@
  * Displays a category with expandable transaction list
  */
 
-import { useState } from 'react'
-import type { CategoryGroup, PersistedTransaction } from '../../types'
-import { motion, AnimatePresence } from 'framer-motion'
-import TransactionRow from './TransactionRow'
-import { formatCLP } from '../../lib/formatters'
-import { DEFAULT_CATEGORY_ICON } from '../../data/categories'
+import { useState } from 'react';
+import type { CategoryGroup, PersistedTransaction } from '../../types';
+import { motion, AnimatePresence } from 'framer-motion';
+import TransactionRow from './TransactionRow';
+import { formatCLP } from '../../lib/formatters';
+import { DEFAULT_CATEGORY_ICON } from '../../data/categories';
 
 // Chevron icon for expand/collapse
 function ChevronIcon({ expanded }: { expanded: boolean }) {
   return (
     <motion.svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth={2}
-    stroke="currentColor"
-    className="w-4 h-4"
-    animate={{ rotate: expanded ? 90 : 0 }}
-    transition={{ duration: 0.2, ease: 'easeInOut' }}
-  >
-    <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={2}
+      stroke="currentColor"
+      className="h-4 w-4"
+      animate={{ rotate: expanded ? 90 : 0 }}
+      transition={{ duration: 0.2, ease: 'easeInOut' }}
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
     </motion.svg>
-  )
+  );
 }
 
 export default function CategoryItem({ category }: { category: CategoryGroup }) {
-  const [expanded, setExpanded] = useState(false)
-  const icon = category.icon || DEFAULT_CATEGORY_ICON
+  const [expanded, setExpanded] = useState(false);
+  const icon = category.icon || DEFAULT_CATEGORY_ICON;
 
   return (
-    <div className="panel overflow-hidden category-panel">
+    <div className="panel category-panel overflow-hidden">
       <button
         onClick={() => setExpanded(!expanded)}
-        className="flex w-full items-center justify-between gap-4 px-4 py-3 text-left category-item-button cursor-pointer"
+        className="category-item-button flex w-full cursor-pointer items-center justify-between gap-4 px-4 py-3 text-left"
         type="button"
         aria-expanded={expanded}
       >
         {/* Left: chevron + name + count */}
         <div className="flex min-w-0 flex-1 items-center gap-3">
-          <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded arrow-icon transition-colors duration-200">
+          <span className="arrow-icon inline-flex h-5 w-5 shrink-0 items-center justify-center rounded transition-colors duration-200">
             <ChevronIcon expanded={expanded} />
           </span>
-          <span className="text-base shrink-0">{icon}</span>
-          <span className="text-sm font-semibold truncate" style={{ color: 'var(--text-strong)' }}>
+          <span className="shrink-0 text-base">{icon}</span>
+          <span className="truncate text-sm font-semibold" style={{ color: 'var(--text-strong)' }}>
             {category.name}
           </span>
           <span className="badge-soft badge-soft--compact shrink-0">
@@ -56,7 +56,10 @@ export default function CategoryItem({ category }: { category: CategoryGroup }) 
 
         {/* Right: total amount */}
         <div className="shrink-0 text-right">
-          <p className="text-[9px] font-bold uppercase tracking-[0.14em] mb-0.5" style={{ color: 'var(--text-soft)' }}>
+          <p
+            className="mb-0.5 text-[9px] font-bold uppercase tracking-[0.14em]"
+            style={{ color: 'var(--text-soft)' }}
+          >
             Total
           </p>
           <span className="mono-num text-sm font-bold" style={{ color: 'var(--text-strong)' }}>
@@ -102,5 +105,5 @@ export default function CategoryItem({ category }: { category: CategoryGroup }) 
         )}
       </AnimatePresence>
     </div>
-  )
+  );
 }

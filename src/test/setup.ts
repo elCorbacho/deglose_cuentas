@@ -1,11 +1,11 @@
-import '@testing-library/jest-dom/vitest'
-import { afterEach, beforeAll, vi } from 'vitest'
-import { cleanup } from '@testing-library/react'
+import '@testing-library/jest-dom/vitest';
+import { afterEach, beforeAll, vi } from 'vitest';
+import { cleanup } from '@testing-library/react';
 
 beforeAll(() => {
-  vi.spyOn(console, 'log').mockImplementation(() => {})
-  vi.spyOn(console, 'error').mockImplementation(() => {})
-  vi.spyOn(console, 'warn').mockImplementation(() => {})
+  vi.spyOn(console, 'log').mockImplementation(() => {});
+  vi.spyOn(console, 'error').mockImplementation(() => {});
+  vi.spyOn(console, 'warn').mockImplementation(() => {});
 
   Object.defineProperty(window, 'matchMedia', {
     writable: true,
@@ -19,10 +19,10 @@ beforeAll(() => {
       removeEventListener: vi.fn(),
       dispatchEvent: vi.fn(),
     })),
-  })
-})
+  });
+});
 
 afterEach(() => {
-  cleanup()
-  vi.clearAllMocks()
-})
+  cleanup();
+  vi.clearAllMocks();
+});

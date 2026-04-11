@@ -3,31 +3,30 @@
  * Enhanced date filtering with quick presets and calendar date picker
  */
 
-import { useState, useMemo } from 'react'
-import { X } from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
-import Button from '../atoms/Button'
-import DatePicker from '../molecules/DatePicker'
+import { useState, useMemo } from 'react';
+import { X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import DatePicker from '../molecules/DatePicker';
 
 interface DateFilterProps {
-  desde: string
-  hasta: string
-  onDesdeChange: (value: string) => void
-  onHastaChange: (value: string) => void
+  desde: string;
+  hasta: string;
+  onDesdeChange: (value: string) => void;
+  onHastaChange: (value: string) => void;
 }
 
 interface DatePreset {
-  id: string
-  label: string
-  getValue: () => { desde: string; hasta: string }
+  id: string;
+  label: string;
+  getValue: () => { desde: string; hasta: string };
 }
 
 // Get current date info
 function getDateInfo() {
-  const now = new Date()
-  const currentYear = now.getFullYear()
-  const currentMonth = now.getMonth()
-  return { now, currentYear, currentMonth }
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth();
+  return { now, currentYear, currentMonth };
 }
 
 // Preset configurations
@@ -36,91 +35,96 @@ const PRESETS: DatePreset[] = [
     id: 'this-month',
     label: 'Este mes',
     getValue: () => {
-      const { now, currentYear, currentMonth } = getDateInfo()
-      const firstDay = new Date(currentYear, currentMonth, 1)
-      const lastDay = new Date(currentYear, currentMonth + 1, 0)
+      const { currentYear, currentMonth } = getDateInfo();
+      const firstDay = new Date(currentYear, currentMonth, 1);
+      const lastDay = new Date(currentYear, currentMonth + 1, 0);
       return {
         desde: firstDay.toISOString().split('T')[0],
-        hasta: lastDay.toISOString().split('T')[0]
-      }
-    }
+        hasta: lastDay.toISOString().split('T')[0],
+      };
+    },
   },
   {
     id: 'last-month',
     label: 'Mes pasado',
     getValue: () => {
-      const { currentYear, currentMonth } = getDateInfo()
-      const firstDay = new Date(currentYear, currentMonth - 1, 1)
-      const lastDay = new Date(currentYear, currentMonth, 0)
+      const { currentYear, currentMonth } = getDateInfo();
+      const firstDay = new Date(currentYear, currentMonth - 1, 1);
+      const lastDay = new Date(currentYear, currentMonth, 0);
       return {
         desde: firstDay.toISOString().split('T')[0],
-        hasta: lastDay.toISOString().split('T')[0]
-      }
-    }
+        hasta: lastDay.toISOString().split('T')[0],
+      };
+    },
   },
   {
     id: 'last-30',
     label: 'Últimos 30 días',
     getValue: () => {
-      const { now } = getDateInfo()
-      const thirtyDaysAgo = new Date(now)
-      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+      const { now } = getDateInfo();
+      const thirtyDaysAgo = new Date(now);
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
       return {
         desde: thirtyDaysAgo.toISOString().split('T')[0],
-        hasta: now.toISOString().split('T')[0]
-      }
-    }
+        hasta: now.toISOString().split('T')[0],
+      };
+    },
   },
   {
     id: 'this-year',
     label: 'Este año',
     getValue: () => {
-      const { currentYear } = getDateInfo()
+      const { currentYear } = getDateInfo();
       return {
         desde: `${currentYear}-01-01`,
-        hasta: `${currentYear}-12-31`
-      }
-    }
-  }
-]
+        hasta: `${currentYear}-12-31`,
+      };
+    },
+  },
+];
 
-export default function DateFilter({ desde, hasta, onDesdeChange, onHastaChange }: DateFilterProps) {
-  const [activePreset, setActivePreset] = useState<string | null>(null)
-  const isFiltered = Boolean(desde || hasta)
+export default function DateFilter({
+  desde,
+  hasta,
+  onDesdeChange,
+  onHastaChange,
+}: DateFilterProps) {
+  const [_activePreset, setActivePreset] = useState<string | null>(null);
+  const isFiltered = Boolean(desde || hasta);
 
   // Check if current dates match a preset
   const currentPreset = useMemo(() => {
-    if (!desde || !hasta) return null
+    if (!desde || !hasta) return null;
     for (const preset of PRESETS) {
-      const presetValue = preset.getValue()
+      const presetValue = preset.getValue();
       if (presetValue.desde === desde && presetValue.hasta === hasta) {
-        return preset.id
+        return preset.id;
       }
     }
-    return null
-  }, [desde, hasta])
+    return null;
+  }, [desde, hasta]);
 
   const handlePresetClick = (preset: DatePreset) => {
-    const value = preset.getValue()
-    onDesdeChange(value.desde)
-    onHastaChange(value.hasta)
-    setActivePreset(preset.id)
-  }
+    const value = preset.getValue();
+    onDesdeChange(value.desde);
+    onHastaChange(value.hasta);
+    setActivePreset(preset.id);
+  };
 
   const handleClear = () => {
-    onDesdeChange('')
-    onHastaChange('')
-    setActivePreset(null)
-  }
+    onDesdeChange('');
+    onHastaChange('');
+    setActivePreset(null);
+  };
 
   const handleManualChange = (type: 'desde' | 'hasta', value: string) => {
     if (type === 'desde') {
-      onDesdeChange(value)
+      onDesdeChange(value);
     } else {
-      onHastaChange(value)
+      onHastaChange(value);
     }
-    setActivePreset(null)
-  }
+    setActivePreset(null);
+  };
 
   return (
     <section className="date-filter-bar" aria-label="Filtro por rango de fechas">
@@ -146,7 +150,9 @@ export default function DateFilter({ desde, hasta, onDesdeChange, onHastaChange 
       {/* Date pickers */}
       <div className="date-filter-bar__pickers">
         <div className="date-filter-bar__picker-group">
-          <label id="desde-label" htmlFor="date-desde" className="date-filter-bar__label">Desde</label>
+          <label id="desde-label" htmlFor="date-desde" className="date-filter-bar__label">
+            Desde
+          </label>
           <DatePicker
             id="date-desde"
             ariaLabelledBy="desde-label"
@@ -159,7 +165,9 @@ export default function DateFilter({ desde, hasta, onDesdeChange, onHastaChange 
         <span className="date-filter-bar__separator">→</span>
 
         <div className="date-filter-bar__picker-group">
-          <label id="hasta-label" htmlFor="date-hasta" className="date-filter-bar__label">Hasta</label>
+          <label id="hasta-label" htmlFor="date-hasta" className="date-filter-bar__label">
+            Hasta
+          </label>
           <DatePicker
             id="date-hasta"
             ariaLabelledBy="hasta-label"
@@ -187,12 +195,12 @@ export default function DateFilter({ desde, hasta, onDesdeChange, onHastaChange 
               type="button"
               aria-label="Limpiar filtros"
             >
-              <X className="w-3.5 h-3.5" />
+              <X className="h-3.5 w-3.5" />
               <span>Limpiar</span>
             </button>
           </motion.div>
         )}
       </AnimatePresence>
     </section>
-  )
+  );
 }

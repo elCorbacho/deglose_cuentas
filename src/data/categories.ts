@@ -1,77 +1,100 @@
-import type { CategoriesMap } from '../types'
+import type { CategoriesMap } from '../types';
 
 export const CATEGORIES: CategoriesMap = {
-  "Supermercado": {
-    icon: "🛒",
-    keywords: ["JUMBO ONECLICK", "CENCOPAY-SUPERMERCADOS", "LIDER MATUCANA", "UNIMARC", "JUMBO MAIPU", "JUMBO"]
+  Supermercado: {
+    icon: '🛒',
+    keywords: [
+      'JUMBO ONECLICK',
+      'CENCOPAY-SUPERMERCADOS',
+      'LIDER MATUCANA',
+      'UNIMARC',
+      'JUMBO MAIPU',
+      'JUMBO',
+    ],
   },
-  "Restaurante": {
-    icon: "🍽️",
-    keywords: ["SOHO THAI RESTAURANT", "TEXAS RIBS", "EL BARBARA", "LIRA 45", "TUU*VITTORIO", "SUNRISE COFFEE", "JUNIO", "SUC LIRA"]
+  Restaurante: {
+    icon: '🍽️',
+    keywords: [
+      'SOHO THAI RESTAURANT',
+      'TEXAS RIBS',
+      'EL BARBARA',
+      'LIRA 45',
+      'TUU*VITTORIO',
+      'SUNRISE COFFEE',
+      'JUNIO',
+      'SUC LIRA',
+    ],
   },
-  "Delivery": {
-    icon: "🚗",
-    keywords: ["UBER EATS", "PAYU *UBER EATS"]
+  Delivery: {
+    icon: '🚗',
+    keywords: ['UBER EATS', 'PAYU *UBER EATS'],
   },
-  "Farmacia": {
-    icon: "💊",
-    keywords: ["AHUM"]
+  Farmacia: {
+    icon: '💊',
+    keywords: ['AHUM'],
   },
-  "Combustible": {
-    icon: "⛽",
-    keywords: ["COPEC APP", "AGASNAR SPA"]
+  Combustible: {
+    icon: '⛽',
+    keywords: ['COPEC APP', 'AGASNAR SPA'],
   },
-  "Educación": {
-    icon: "🎓",
-    keywords: ["COLEGIO SAN IGNACIO", "PISCINA PUC"]
+  Educación: {
+    icon: '🎓',
+    keywords: ['COLEGIO SAN IGNACIO', 'PISCINA PUC'],
   },
-  "Servicios": {
-    icon: "🔧",
-    keywords: ["UNIRED CL", "GAS DON VICTOR"]
+  Servicios: {
+    icon: '🔧',
+    keywords: ['UNIRED CL', 'GAS DON VICTOR'],
   },
-  "Transporte": {
-    icon: "🚕",
-    keywords: ["UBER TRIP", "TAG TOTAL CREDITO", "PUC ESTACIONAMIENTO", "MALL ARAUCO MAIPU", "PARKING MALL", "PAYU *UBER TRIP"]
+  Transporte: {
+    icon: '🚕',
+    keywords: [
+      'UBER TRIP',
+      'TAG TOTAL CREDITO',
+      'PUC ESTACIONAMIENTO',
+      'MALL ARAUCO MAIPU',
+      'PARKING MALL',
+      'PAYU *UBER TRIP',
+    ],
   },
-  "Streaming": {
-    icon: "📺",
-    keywords: ["NETFLIX", "CINEPOLIS", "HAPPYLAND", "PETERLAND", "MAMUT"]
+  Streaming: {
+    icon: '📺',
+    keywords: ['NETFLIX', 'CINEPOLIS', 'HAPPYLAND', 'PETERLAND', 'MAMUT'],
   },
-  "Suscripciones": {
-    icon: "📱",
-    keywords: ["MERPAGO*MELIMAS"]
+  Suscripciones: {
+    icon: '📱',
+    keywords: ['MERPAGO*MELIMAS'],
   },
-  "Seguros": {
-    icon: "🛡️",
-    keywords: ["DP *SEGUROS", "DP *SEGFALA CL PAC"]
+  Seguros: {
+    icon: '🛡️',
+    keywords: ['DP *SEGUROS', 'DP *SEGFALA CL PAC'],
   },
-  "Municipalidad": {
-    icon: "🏛️",
-    keywords: ["MUNI DE LO PRADO", "REGISTRO CIVIL"]
+  Municipalidad: {
+    icon: '🏛️',
+    keywords: ['MUNI DE LO PRADO', 'REGISTRO CIVIL'],
   },
-  "Estacionamiento": {
-    icon: "🅿️",
-    keywords: ["PUC ESTACIONAMIENTO", "MALL ARAUCO MAIPU", "PARKING MALL"]
+  Estacionamiento: {
+    icon: '🅿️',
+    keywords: ['PUC ESTACIONAMIENTO', 'MALL ARAUCO MAIPU', 'PARKING MALL'],
   },
-  "Hogar/Construcción": {
-    icon: "🏠",
-    keywords: ["CONSTRUMART"]
+  'Hogar/Construcción': {
+    icon: '🏠',
+    keywords: ['CONSTRUMART'],
   },
-  "Alimentación/Tienda": {
-    icon: "🍞",
-    keywords: ["DONDE LA CLAU", "DONDE LOS TIOS", "TUU*AQUI HAY DE TODO", "ISABEL", "TOTYS"]
+  'Alimentación/Tienda': {
+    icon: '🍞',
+    keywords: ['DONDE LA CLAU', 'DONDE LOS TIOS', 'TUU*AQUI HAY DE TODO', 'ISABEL', 'TOTYS'],
   },
-  "Cuotas": {
-    icon: "💳",
-    keywords: []
+  Cuotas: {
+    icon: '💳',
+    keywords: [],
   },
-  "Otros": {
-    icon: "📋",
-    keywords: []
-  }
-}
+  Otros: {
+    icon: '📋',
+    keywords: [],
+  },
+};
 
-export const DEFAULT_CATEGORY_ICON = '📋'
+export const DEFAULT_CATEGORY_ICON = '📋';
 
 export const NON_EXPENSE_KEYWORDS = [
   'MONTO CANCELADO',
@@ -80,4 +103,4 @@ export const NON_EXPENSE_KEYWORDS = [
   'COMISION DE MANTENCION',
   'MONTO FACTURADO',
   'CUPO',
-]
+];

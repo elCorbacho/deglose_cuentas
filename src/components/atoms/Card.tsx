@@ -11,4 +11,4 @@ export {
   CardTitle,
   CardDescription,
   CardContent,
-} from '@/components/ui/card'
+} from '@/components/ui/card';

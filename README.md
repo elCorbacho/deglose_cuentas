@@ -1,6 +1,5 @@
 # Deglose Cuentas ui 5.0
 
-
 Aplicación web para analizar estados de cuenta Santander en PDF, clasificar movimientos por categoría y revisar el gasto de forma más clara.
 
 La rama `ui_5.0` acompaña la base ya migrada a TypeScript y deja el proyecto listo para seguir iterando sobre la UI.
@@ -91,6 +90,47 @@ src/        Frontend principal
 backend/    API para categorías
 public/     Recursos estáticos
 ```
+
+## Linting y Formateo
+
+El proyecto usa ESLint + Prettier para garantizar calidad y consistencia de código.
+
+### Comandos disponibles
+
+```bash
+npm run lint            # Chequea el frontend (src/)
+npm run lint:fix        # Auto-corrige el frontend
+npm run lint:backend    # Chequea el backend (backend/)
+npm run lint:backend:fix # Auto-corrige el backend
+npm run format          # Chequea formato sin modificar
+npm run format:fix      # Auto-formatea todo el proyecto
+```
+
+### Pre-commit automático
+
+Al hacer `git commit`, Husky ejecuta `lint-staged` automáticamente:
+
+- Los archivos `.ts` y `.tsx` se pasan por ESLint + Prettier.
+- El commit se bloquea si hay violaciones que no se pueden auto-corregir.
+
+Para deshabilitar el hook temporalmente (solo en local):
+
+```bash
+npx husky uninstall
+```
+
+### CI/CD
+
+GitHub Actions corre lint y format check en cada push y pull request (`.github/workflows/lint.yml`). Los PRs con violaciones no pueden mergearse.
+
+### IDE (VSCode)
+
+El archivo `.vscode/settings.json` ya está incluido en el repo. Al abrir el proyecto, VSCode activa:
+
+- Formato automático al guardar (`editor.formatOnSave`)
+- Auto-fix de ESLint al guardar
+
+Extensiones requeridas: `esbenp.prettier-vscode` y `dbaeumer.vscode-eslint`.
 
 ## Notas
 

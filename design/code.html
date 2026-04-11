@@ -1,265 +1,452 @@
-<!DOCTYPE html>
+<!doctype html>
 
-<html class="light" lang="es"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
+<html class="light" lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
       tailwind.config = {
-        darkMode: "class",
+        darkMode: 'class',
         theme: {
           extend: {
             colors: {
-              primary: "#0052CC",
-              "main-text": "#1A1A1A",
-              "secondary-text": "#666666",
-              "sub-text": "#999999",
-              "main-bg": "#FFFFFF",
-              "secondary-bg": "#FAFAFA",
-              "border-color": "#E0E0E0",
-              "input-bg": "#F5F5F5",
-              "success": "#10B981"
+              primary: '#0052CC',
+              'main-text': '#1A1A1A',
+              'secondary-text': '#666666',
+              'sub-text': '#999999',
+              'main-bg': '#FFFFFF',
+              'secondary-bg': '#FAFAFA',
+              'border-color': '#E0E0E0',
+              'input-bg': '#F5F5F5',
+              success: '#10B981',
             },
             fontFamily: {
-              sans: ["Inter", "sans-serif"],
-              mono: ["JetBrains Mono", "monospace"]
-            }
+              sans: ['Inter', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
+            },
           },
         },
-      }
+      };
     </script>
-<style>
-        body { font-family: 'Inter', sans-serif; background-color: #FFFFFF; color: #1A1A1A; }
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #E0E0E0; border-radius: 10px; }
-        .active-border { border-left: 4px solid #0052CC; }
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: #ffffff;
+        color: #1a1a1a;
+      }
+      .material-symbols-outlined {
+        font-variation-settings:
+          'FILL' 0,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24;
+      }
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #e0e0e0;
+        border-radius: 10px;
+      }
+      .active-border {
+        border-left: 4px solid #0052cc;
+      }
     </style>
-</head>
-<body class="bg-main-bg text-main-text">
-<!-- Header (Fixed, 56px height) -->
-<header class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 bg-white h-[56px] w-full border-b border-border-color">
-<div class="flex items-center gap-4">
-<span class="text-[14px] font-semibold text-main-text">Editorial Financial Intelligence</span>
-</div>
-<div class="absolute left-1/2 -translate-x-1/2">
-<h1 class="text-[12px] font-medium text-primary uppercase tracking-wider">ANÁLISIS DE TRANSACCIONES</h1>
-</div>
-<div class="flex items-center gap-6">
-<div class="relative flex items-center">
-<span class="material-symbols-outlined absolute left-3 text-secondary-text text-lg">search</span>
-<input class="bg-input-bg border border-border-color rounded-md pl-10 pr-4 py-1 text-[13px] w-[280px] h-[36px] focus:ring-1 focus:ring-primary outline-none" placeholder="Buscar movimientos..." type="text"/>
-</div>
-<div class="flex gap-5 items-center">
-<span class="material-symbols-outlined text-secondary-text hover:text-primary cursor-pointer transition-colors text-xl" data-icon="notifications">notifications</span>
-<span class="material-symbols-outlined text-secondary-text hover:text-primary cursor-pointer transition-colors text-xl" data-icon="account_circle">account_circle</span>
-</div>
-</div>
-</header>
-<!-- Aside (Fixed, 245px width) -->
-<aside class="fixed left-0 top-[56px] bottom-0 flex flex-col w-[245px] bg-secondary-bg border-r border-border-color">
-<div class="px-6 py-6 mb-2">
-<div class="text-[13px] font-bold text-main-text">Editorial Intelligence</div>
-<div class="text-[10px] font-medium text-sub-text uppercase tracking-widest mt-0.5">FINANCIAL LEDGER</div>
-</div>
-<nav class="flex-1 px-2 space-y-0.5">
-<a class="flex items-center gap-3 text-main-text px-4 h-[40px] rounded hover:bg-border-color/30 transition-all text-[13px]" href="#">
-<span class="material-symbols-outlined text-[20px]" data-icon="upload_file">upload_file</span>
-<span>Cargar PDF</span>
-</a>
-<a class="flex items-center gap-3 text-primary font-semibold px-4 h-[40px] bg-white border border-border-color/50 rounded transition-all text-[13px]" href="#">
-<span class="material-symbols-outlined text-[20px]" data-icon="analytics" style="font-variation-settings: 'FILL' 1;">analytics</span>
-<span>Análisis</span>
-</a>
-<a class="flex items-center gap-3 text-main-text px-4 h-[40px] rounded hover:bg-border-color/30 transition-all text-[13px]" href="#">
-<span class="material-symbols-outlined text-[20px]" data-icon="settings">settings</span>
-<span>Configuración</span>
-</a>
-</nav>
-<div class="p-4 border-t border-border-color">
-<button class="w-full h-[44px] bg-primary text-white rounded font-semibold text-[13px] flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
-<span class="material-symbols-outlined text-[18px]">add</span>
-                Nueva Transacción
+  </head>
+  <body class="bg-main-bg text-main-text">
+    <!-- Header (Fixed, 56px height) -->
+    <header
+      class="border-border-color fixed left-0 right-0 top-0 z-50 flex h-[56px] w-full items-center justify-between border-b bg-white px-8"
+    >
+      <div class="flex items-center gap-4">
+        <span class="text-main-text text-[14px] font-semibold"
+          >Editorial Financial Intelligence</span
+        >
+      </div>
+      <div class="absolute left-1/2 -translate-x-1/2">
+        <h1 class="text-primary text-[12px] font-medium uppercase tracking-wider">
+          ANÁLISIS DE TRANSACCIONES
+        </h1>
+      </div>
+      <div class="flex items-center gap-6">
+        <div class="relative flex items-center">
+          <span class="material-symbols-outlined text-secondary-text absolute left-3 text-lg"
+            >search</span
+          >
+          <input
+            class="bg-input-bg border-border-color focus:ring-primary h-[36px] w-[280px] rounded-md border py-1 pl-10 pr-4 text-[13px] outline-none focus:ring-1"
+            placeholder="Buscar movimientos..."
+            type="text"
+          />
+        </div>
+        <div class="flex items-center gap-5">
+          <span
+            class="material-symbols-outlined text-secondary-text hover:text-primary cursor-pointer text-xl transition-colors"
+            data-icon="notifications"
+            >notifications</span
+          >
+          <span
+            class="material-symbols-outlined text-secondary-text hover:text-primary cursor-pointer text-xl transition-colors"
+            data-icon="account_circle"
+            >account_circle</span
+          >
+        </div>
+      </div>
+    </header>
+    <!-- Aside (Fixed, 245px width) -->
+    <aside
+      class="bg-secondary-bg border-border-color fixed bottom-0 left-0 top-[56px] flex w-[245px] flex-col border-r"
+    >
+      <div class="mb-2 px-6 py-6">
+        <div class="text-main-text text-[13px] font-bold">Editorial Intelligence</div>
+        <div class="text-sub-text mt-0.5 text-[10px] font-medium uppercase tracking-widest">
+          FINANCIAL LEDGER
+        </div>
+      </div>
+      <nav class="flex-1 space-y-0.5 px-2">
+        <a
+          class="text-main-text hover:bg-border-color/30 flex h-[40px] items-center gap-3 rounded px-4 text-[13px] transition-all"
+          href="#"
+        >
+          <span class="material-symbols-outlined text-[20px]" data-icon="upload_file"
+            >upload_file</span
+          >
+          <span>Cargar PDF</span>
+        </a>
+        <a
+          class="text-primary border-border-color/50 flex h-[40px] items-center gap-3 rounded border bg-white px-4 text-[13px] font-semibold transition-all"
+          href="#"
+        >
+          <span
+            class="material-symbols-outlined text-[20px]"
+            data-icon="analytics"
+            style="font-variation-settings: 'FILL' 1"
+            >analytics</span
+          >
+          <span>Análisis</span>
+        </a>
+        <a
+          class="text-main-text hover:bg-border-color/30 flex h-[40px] items-center gap-3 rounded px-4 text-[13px] transition-all"
+          href="#"
+        >
+          <span class="material-symbols-outlined text-[20px]" data-icon="settings">settings</span>
+          <span>Configuración</span>
+        </a>
+      </nav>
+      <div class="border-border-color border-t p-4">
+        <button
+          class="bg-primary flex h-[44px] w-full items-center justify-center gap-2 rounded text-[13px] font-semibold text-white transition-opacity hover:opacity-90"
+        >
+          <span class="material-symbols-outlined text-[18px]">add</span>
+          Nueva Transacción
+        </button>
+      </div>
+    </aside>
+    <!-- Central Panel (Main, Scrollable) -->
+    <main class="bg-main-bg ml-[245px] mt-[56px] min-h-screen p-8">
+      <!-- SECTION 1: TOP WIDGETS -->
+      <div class="mb-8 grid grid-cols-12 gap-4">
+        <!-- Widget 1: Analysis Period -->
+        <div class="border-border-color col-span-4 rounded-lg border bg-white p-6">
+          <label class="text-primary mb-4 block text-[11px] font-bold uppercase tracking-widest"
+            >PERÍODO DE ANÁLISIS</label
+          >
+          <div class="mb-4 flex items-center gap-2">
+            <input
+              class="bg-secondary-bg border-border-color focus:ring-primary w-full rounded border px-3 py-2 font-mono text-[13px] focus:ring-1"
+              type="text"
+              value="01/01/2024"
+            />
+            <span class="text-sub-text">—</span>
+            <input
+              class="bg-secondary-bg border-border-color focus:ring-primary w-full rounded border px-3 py-2 font-mono text-[13px] focus:ring-1"
+              type="text"
+              value="31/01/2024"
+            />
+          </div>
+          <div class="flex gap-2">
+            <button
+              class="bg-secondary-bg border-border-color text-secondary-text hover:bg-primary rounded border px-3 py-1.5 text-[10px] font-bold transition-colors hover:text-white"
+            >
+              ESTE MES
             </button>
-</div>
-</aside>
-<!-- Central Panel (Main, Scrollable) -->
-<main class="ml-[245px] mt-[56px] p-8 min-h-screen bg-main-bg">
-<!-- SECTION 1: TOP WIDGETS -->
-<div class="grid grid-cols-12 gap-4 mb-8">
-<!-- Widget 1: Analysis Period -->
-<div class="col-span-4 bg-white p-6 rounded-lg border border-border-color">
-<label class="block text-[11px] font-bold text-primary uppercase tracking-widest mb-4">PERÍODO DE ANÁLISIS</label>
-<div class="flex items-center gap-2 mb-4">
-<input class="w-full bg-secondary-bg border border-border-color rounded px-3 py-2 text-[13px] font-mono focus:ring-1 focus:ring-primary" type="text" value="01/01/2024"/>
-<span class="text-sub-text">—</span>
-<input class="w-full bg-secondary-bg border border-border-color rounded px-3 py-2 text-[13px] font-mono focus:ring-1 focus:ring-primary" type="text" value="31/01/2024"/>
-</div>
-<div class="flex gap-2">
-<button class="px-3 py-1.5 text-[10px] font-bold bg-secondary-bg border border-border-color rounded text-secondary-text hover:bg-primary hover:text-white transition-colors">ESTE MES</button>
-<button class="px-3 py-1.5 text-[10px] font-bold bg-secondary-bg border border-border-color rounded text-secondary-text hover:bg-primary hover:text-white transition-colors">ÚLTIMOS 3 MESES</button>
-</div>
-</div>
-<!-- Widget 2: Total General -->
-<div class="col-span-4 bg-white p-6 rounded-lg border border-border-color flex flex-col justify-between">
-<div>
-<label class="block text-[11px] font-bold text-primary uppercase tracking-widest mb-3">TOTAL GENERAL GASTOS</label>
-<p class="text-[32px] font-mono font-bold text-primary tracking-tighter">
-                        $2.811.058
-                    </p>
-</div>
-<div class="flex items-center gap-1.5 text-[12px] font-medium text-success">
-<span class="material-symbols-outlined text-[16px]">trending_up</span>
-<span>12.5% vs mes anterior</span>
-</div>
-</div>
-<!-- Widget 3: Donut Chart -->
-<div class="col-span-4 bg-white p-6 rounded-lg border border-border-color">
-<label class="block text-[11px] font-bold text-primary uppercase tracking-widest mb-4">DISTRIBUCIÓN % GASTOS</label>
-<div class="flex items-center justify-between">
-<div class="relative w-[120px] h-[120px]">
-<!-- Simple SVG Donut -->
-<svg class="w-full h-full transform -rotate-90" viewbox="0 0 36 36">
-<circle class="text-gray-200" cx="18" cy="18" fill="none" r="15.915" stroke="currentColor" stroke-width="4"></circle>
-<circle class="text-primary" cx="18" cy="18" fill="none" r="15.915" stroke="currentColor" stroke-dasharray="45 100" stroke-width="4.5"></circle>
-<circle class="text-[#4F46E5]" cx="18" cy="18" fill="none" r="15.915" stroke="currentColor" stroke-dasharray="30 100" stroke-dashoffset="-45" stroke-width="4.5"></circle>
-<circle class="text-[#9CA3AF]" cx="18" cy="18" fill="none" r="15.915" stroke="currentColor" stroke-dasharray="25 100" stroke-dashoffset="-75" stroke-width="4.5"></circle>
-</svg>
-</div>
-<div class="flex flex-col gap-2.5 pl-4">
-<div class="flex items-center gap-2">
-<div class="w-2.5 h-2.5 rounded-full bg-primary"></div>
-<span class="text-[11px] font-medium text-main-text">Educación</span>
-</div>
-<div class="flex items-center gap-2">
-<div class="w-2.5 h-2.5 rounded-full bg-[#4F46E5]"></div>
-<span class="text-[11px] font-medium text-main-text">Vivienda</span>
-</div>
-<div class="flex items-center gap-2">
-<div class="w-2.5 h-2.5 rounded-full bg-[#9CA3AF]"></div>
-<span class="text-[11px] font-medium text-main-text">Otros</span>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- SECTION 2: CATEGORY BREAKDOWN -->
-<section class="space-y-4">
-<h2 class="text-[18px] font-semibold text-main-text mb-6">Desglose por Categoría</h2>
-<!-- Category Item 1 (Expanded) -->
-<div class="bg-white rounded-lg border border-border-color overflow-hidden">
-<div class="flex items-center justify-between h-[56px] px-6 active-border bg-secondary-bg cursor-pointer">
-<div class="flex items-center gap-4">
-<span class="material-symbols-outlined text-secondary-text transform rotate-180 text-[18px]">expand_more</span>
-<div class="w-8 h-8 rounded-md bg-primary/10 flex items-center justify-center text-primary">
-<span class="material-symbols-outlined text-[20px]" data-icon="school">school</span>
-</div>
-<h3 class="text-[14px] font-semibold text-main-text">Educación <span class="text-secondary-text font-normal ml-1">(3 mov.)</span></h3>
-</div>
-<div class="flex items-center gap-8">
-<div class="text-right">
-<span class="block text-[10px] font-bold text-sub-text uppercase">TOTAL CATEGORÍA</span>
-<span class="text-[16px] font-mono font-bold text-primary">$968.424</span>
-</div>
-</div>
-</div>
-<!-- Expanded Content -->
-<div class="bg-secondary-bg">
-<table class="w-full text-left">
-<thead>
-<tr class="border-b border-border-color">
-<th class="w-[70%] px-6 py-3 text-[10px] font-bold text-sub-text uppercase">DESCRIPCIÓN COMERCIANTE</th>
-<th class="w-[15%] px-6 py-3 text-[10px] font-bold text-sub-text uppercase">FECHA</th>
-<th class="w-[15%] px-6 py-3 text-[10px] font-bold text-sub-text uppercase text-right">MONTO</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-border-color/40">
-<tr class="hover:bg-white transition-colors">
-<td class="px-6 py-4 text-[13px] text-[#333333] font-medium">UNIVERSIDAD ANDES MATRÍCULA</td>
-<td class="px-6 py-4 text-[13px] font-mono text-primary">12/01/24</td>
-<td class="px-6 py-4 text-[13px] font-mono text-primary font-bold text-right">$850.000</td>
-</tr>
-<tr class="hover:bg-white transition-colors">
-<td class="px-6 py-4 text-[13px] text-[#333333] font-medium">LIBRERIA NACIONAL SEDE NORTE</td>
-<td class="px-6 py-4 text-[13px] font-mono text-primary">15/01/24</td>
-<td class="px-6 py-4 text-[13px] font-mono text-primary font-bold text-right">$45.524</td>
-</tr>
-<tr class="hover:bg-white transition-colors">
-<td class="px-6 py-4 text-[13px] text-[#333333] font-medium">COURSERA PLUS ANNUAL SUBS</td>
-<td class="px-6 py-4 text-[13px] font-mono text-primary">18/01/24</td>
-<td class="px-6 py-4 text-[13px] font-mono text-primary font-bold text-right">$72.900</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<!-- Category Item 2 (Collapsed) -->
-<div class="bg-white rounded-lg border border-border-color overflow-hidden">
-<div class="flex items-center justify-between h-[56px] px-6 hover:bg-secondary-bg cursor-pointer transition-colors">
-<div class="flex items-center gap-4">
-<span class="material-symbols-outlined text-secondary-text text-[18px]">chevron_right</span>
-<div class="w-8 h-8 rounded-md bg-gray-100 flex items-center justify-center text-secondary-text">
-<span class="material-symbols-outlined text-[20px]" data-icon="home">home</span>
-</div>
-<h3 class="text-[14px] font-semibold text-main-text">Vivienda <span class="text-secondary-text font-normal ml-1">(2 mov.)</span></h3>
-</div>
-<div class="flex items-center gap-8">
-<div class="text-right">
-<span class="block text-[10px] font-bold text-sub-text uppercase">TOTAL CATEGORÍA</span>
-<span class="text-[16px] font-mono font-bold text-primary">$1.240.000</span>
-</div>
-</div>
-</div>
-</div>
-<!-- Category Item 3 (Collapsed) -->
-<div class="bg-white rounded-lg border border-border-color overflow-hidden">
-<div class="flex items-center justify-between h-[56px] px-6 hover:bg-secondary-bg cursor-pointer transition-colors">
-<div class="flex items-center gap-4">
-<span class="material-symbols-outlined text-secondary-text text-[18px]">chevron_right</span>
-<div class="w-8 h-8 rounded-md bg-gray-100 flex items-center justify-center text-secondary-text">
-<span class="material-symbols-outlined text-[20px]" data-icon="restaurant">restaurant</span>
-</div>
-<h3 class="text-[14px] font-semibold text-main-text">Alimentación <span class="text-secondary-text font-normal ml-1">(8 mov.)</span></h3>
-</div>
-<div class="flex items-center gap-8">
-<div class="text-right">
-<span class="block text-[10px] font-bold text-sub-text uppercase">TOTAL CATEGORÍA</span>
-<span class="text-[16px] font-mono font-bold text-primary">$602.634</span>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- Banner Info -->
-<section class="mt-12 bg-primary p-8 rounded-lg relative overflow-hidden text-white">
-<div class="relative z-10">
-<h3 class="text-xl font-bold mb-2">Optimiza tus reportes financieros</h3>
-<p class="text-white/80 text-[13px] max-w-lg leading-relaxed">
-                    Nuestro motor de IA ha detectado 3 transacciones duplicadas en el periodo seleccionado. Revisa la conciliación para mantener la precisión de tus balances.
-                </p>
-<button class="mt-6 bg-white text-primary px-6 h-[40px] rounded font-bold text-[13px] flex items-center gap-2 hover:bg-secondary-bg transition-colors">
-                    Revisar Duplicados <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-</button>
-</div>
-<div class="absolute right-0 top-0 h-full w-1/3 bg-white/10 flex items-center justify-center border-l border-white/20">
-<div class="w-4/5 h-1/2 flex flex-col gap-2">
-<div class="h-1.5 w-full bg-white/30 rounded-full"></div>
-<div class="h-1.5 w-3/4 bg-white/30 rounded-full"></div>
-<div class="h-1.5 w-1/2 bg-white/30 rounded-full"></div>
-</div>
-</div>
-</section>
-</main>
-<!-- Asistente IA (Floating circle button) -->
-<div class="fixed bottom-8 right-8 z-[100]">
-<button class="flex items-center gap-2 bg-main-text text-white py-3 px-6 rounded-full shadow-xl hover:scale-105 transition-transform">
-<span class="material-symbols-outlined">help</span>
-<span class="text-[11px] font-bold uppercase tracking-widest">ASISTENTE FISCAL</span>
-</button>
-</div>
-</body></html>
+            <button
+              class="bg-secondary-bg border-border-color text-secondary-text hover:bg-primary rounded border px-3 py-1.5 text-[10px] font-bold transition-colors hover:text-white"
+            >
+              ÚLTIMOS 3 MESES
+            </button>
+          </div>
+        </div>
+        <!-- Widget 2: Total General -->
+        <div
+          class="border-border-color col-span-4 flex flex-col justify-between rounded-lg border bg-white p-6"
+        >
+          <div>
+            <label class="text-primary mb-3 block text-[11px] font-bold uppercase tracking-widest"
+              >TOTAL GENERAL GASTOS</label
+            >
+            <p class="text-primary font-mono text-[32px] font-bold tracking-tighter">$2.811.058</p>
+          </div>
+          <div class="text-success flex items-center gap-1.5 text-[12px] font-medium">
+            <span class="material-symbols-outlined text-[16px]">trending_up</span>
+            <span>12.5% vs mes anterior</span>
+          </div>
+        </div>
+        <!-- Widget 3: Donut Chart -->
+        <div class="border-border-color col-span-4 rounded-lg border bg-white p-6">
+          <label class="text-primary mb-4 block text-[11px] font-bold uppercase tracking-widest"
+            >DISTRIBUCIÓN % GASTOS</label
+          >
+          <div class="flex items-center justify-between">
+            <div class="relative h-[120px] w-[120px]">
+              <!-- Simple SVG Donut -->
+              <svg class="h-full w-full -rotate-90 transform" viewbox="0 0 36 36">
+                <circle
+                  class="text-gray-200"
+                  cx="18"
+                  cy="18"
+                  fill="none"
+                  r="15.915"
+                  stroke="currentColor"
+                  stroke-width="4"
+                ></circle>
+                <circle
+                  class="text-primary"
+                  cx="18"
+                  cy="18"
+                  fill="none"
+                  r="15.915"
+                  stroke="currentColor"
+                  stroke-dasharray="45 100"
+                  stroke-width="4.5"
+                ></circle>
+                <circle
+                  class="text-[#4F46E5]"
+                  cx="18"
+                  cy="18"
+                  fill="none"
+                  r="15.915"
+                  stroke="currentColor"
+                  stroke-dasharray="30 100"
+                  stroke-dashoffset="-45"
+                  stroke-width="4.5"
+                ></circle>
+                <circle
+                  class="text-[#9CA3AF]"
+                  cx="18"
+                  cy="18"
+                  fill="none"
+                  r="15.915"
+                  stroke="currentColor"
+                  stroke-dasharray="25 100"
+                  stroke-dashoffset="-75"
+                  stroke-width="4.5"
+                ></circle>
+              </svg>
+            </div>
+            <div class="flex flex-col gap-2.5 pl-4">
+              <div class="flex items-center gap-2">
+                <div class="bg-primary h-2.5 w-2.5 rounded-full"></div>
+                <span class="text-main-text text-[11px] font-medium">Educación</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <div class="h-2.5 w-2.5 rounded-full bg-[#4F46E5]"></div>
+                <span class="text-main-text text-[11px] font-medium">Vivienda</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <div class="h-2.5 w-2.5 rounded-full bg-[#9CA3AF]"></div>
+                <span class="text-main-text text-[11px] font-medium">Otros</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- SECTION 2: CATEGORY BREAKDOWN -->
+      <section class="space-y-4">
+        <h2 class="text-main-text mb-6 text-[18px] font-semibold">Desglose por Categoría</h2>
+        <!-- Category Item 1 (Expanded) -->
+        <div class="border-border-color overflow-hidden rounded-lg border bg-white">
+          <div
+            class="active-border bg-secondary-bg flex h-[56px] cursor-pointer items-center justify-between px-6"
+          >
+            <div class="flex items-center gap-4">
+              <span
+                class="material-symbols-outlined text-secondary-text rotate-180 transform text-[18px]"
+                >expand_more</span
+              >
+              <div
+                class="bg-primary/10 text-primary flex h-8 w-8 items-center justify-center rounded-md"
+              >
+                <span class="material-symbols-outlined text-[20px]" data-icon="school">school</span>
+              </div>
+              <h3 class="text-main-text text-[14px] font-semibold">
+                Educación <span class="text-secondary-text ml-1 font-normal">(3 mov.)</span>
+              </h3>
+            </div>
+            <div class="flex items-center gap-8">
+              <div class="text-right">
+                <span class="text-sub-text block text-[10px] font-bold uppercase"
+                  >TOTAL CATEGORÍA</span
+                >
+                <span class="text-primary font-mono text-[16px] font-bold">$968.424</span>
+              </div>
+            </div>
+          </div>
+          <!-- Expanded Content -->
+          <div class="bg-secondary-bg">
+            <table class="w-full text-left">
+              <thead>
+                <tr class="border-border-color border-b">
+                  <th class="text-sub-text w-[70%] px-6 py-3 text-[10px] font-bold uppercase">
+                    DESCRIPCIÓN COMERCIANTE
+                  </th>
+                  <th class="text-sub-text w-[15%] px-6 py-3 text-[10px] font-bold uppercase">
+                    FECHA
+                  </th>
+                  <th
+                    class="text-sub-text w-[15%] px-6 py-3 text-right text-[10px] font-bold uppercase"
+                  >
+                    MONTO
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="divide-border-color/40 divide-y">
+                <tr class="transition-colors hover:bg-white">
+                  <td class="px-6 py-4 text-[13px] font-medium text-[#333333]">
+                    UNIVERSIDAD ANDES MATRÍCULA
+                  </td>
+                  <td class="text-primary px-6 py-4 font-mono text-[13px]">12/01/24</td>
+                  <td class="text-primary px-6 py-4 text-right font-mono text-[13px] font-bold">
+                    $850.000
+                  </td>
+                </tr>
+                <tr class="transition-colors hover:bg-white">
+                  <td class="px-6 py-4 text-[13px] font-medium text-[#333333]">
+                    LIBRERIA NACIONAL SEDE NORTE
+                  </td>
+                  <td class="text-primary px-6 py-4 font-mono text-[13px]">15/01/24</td>
+                  <td class="text-primary px-6 py-4 text-right font-mono text-[13px] font-bold">
+                    $45.524
+                  </td>
+                </tr>
+                <tr class="transition-colors hover:bg-white">
+                  <td class="px-6 py-4 text-[13px] font-medium text-[#333333]">
+                    COURSERA PLUS ANNUAL SUBS
+                  </td>
+                  <td class="text-primary px-6 py-4 font-mono text-[13px]">18/01/24</td>
+                  <td class="text-primary px-6 py-4 text-right font-mono text-[13px] font-bold">
+                    $72.900
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- Category Item 2 (Collapsed) -->
+        <div class="border-border-color overflow-hidden rounded-lg border bg-white">
+          <div
+            class="hover:bg-secondary-bg flex h-[56px] cursor-pointer items-center justify-between px-6 transition-colors"
+          >
+            <div class="flex items-center gap-4">
+              <span class="material-symbols-outlined text-secondary-text text-[18px]"
+                >chevron_right</span
+              >
+              <div
+                class="text-secondary-text flex h-8 w-8 items-center justify-center rounded-md bg-gray-100"
+              >
+                <span class="material-symbols-outlined text-[20px]" data-icon="home">home</span>
+              </div>
+              <h3 class="text-main-text text-[14px] font-semibold">
+                Vivienda <span class="text-secondary-text ml-1 font-normal">(2 mov.)</span>
+              </h3>
+            </div>
+            <div class="flex items-center gap-8">
+              <div class="text-right">
+                <span class="text-sub-text block text-[10px] font-bold uppercase"
+                  >TOTAL CATEGORÍA</span
+                >
+                <span class="text-primary font-mono text-[16px] font-bold">$1.240.000</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Category Item 3 (Collapsed) -->
+        <div class="border-border-color overflow-hidden rounded-lg border bg-white">
+          <div
+            class="hover:bg-secondary-bg flex h-[56px] cursor-pointer items-center justify-between px-6 transition-colors"
+          >
+            <div class="flex items-center gap-4">
+              <span class="material-symbols-outlined text-secondary-text text-[18px]"
+                >chevron_right</span
+              >
+              <div
+                class="text-secondary-text flex h-8 w-8 items-center justify-center rounded-md bg-gray-100"
+              >
+                <span class="material-symbols-outlined text-[20px]" data-icon="restaurant"
+                  >restaurant</span
+                >
+              </div>
+              <h3 class="text-main-text text-[14px] font-semibold">
+                Alimentación <span class="text-secondary-text ml-1 font-normal">(8 mov.)</span>
+              </h3>
+            </div>
+            <div class="flex items-center gap-8">
+              <div class="text-right">
+                <span class="text-sub-text block text-[10px] font-bold uppercase"
+                  >TOTAL CATEGORÍA</span
+                >
+                <span class="text-primary font-mono text-[16px] font-bold">$602.634</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Banner Info -->
+      <section class="bg-primary relative mt-12 overflow-hidden rounded-lg p-8 text-white">
+        <div class="relative z-10">
+          <h3 class="mb-2 text-xl font-bold">Optimiza tus reportes financieros</h3>
+          <p class="max-w-lg text-[13px] leading-relaxed text-white/80">
+            Nuestro motor de IA ha detectado 3 transacciones duplicadas en el periodo seleccionado.
+            Revisa la conciliación para mantener la precisión de tus balances.
+          </p>
+          <button
+            class="text-primary hover:bg-secondary-bg mt-6 flex h-[40px] items-center gap-2 rounded bg-white px-6 text-[13px] font-bold transition-colors"
+          >
+            Revisar Duplicados
+            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+          </button>
+        </div>
+        <div
+          class="absolute right-0 top-0 flex h-full w-1/3 items-center justify-center border-l border-white/20 bg-white/10"
+        >
+          <div class="flex h-1/2 w-4/5 flex-col gap-2">
+            <div class="h-1.5 w-full rounded-full bg-white/30"></div>
+            <div class="h-1.5 w-3/4 rounded-full bg-white/30"></div>
+            <div class="h-1.5 w-1/2 rounded-full bg-white/30"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- Asistente IA (Floating circle button) -->
+    <div class="fixed bottom-8 right-8 z-[100]">
+      <button
+        class="bg-main-text flex items-center gap-2 rounded-full px-6 py-3 text-white shadow-xl transition-transform hover:scale-105"
+      >
+        <span class="material-symbols-outlined">help</span>
+        <span class="text-[11px] font-bold uppercase tracking-widest">ASISTENTE FISCAL</span>
+      </button>
+    </div>
+  </body>
+</html>

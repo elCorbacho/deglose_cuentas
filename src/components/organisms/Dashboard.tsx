@@ -3,81 +3,88 @@
  * Displays financial summary with key metrics and visualizations
  */
 
-import { Fragment } from 'react'
-import type { ComponentType } from 'react'
-import type { CategoryGroup, DateRange } from '../../types'
-import { formatCLP, formatDate } from '../../lib/formatters'
-import { TrendingUp, Calendar, Receipt, Wallet, Info } from 'lucide-react'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { motion } from 'framer-motion'
+import { Fragment } from 'react';
+import type { ComponentType, SVGProps } from 'react';
+import type { CategoryGroup, DateRange } from '../../types';
+import { formatCLP, formatDate } from '../../lib/formatters';
+import { TrendingUp, Calendar, Receipt, Wallet, Info } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { motion } from 'framer-motion';
 
 interface MetricCardProps {
-  icon: ComponentType<any>
-  label: string
-  value: string | number
-  subValue?: string
-  highlight?: boolean
-  tooltip?: string
+  icon: ComponentType<SVGProps<SVGSVGElement>>;
+  label: string;
+  value: string | number;
+  subValue?: string;
+  highlight?: boolean;
+  tooltip?: string;
 }
 
 interface CategoryBarProps {
-  category: CategoryGroup
-  maxTotal: number
-  index: number
+  category: CategoryGroup;
+  maxTotal: number;
+  index: number;
 }
 
 interface DashboardProps {
-  categories: CategoryGroup[]
-  grandTotal: number
-  transactionCount: number
-  dateRange: DateRange
+  categories: CategoryGroup[];
+  grandTotal: number;
+  transactionCount: number;
+  dateRange: DateRange;
 }
 
 function MetricCard({ icon: Icon, label, value, subValue, highlight, tooltip }: MetricCardProps) {
   const cardContent = (
-    <div className="dashboard-metric-card panel p-4 
-      hover:shadow-lg hover:border-blue-200
-      dark:hover:border-blue-800 dark:hover:shadow-blue-900/20
-      transition-all duration-200
-      cursor-pointer">
+    <div className="dashboard-metric-card panel cursor-pointer p-4 transition-all duration-200 hover:border-blue-200 hover:shadow-lg dark:hover:border-blue-800 dark:hover:shadow-blue-900/20">
       <div className="flex items-start gap-3">
-         <div className={`dashboard-metric-icon flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${highlight ? 'bg-blue-50' : 'bg-slate-100'}`}>
-           <Icon />
-         </div>
-         <div className="min-w-0 flex-1">
-           <div className="flex items-center gap-1">
-             <p className="dashboard-metric-label text-xs font-semibold uppercase tracking-[0.16em]" style={{ color: 'var(--text-soft)' }}>
-               {label}
-             </p>
-             {tooltip && (
-               <Tooltip>
-                  <TooltipTrigger>
-                    <span className="inline-flex">
-                      <Info className="w-3 h-3" style={{ color: 'var(--text-soft)', cursor: 'help' }} />
-                    </span>
-                  </TooltipTrigger>
-                 <TooltipContent>{tooltip}</TooltipContent>
-               </Tooltip>
-             )}
-           </div>
-           <p className="dashboard-metric-value text-xl font-bold tracking-tight" style={{ color: 'var(--text-strong)' }}>
-             {value}
-           </p>
-           {subValue && (
-             <p className="dashboard-metric-sub text-xs mt-1" style={{ color: 'var(--text-soft)' }}>
-               {subValue}
-             </p>
-           )}
-         </div>
-       </div>
+        <div
+          className={`dashboard-metric-icon flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${highlight ? 'bg-blue-50' : 'bg-slate-100'}`}
+        >
+          <Icon />
+        </div>
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-1">
+            <p
+              className="dashboard-metric-label text-xs font-semibold uppercase tracking-[0.16em]"
+              style={{ color: 'var(--text-soft)' }}
+            >
+              {label}
+            </p>
+            {tooltip && (
+              <Tooltip>
+                <TooltipTrigger>
+                  <span className="inline-flex">
+                    <Info
+                      className="h-3 w-3"
+                      style={{ color: 'var(--text-soft)', cursor: 'help' }}
+                    />
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent>{tooltip}</TooltipContent>
+              </Tooltip>
+            )}
+          </div>
+          <p
+            className="dashboard-metric-value text-xl font-bold tracking-tight"
+            style={{ color: 'var(--text-strong)' }}
+          >
+            {value}
+          </p>
+          {subValue && (
+            <p className="dashboard-metric-sub mt-1 text-xs" style={{ color: 'var(--text-soft)' }}>
+              {subValue}
+            </p>
+          )}
+        </div>
+      </div>
     </div>
-  )
+  );
 
-  return cardContent
+  return cardContent;
 }
 
 function CategoryBar({ category, maxTotal, index }: CategoryBarProps) {
-  const percentage = maxTotal > 0 ? (category.total / maxTotal) * 100 : 0
+  const percentage = maxTotal > 0 ? (category.total / maxTotal) * 100 : 0;
   const colors = [
     'bg-cyan-500',
     'bg-indigo-500',
@@ -87,12 +94,12 @@ function CategoryBar({ category, maxTotal, index }: CategoryBarProps) {
     'bg-rose-500',
     'bg-orange-500',
     'bg-amber-500',
-  ]
-  const color = colors[index % colors.length]
+  ];
+  const color = colors[index % colors.length];
 
   return (
     <motion.div
-      className="space-y-2 hover:opacity-75 dark:hover:opacity-90 transition-opacity duration-200 cursor-pointer"
+      className="cursor-pointer space-y-2 transition-opacity duration-200 hover:opacity-75 dark:hover:opacity-90"
       initial={{ opacity: 0, x: -12 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: 0.25 + index * 0.07, duration: 0.3, ease: 'easeOut' }}
@@ -120,41 +127,52 @@ function CategoryBar({ category, maxTotal, index }: CategoryBarProps) {
         />
       </div>
     </motion.div>
-  )
+  );
 }
 
-export default function Dashboard({ categories, grandTotal, transactionCount, dateRange }: DashboardProps) {
-  const topCategories = categories.slice(0, 5)
-  const maxTotal = topCategories[0]?.total || 0
+export default function Dashboard({
+  categories,
+  grandTotal,
+  transactionCount,
+  dateRange,
+}: DashboardProps) {
+  const topCategories = categories.slice(0, 5);
+  const maxTotal = topCategories[0]?.total || 0;
 
   const dateRangeText = (() => {
-    if (!dateRange.desde && !dateRange.hasta) return 'Todas las fechas'
+    if (!dateRange.desde && !dateRange.hasta) return 'Todas las fechas';
     if (dateRange.desde && dateRange.hasta) {
-      return `${formatDate(dateRange.desde)} - ${formatDate(dateRange.hasta)}`
+      return `${formatDate(dateRange.desde)} - ${formatDate(dateRange.hasta)}`;
     }
-    if (dateRange.desde) return `Desde ${formatDate(dateRange.desde)}`
-    return `Hasta ${formatDate(dateRange.hasta)}`
-  })()
+    if (dateRange.desde) return `Desde ${formatDate(dateRange.desde)}`;
+    return `Hasta ${formatDate(dateRange.hasta)}`;
+  })();
 
   return (
     <section className="space-y-6" aria-label="Resumen financiero">
-       {/* Main Total Card */}
-       <motion.article
-         className="panel dashboard-total-card p-6"
-         aria-label={`Total gastado ${formatCLP(grandTotal)} en ${transactionCount} ${transactionCount === 1 ? 'transacción' : 'transacciones'}`}
-         initial={{ opacity: 0, y: 16, scale: 0.98 }}
-         animate={{ opacity: 1, y: 0, scale: 1 }}
-         transition={{ duration: 0.35, ease: 'easeOut' }}
-       >
-         <div className="flex flex-col items-center justify-center gap-4 text-center">
-           <div className="dashboard-total-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 shadow-lg shadow-cyan-500/25">
-             <Wallet className="w-7 h-7 text-white" />
-           </div>
+      {/* Main Total Card */}
+      <motion.article
+        className="panel dashboard-total-card p-6"
+        aria-label={`Total gastado ${formatCLP(grandTotal)} en ${transactionCount} ${transactionCount === 1 ? 'transacción' : 'transacciones'}`}
+        initial={{ opacity: 0, y: 16, scale: 0.98 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.35, ease: 'easeOut' }}
+      >
+        <div className="flex flex-col items-center justify-center gap-4 text-center">
+          <div className="dashboard-total-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 shadow-lg shadow-cyan-500/25">
+            <Wallet className="h-7 w-7 text-white" />
+          </div>
           <div className="space-y-1">
-            <p className="dashboard-total-label text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: 'var(--text-soft)' }}>
+            <p
+              className="dashboard-total-label text-xs font-semibold uppercase tracking-[0.18em]"
+              style={{ color: 'var(--text-soft)' }}
+            >
               Total Gastado
             </p>
-            <p className="dashboard-total-value mono-num text-4xl font-bold tracking-tight" style={{ color: 'var(--text-strong)' }}>
+            <p
+              className="dashboard-total-value mono-num text-4xl font-bold tracking-tight"
+              style={{ color: 'var(--text-strong)' }}
+            >
               {formatCLP(grandTotal)}
             </p>
             <p className="text-sm" style={{ color: 'var(--text-soft)' }}>
@@ -165,11 +183,32 @@ export default function Dashboard({ categories, grandTotal, transactionCount, da
       </motion.article>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" aria-label="Métricas de resumen">
+      <div
+        className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+        aria-label="Métricas de resumen"
+      >
         {[
-          { icon: Receipt, label: 'Movimientos', value: transactionCount, subValue: `${categories.length} categorías`, highlight: true, tooltip: 'Número total de transacciones en el período seleccionado' },
-          { icon: Calendar, label: 'Período', value: dateRangeText, tooltip: 'Rango de fechas aplicado al análisis' },
-          { icon: TrendingUp, label: 'Categoría Principal', value: topCategories[0]?.name || 'N/A', subValue: topCategories[0] ? formatCLP(topCategories[0].total) : '', tooltip: 'La categoría con mayor gasto en el período' },
+          {
+            icon: Receipt,
+            label: 'Movimientos',
+            value: transactionCount,
+            subValue: `${categories.length} categorías`,
+            highlight: true,
+            tooltip: 'Número total de transacciones en el período seleccionado',
+          },
+          {
+            icon: Calendar,
+            label: 'Período',
+            value: dateRangeText,
+            tooltip: 'Rango de fechas aplicado al análisis',
+          },
+          {
+            icon: TrendingUp,
+            label: 'Categoría Principal',
+            value: topCategories[0]?.name || 'N/A',
+            subValue: topCategories[0] ? formatCLP(topCategories[0].total) : '',
+            tooltip: 'La categoría con mayor gasto en el período',
+          },
         ].map((props, i) => (
           <motion.div
             key={props.label}
@@ -186,26 +225,28 @@ export default function Dashboard({ categories, grandTotal, transactionCount, da
       {topCategories.length > 0 && (
         <article className="panel p-5" aria-label="Top categorías por gasto">
           <div className="mb-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: 'var(--text-soft)' }}>
+            <p
+              className="text-xs font-semibold uppercase tracking-[0.18em]"
+              style={{ color: 'var(--text-soft)' }}
+            >
               Desglose Principal
             </p>
-            <h3 className="text-lg font-semibold tracking-tight" style={{ color: 'var(--text-strong)' }}>
+            <h3
+              className="text-lg font-semibold tracking-tight"
+              style={{ color: 'var(--text-strong)' }}
+            >
               Top {topCategories.length} Categorías
             </h3>
           </div>
           <div className="space-y-4">
             {topCategories.map((category, index) => (
               <Fragment key={category.name}>
-                <CategoryBar
-                  category={category}
-                  maxTotal={maxTotal}
-                  index={index}
-                />
+                <CategoryBar category={category} maxTotal={maxTotal} index={index} />
               </Fragment>
             ))}
           </div>
         </article>
       )}
     </section>
-  )
+  );
 }

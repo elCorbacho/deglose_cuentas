@@ -34,34 +34,22 @@
     {
       "name": "Delivery",
       "icon": "🚗",
-      "keywords": [
-        "UBER EATS",
-        "PAYU *UBER EATS"
-      ]
+      "keywords": ["UBER EATS", "PAYU *UBER EATS"]
     },
     {
       "name": "Farmacia",
       "icon": "💊",
-      "keywords": [
-        "AHUM"
-      ]
+      "keywords": ["AHUM"]
     },
     {
       "name": "Combustible",
       "icon": "⛽",
-      "keywords": [
-        "COPEC APP",
-        "AGASNAR SPA",
-        "GAS DON VICTOR"
-      ]
+      "keywords": ["COPEC APP", "AGASNAR SPA", "GAS DON VICTOR"]
     },
     {
       "name": "Educación",
       "icon": "🎓",
-      "keywords": [
-        "COLEGIO SAN IGNACIO",
-        "PISCINA PUC"
-      ]
+      "keywords": ["COLEGIO SAN IGNACIO", "PISCINA PUC"]
     },
     {
       "name": "Servicios",
@@ -71,71 +59,42 @@
     {
       "name": "Transporte",
       "icon": "🚕",
-      "keywords": [
-        "UBER TRIP",
-        "PAYU *UBER TRIP"
-      ]
+      "keywords": ["UBER TRIP", "PAYU *UBER TRIP"]
     },
     {
       "name": "Salidas",
       "icon": "🍿",
-      "keywords": [
-        "NETFLIX",
-        "CINEPOLIS",
-        "HAPPYLAND",
-        "PETERLAND",
-        "MAMUT"
-      ]
+      "keywords": ["NETFLIX", "CINEPOLIS", "HAPPYLAND", "PETERLAND", "MAMUT"]
     },
     {
       "name": "Suscripciones",
       "icon": "📱",
-      "keywords": [
-        "MERPAGO*MELIMAS"
-      ]
+      "keywords": ["MERPAGO*MELIMAS"]
     },
     {
       "name": "Seguros",
       "icon": "🛡️",
-      "keywords": [
-        "DP *SEGUROS",
-        "DP *SEGFALA CL PAC"
-      ]
+      "keywords": ["DP *SEGUROS", "DP *SEGFALA CL PAC"]
     },
     {
       "name": "Municipalidad",
       "icon": "🏛️",
-      "keywords": [
-        "MUNI DE LO PRADO",
-        "REGISTRO CIVIL"
-      ]
+      "keywords": ["MUNI DE LO PRADO", "REGISTRO CIVIL"]
     },
     {
       "name": "Estacionamiento",
       "icon": "🅿️",
-      "keywords": [
-        "PUC ESTACIONAMIENTO",
-        "MALL ARAUCO MAIPU",
-        "PARKING MALL"
-      ]
+      "keywords": ["PUC ESTACIONAMIENTO", "MALL ARAUCO MAIPU", "PARKING MALL"]
     },
     {
       "name": "Hogar/Construcción",
       "icon": "🏠",
-      "keywords": [
-        "CONSTRUMART"
-      ]
+      "keywords": ["CONSTRUMART"]
     },
     {
       "name": "Alimentación/Tienda",
       "icon": "🍞",
-      "keywords": [
-        "DONDE LA CLAU",
-        "DONDE LOS TIOS",
-        "TUU*AQUI HAY DE TODO",
-        "ISABEL",
-        "TOTYS"
-      ]
+      "keywords": ["DONDE LA CLAU", "DONDE LOS TIOS", "TUU*AQUI HAY DE TODO", "ISABEL", "TOTYS"]
     },
     {
       "name": "Cuotas",
@@ -150,11 +109,7 @@
     {
       "name": "Cuentas y Servicios",
       "icon": "💸",
-      "keywords": [
-        "UNIRED CL",
-        "TAG TOTAL CREDITO",
-        "SPOTIFY"
-      ]
+      "keywords": ["UNIRED CL", "TAG TOTAL CREDITO", "SPOTIFY"]
     }
   ]
 }

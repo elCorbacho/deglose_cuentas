@@ -1,13 +1,13 @@
-import { Fragment } from 'react'
-import type { CategoryGroup } from '../../types'
-import CategoryItem from '../molecules/CategoryItem'
+import { Fragment } from 'react';
+import type { CategoryGroup } from '../../types';
+import CategoryItem from '../molecules/CategoryItem';
 
 interface CategoryListProps {
-  categories: CategoryGroup[]
+  categories: CategoryGroup[];
 }
 
 export default function CategoryList({ categories }: CategoryListProps) {
-  const visible = categories.filter(category => category.count > 0)
+  const visible = categories.filter((category) => category.count > 0);
 
   if (visible.length === 0) {
     return (
@@ -16,13 +16,15 @@ export default function CategoryList({ categories }: CategoryListProps) {
           ↺
         </div>
         <div className="space-y-2">
-          <p className="category-list-empty-title text-lg font-semibold">No encontramos resultados para ese filtro</p>
+          <p className="category-list-empty-title text-lg font-semibold">
+            No encontramos resultados para ese filtro
+          </p>
           <p className="category-list-empty-text max-w-lg text-sm leading-6">
             Tus transacciones siguen cargadas, pero ninguna coincide con el rango seleccionado.
           </p>
         </div>
       </section>
-    )
+    );
   }
 
   return (
@@ -50,5 +52,5 @@ export default function CategoryList({ categories }: CategoryListProps) {
         ))}
       </div>
     </section>
-  )
+  );
 }

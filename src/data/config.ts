@@ -1,1 +1,1 @@
-export const APP_TITLE = 'Analisis trasacciones'
+export const APP_TITLE = 'Analisis trasacciones';

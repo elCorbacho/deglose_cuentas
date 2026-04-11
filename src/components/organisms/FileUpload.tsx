@@ -1,52 +1,52 @@
-import { useState } from 'react'
-import type { ChangeEvent, DragEvent, MouseEvent } from 'react'
-import { FileText, Info } from 'lucide-react'
-import Button from '../atoms/Button'
-import { Tooltip, TooltipTrigger, TooltipContent } from '../atoms/Tooltip'
+import { useState } from 'react';
+import type { ChangeEvent, DragEvent, MouseEvent } from 'react';
+import { FileText, Info } from 'lucide-react';
+import Button from '../atoms/Button';
+import { Tooltip, TooltipTrigger, TooltipContent } from '../atoms/Tooltip';
 
 interface FileUploadProps {
-  onFileLoaded: (file: File) => void | Promise<void>
+  onFileLoaded: (file: File) => void | Promise<void>;
 }
 
 export default function FileUpload({ onFileLoaded }: FileUploadProps) {
-  const [isDragging, setIsDragging] = useState(false)
-  const [error, setError] = useState('')
+  const [isDragging, setIsDragging] = useState(false);
+  const [error, setError] = useState('');
 
   const handleFile = (file?: File) => {
-    setError('')
+    setError('');
 
     if (!file || file.type !== 'application/pdf') {
-      setError('Archivo no válido. Sube un PDF de estado de cuenta para continuar.')
-      return
+      setError('Archivo no válido. Sube un PDF de estado de cuenta para continuar.');
+      return;
     }
 
-    onFileLoaded(file)
-  }
+    onFileLoaded(file);
+  };
 
   const handleDrop = (event: DragEvent<HTMLDivElement>) => {
-    event.preventDefault()
-    setIsDragging(false)
-    const droppedFile = event.dataTransfer?.files?.[0]
-    if (!droppedFile) return
-    handleFile(droppedFile)
-  }
+    event.preventDefault();
+    setIsDragging(false);
+    const droppedFile = event.dataTransfer?.files?.[0];
+    if (!droppedFile) return;
+    handleFile(droppedFile);
+  };
 
   const handleDragOver = (event: DragEvent<HTMLDivElement>) => {
-    event.preventDefault()
-    setIsDragging(true)
-  }
+    event.preventDefault();
+    setIsDragging(true);
+  };
 
-  const handleDragLeave = () => setIsDragging(false)
+  const handleDragLeave = () => setIsDragging(false);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    handleFile(event.target.files?.[0])
-  }
+    handleFile(event.target.files?.[0]);
+  };
 
   const handleOpenPicker = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
-    const input = document.getElementById('pdf-upload-input') as HTMLInputElement | null
-    input?.click()
-  }
+    event.preventDefault();
+    const input = document.getElementById('pdf-upload-input') as HTMLInputElement | null;
+    input?.click();
+  };
 
   return (
     <div className="space-y-3">
@@ -114,19 +114,25 @@ export default function FileUpload({ onFileLoaded }: FileUploadProps) {
         />
 
         <div className="flex flex-col gap-3 text-center">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl upload-icon">
-            <FileText className="w-6 h-6" />
+          <div className="upload-icon mx-auto flex h-12 w-12 items-center justify-center rounded-xl">
+            <FileText className="h-6 w-6" />
           </div>
 
           <div className="space-y-1">
             <div className="flex items-center justify-center gap-2">
-              <p className="text-base font-semibold sm:text-lg" style={{ color: 'var(--text-strong)' }}>
+              <p
+                className="text-base font-semibold sm:text-lg"
+                style={{ color: 'var(--text-strong)' }}
+              >
                 Arrastra tu estado de cuenta Santander aquí
               </p>
               <Tooltip>
                 <TooltipTrigger>
                   <span className="inline-flex">
-                    <Info className="w-4 h-4" style={{ color: 'var(--text-soft)', cursor: 'help' }} />
+                    <Info
+                      className="h-4 w-4"
+                      style={{ color: 'var(--text-soft)', cursor: 'help' }}
+                    />
                   </span>
                 </TooltipTrigger>
                 <TooltipContent>Solo PDFs de estados de cuenta Santander</TooltipContent>
@@ -171,10 +177,12 @@ export default function FileUpload({ onFileLoaded }: FileUploadProps) {
           Consejo: usa el mismo PDF que descargas desde tu banco para mantener la lectura correcta.
         </div>
 
-        <div className={`upload-feedback ${error ? 'upload-feedback-error' : ''} px-3 py-2 leading-5`}>
+        <div
+          className={`upload-feedback ${error ? 'upload-feedback-error' : ''} px-3 py-2 leading-5`}
+        >
           {error || 'Si el archivo no es válido, te lo avisamos aquí mismo antes de procesarlo.'}
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -24,7 +24,10 @@
               "task_name": "Remove useEffect dark class logic from App.jsx",
               "description": "Remove useEffect that adds/removes 'dark' class on documentElement",
               "files_affected": ["src/App.jsx"],
-              "acceptance_criteria": ["No useEffect adding 'dark' class", "No documentElement.classList manipulation for theme"],
+              "acceptance_criteria": [
+                "No useEffect adding 'dark' class",
+                "No documentElement.classList manipulation for theme"
+              ],
               "dependencies": ["T1.1"],
               "effort": "Small"
             },
@@ -33,7 +36,10 @@
               "task_name": "Remove localStorage theme caching from App.jsx",
               "description": "Remove localStorage.getItem and localStorage.setItem for theme",
               "files_affected": ["src/App.jsx"],
-              "acceptance_criteria": ["No localStorage access for theme", "No 'theme' key in localStorage code"],
+              "acceptance_criteria": [
+                "No localStorage access for theme",
+                "No 'theme' key in localStorage code"
+              ],
               "dependencies": ["T1.2"],
               "effort": "Small"
             },
@@ -42,7 +48,10 @@
               "task_name": "Remove ThemeToggle import from Header.jsx",
               "description": "Remove ThemeToggle import and its usage from Header component",
               "files_affected": ["src/components/Header.jsx"],
-              "acceptance_criteria": ["No ThemeToggle import", "No <ThemeToggle /> component usage"],
+              "acceptance_criteria": [
+                "No ThemeToggle import",
+                "No <ThemeToggle /> component usage"
+              ],
               "dependencies": [],
               "effort": "Small"
             },
@@ -60,7 +69,10 @@
               "task_name": "Remove dark: Tailwind classes from components",
               "description": "Grep for 'dark:' classes across all components and remove them",
               "files_affected": ["src/components/*.jsx"],
-              "acceptance_criteria": ["No 'dark:' Tailwind classes found", "Run: grep -r 'dark:' src/"],
+              "acceptance_criteria": [
+                "No 'dark:' Tailwind classes found",
+                "Run: grep -r 'dark:' src/"
+              ],
               "dependencies": ["T1.5"],
               "effort": "Medium"
             },
@@ -78,7 +90,10 @@
               "task_name": "Remove --color-dark-mode from @theme block",
               "description": "Remove --color-dark-mode property from @theme block in index.css",
               "files_affected": ["src/index.css"],
-              "acceptance_criteria": ["No --color-dark-mode in @theme", "Run: grep 'dark-mode' src/index.css"],
+              "acceptance_criteria": [
+                "No --color-dark-mode in @theme",
+                "Run: grep 'dark-mode' src/index.css"
+              ],
               "dependencies": ["T1.7"],
               "effort": "Small"
             }
@@ -93,7 +108,11 @@
               "task_name": "Add Google Fonts @import to index.css",
               "description": "Add @import for Plus Jakarta Sans and Inter from Google Fonts at top of index.css",
               "files_affected": ["src/index.css"],
-              "acceptance_criteria": ["@import includes Plus Jakarta Sans", "@import includes Inter", "Import placed at top of file"],
+              "acceptance_criteria": [
+                "@import includes Plus Jakarta Sans",
+                "@import includes Inter",
+                "Import placed at top of file"
+              ],
               "dependencies": ["T1.8"],
               "effort": "Small"
             },
@@ -102,7 +121,11 @@
               "task_name": "Update global font-family declarations",
               "description": "Update CSS font-family for headlines (Plus Jakarta Sans) and body (Inter) in index.css",
               "files_affected": ["src/index.css"],
-              "acceptance_criteria": ["h1-h6 use Plus Jakarta Sans", "body uses Inter", "font-family declarations updated"],
+              "acceptance_criteria": [
+                "h1-h6 use Plus Jakarta Sans",
+                "body uses Inter",
+                "font-family declarations updated"
+              ],
               "dependencies": ["T2.1"],
               "effort": "Small"
             },
@@ -111,7 +134,10 @@
               "task_name": "Verify font loading in browser",
               "description": "Test in browser that Plus Jakarta Sans and Inter render correctly",
               "files_affected": [],
-              "acceptance_criteria": ["DevTools shows correct fonts loaded", "Text renders with expected font families"],
+              "acceptance_criteria": [
+                "DevTools shows correct fonts loaded",
+                "Text renders with expected font families"
+              ],
               "dependencies": ["T2.2"],
               "effort": "Small"
             }
@@ -135,7 +161,10 @@
               "task_name": "Add design.md colors to @theme block",
               "description": "Add all design system colors to @theme block in index.css",
               "files_affected": ["src/index.css"],
-              "acceptance_criteria": ["@theme block includes all colors", "Colors match design.md values"],
+              "acceptance_criteria": [
+                "@theme block includes all colors",
+                "Colors match design.md values"
+              ],
               "dependencies": ["T3.1"],
               "effort": "Medium"
             },
@@ -143,8 +172,15 @@
               "task_id": "T3.3",
               "task_name": "Update component CSS to use new colors",
               "description": "Update Header, FileUpload, CategoryList to use new color values or Tailwind utilities",
-              "files_affected": ["src/components/Header.jsx", "src/components/FileUpload.jsx", "src/components/CategoryList.jsx"],
-              "acceptance_criteria": ["Components use new design colors", "No hardcoded color values remain"],
+              "files_affected": [
+                "src/components/Header.jsx",
+                "src/components/FileUpload.jsx",
+                "src/components/CategoryList.jsx"
+              ],
+              "acceptance_criteria": [
+                "Components use new design colors",
+                "No hardcoded color values remain"
+              ],
               "dependencies": ["T3.2"],
               "effort": "Medium"
             },
@@ -153,7 +189,10 @@
               "task_name": "Verify color consistency",
               "description": "Verify Header, FileUpload, CategoryList use consistent colors per design.md",
               "files_affected": [],
-              "acceptance_criteria": ["All components match design colors", "Color contrast meets standards"],
+              "acceptance_criteria": [
+                "All components match design colors",
+                "Color contrast meets standards"
+              ],
               "dependencies": ["T3.3"],
               "effort": "Small"
             }
@@ -177,7 +216,11 @@
               "task_name": "Create Button atom",
               "description": "Create reusable Button component at src/components/atoms/Button.jsx with primary/secondary variants",
               "files_affected": ["src/components/atoms/Button.jsx"],
-              "acceptance_criteria": ["Button renders", "Has primary/secondary variants", "Uses design system colors"],
+              "acceptance_criteria": [
+                "Button renders",
+                "Has primary/secondary variants",
+                "Uses design system colors"
+              ],
               "dependencies": ["T4.1"],
               "effort": "Medium"
             },
@@ -186,7 +229,11 @@
               "task_name": "Create Input atom",
               "description": "Create reusable Input component at src/components/atoms/Input.jsx with label and error states",
               "files_affected": ["src/components/atoms/Input.jsx"],
-              "acceptance_criteria": ["Input renders", "Supports label prop", "Shows error state correctly"],
+              "acceptance_criteria": [
+                "Input renders",
+                "Supports label prop",
+                "Shows error state correctly"
+              ],
               "dependencies": ["T4.1"],
               "effort": "Medium"
             },
@@ -204,7 +251,11 @@
               "task_name": "Create Card atom",
               "description": "Create reusable Card component at src/components/atoms/Card.jsx with padding and shadow",
               "files_affected": ["src/components/atoms/Card.jsx"],
-              "acceptance_criteria": ["Card renders", "Has proper padding and shadow", "Uses design colors"],
+              "acceptance_criteria": [
+                "Card renders",
+                "Has proper padding and shadow",
+                "Uses design colors"
+              ],
               "dependencies": ["T4.1"],
               "effort": "Medium"
             },
@@ -222,7 +273,10 @@
               "task_name": "Create TransactionRow molecule if needed",
               "description": "Create TransactionRow molecule combining Badge + text for transaction display (only if design requires)",
               "files_affected": ["src/components/molecules/TransactionRow.jsx"],
-              "acceptance_criteria": ["Component renders if created", "Combines existing component logic"],
+              "acceptance_criteria": [
+                "Component renders if created",
+                "Combines existing component logic"
+              ],
               "dependencies": ["T4.6"],
               "effort": "Medium"
             },
@@ -231,7 +285,10 @@
               "task_name": "Create CategoryItem molecule if needed",
               "description": "Create CategoryItem molecule combining Badge + icon for category display (only if design requires)",
               "files_affected": ["src/components/molecules/CategoryItem.jsx"],
-              "acceptance_criteria": ["Component renders if created", "Combines existing component logic"],
+              "acceptance_criteria": [
+                "Component renders if created",
+                "Combines existing component logic"
+              ],
               "dependencies": ["T4.6"],
               "effort": "Medium"
             }
@@ -255,7 +312,11 @@
               "task_name": "Refactor FileUpload.jsx to use atoms",
               "description": "Refactor FileUpload to import and use atomic Input and Button components",
               "files_affected": ["src/components/FileUpload.jsx"],
-              "acceptance_criteria": ["FileUpload uses Input atom", "FileUpload uses Button atom", "Imports from atoms/ directory"],
+              "acceptance_criteria": [
+                "FileUpload uses Input atom",
+                "FileUpload uses Button atom",
+                "Imports from atoms/ directory"
+              ],
               "dependencies": ["T5.1"],
               "effort": "Medium"
             },
@@ -264,7 +325,11 @@
               "task_name": "Refactor CategoryList.jsx to use atoms",
               "description": "Refactor CategoryList to import and use atomic components (Badge, Card)",
               "files_affected": ["src/components/CategoryList.jsx"],
-              "acceptance_criteria": ["CategoryList uses Badge atom", "CategoryList uses Card atom", "Imports from atoms/ directory"],
+              "acceptance_criteria": [
+                "CategoryList uses Badge atom",
+                "CategoryList uses Card atom",
+                "Imports from atoms/ directory"
+              ],
               "dependencies": ["T5.2"],
               "effort": "Medium"
             },
@@ -324,7 +389,10 @@
               "task_name": "Color DevTools inspection",
               "description": "Inspect computed styles in DevTools to verify all colors match design.md",
               "files_affected": [],
-              "acceptance_criteria": ["Computed colors match design.md", "All theme colors applied correctly"],
+              "acceptance_criteria": [
+                "Computed colors match design.md",
+                "All theme colors applied correctly"
+              ],
               "dependencies": ["T6.4"],
               "effort": "Small"
             }

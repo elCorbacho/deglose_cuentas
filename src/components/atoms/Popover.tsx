@@ -8,4 +8,4 @@ export {
   Popover,
   PopoverTrigger,
   PopoverContent,
-} from '@/components/ui/popover'
+} from '@/components/ui/popover';
