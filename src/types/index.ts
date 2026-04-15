@@ -21,6 +21,7 @@ export interface CategoryJson {
   name: string;
   icon: string;
   keywords: string[];
+  color?: string;
 }
 
 export interface CategoriesPayload {

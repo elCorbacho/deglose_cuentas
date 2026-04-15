@@ -15,11 +15,18 @@ import Sidebar from './components/organisms/Sidebar';
 import { extractText } from './lib/pdfParser';
 import { parse } from './lib/transactionExtractor';
 import { categorize } from './lib/categorizer';
-import { group } from './lib/aggregator';
+import { group, mergeTransactions } from './lib/aggregator';
 import { parseDate, formatCLP } from './lib/formatters';
+import { filterTransactions } from './lib/search';
 import { getCategories } from './services/api';
 import { savePdfState, loadPdfState, clearPdfState } from './services/pdfState';
 import { CATEGORIES as DEFAULT_CATEGORIES } from './data/categories';
+
+interface MultiPdfState {
+  id: string;
+  fileName: string;
+  transactions: CategorizedTransaction[];
+}
 
 // Convert JSON format to object format used by categorizer
 function convertCategoriesFromJSON(jsonCategories: CategoryJson[]): CategoriesMap {
@@ -34,16 +41,40 @@ function convertCategoriesFromJSON(jsonCategories: CategoryJson[]): CategoriesMa
 }
 
 export default function App() {
-  const [rawTransactions, setRawTransactions] = useState<CategorizedTransaction[]>([]);
+  const [pdfStates, setPdfStates] = useState<MultiPdfState[]>(() => {
+    const savedState = loadPdfState();
+    if (savedState && savedState.rawTransactions?.length > 0) {
+      return [
+        {
+          id: 'restored',
+          fileName: savedState.fileName || '',
+          transactions: savedState.rawTransactions as CategorizedTransaction[],
+        },
+      ];
+    }
+    return [];
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [desde, setDesde] = useState('');
   const [hasta, setHasta] = useState('');
-  const [fileName, setFileName] = useState('');
   const [activeView, setActiveView] = useState<'upload' | 'dashboard' | 'analysis' | 'config'>(
-    'upload'
+    () => {
+      const savedState = loadPdfState();
+      return savedState && savedState.rawTransactions?.length > 0 ? 'analysis' : 'upload';
+    }
   );
   const [categoriesConfig, setCategoriesConfig] = useState<CategoriesMap>(DEFAULT_CATEGORIES);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  // Derive all transactions from all loaded PDFs
+  const rawTransactions = useMemo(
+    () => mergeTransactions(pdfStates.map((s) => s.transactions)),
+    [pdfStates]
+  );
+
+  // Convenience: latest fileName for legacy persistence (use first loaded file's name)
+  const fileName = pdfStates[0]?.fileName ?? '';
 
   // Load categories from backend on mount
   useEffect(() => {
@@ -64,16 +95,6 @@ export default function App() {
     loadCategories();
   }, []);
 
-  // Restore PDF state from storage on mount
-  useEffect(() => {
-    const savedState = loadPdfState();
-    if (savedState && savedState.rawTransactions?.length > 0) {
-      setRawTransactions(savedState.rawTransactions as CategorizedTransaction[]);
-      setFileName(savedState.fileName || '');
-      setActiveView('analysis');
-    }
-  }, []);
-
   const parseInputDateLocal = (dateStr: string, endOfDay = false): Date | null => {
     const [year, month, day] = dateStr.split('-').map(Number);
     if (!year || !month || !day) return null;
@@ -83,41 +104,62 @@ export default function App() {
     return new Date(year, month - 1, day, 0, 0, 0, 0);
   };
 
-  const handleFile = async (file: File) => {
+  const handleFiles = async (files: File[]) => {
     setLoading(true);
     setError('');
-    setFileName(file.name);
 
-    try {
-      const text = await extractText(file);
+    const newPdfStates: MultiPdfState[] = [];
+    const errors: string[] = [];
 
-      const transactions = parse(text);
+    for (const file of files) {
+      try {
+        const text = await extractText(file);
+        const transactions = parse(text);
 
-      if (transactions.length === 0) {
-        setError('No se encontraron transacciones en el PDF.');
-        setRawTransactions([]);
-        setActiveView('upload');
-      } else {
-        // Use categories from config or default
-        const cats = categoriesConfig || DEFAULT_CATEGORIES;
-        const categorized = categorize(transactions, cats);
-        setRawTransactions(categorized);
-        setActiveView('analysis');
-
-        // Persist PDF state
-        savePdfState({ rawTransactions: categorized, fileName: file.name });
+        if (transactions.length === 0) {
+          errors.push(`No se encontraron transacciones en el PDF "${file.name}".`);
+        } else {
+          const cats = categoriesConfig || DEFAULT_CATEGORIES;
+          const categorized = categorize(transactions, cats);
+          newPdfStates.push({
+            id: `${file.name}-${Date.now()}`,
+            fileName: file.name,
+            transactions: categorized,
+          });
+        }
+      } catch (err) {
+        const message = err instanceof Error ? err.message : 'Error desconocido';
+        console.error('PDF Error:', err);
+        errors.push(`Error en "${file.name}": ${message}.`);
       }
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Error desconocido';
-      console.error('PDF Error:', err);
-      setError(
-        `Error al procesar el PDF: ${message}. Verifica que sea un estado de cuenta Santander.`
-      );
-      setRawTransactions([]);
-      setActiveView('upload');
-    } finally {
-      setLoading(false);
     }
+
+    if (newPdfStates.length > 0) {
+      setPdfStates((prev) => {
+        const updated = [...prev, ...newPdfStates];
+        // Persist first file for backward compat
+        savePdfState({
+          rawTransactions: updated.flatMap((s) => s.transactions),
+          fileName: updated[0].fileName,
+        });
+        return updated;
+      });
+      setActiveView('analysis');
+    }
+
+    if (errors.length > 0) {
+      setError(errors.join(' '));
+      if (newPdfStates.length === 0) {
+        setActiveView('upload');
+      }
+    }
+
+    setLoading(false);
+  };
+
+  // Legacy single-file handler (kept for backward compat — not actively used)
+  const _handleFile = async (file: File) => {
+    await handleFiles([file]);
   };
 
   const filteredTransactions = useMemo(() => {
@@ -134,18 +176,24 @@ export default function App() {
     });
   }, [rawTransactions, desde, hasta]);
 
+  // Apply search filter on top of date filter — drives both metrics and export
+  const searchFilteredTransactions = useMemo(
+    () => filterTransactions(filteredTransactions, searchTerm),
+    [filteredTransactions, searchTerm]
+  );
+
   const { categories, grandTotal } = useMemo(
-    () => group(filteredTransactions, categoriesConfig),
-    [filteredTransactions, categoriesConfig]
+    () => group(searchFilteredTransactions, categoriesConfig),
+    [searchFilteredTransactions, categoriesConfig]
   );
 
   const hasTransactions = rawTransactions.length > 0;
   const resetResults = () => {
-    setRawTransactions([]);
-    setFileName('');
+    setPdfStates([]);
     setDesde('');
     setHasta('');
     setError('');
+    setSearchTerm('');
     setActiveView('upload');
     clearPdfState();
   };
@@ -171,9 +219,14 @@ export default function App() {
       setCategoriesConfig(converted);
       localStorage.setItem('cachedCategories', JSON.stringify(converted));
 
-      if (rawTransactions.length > 0) {
-        const categorized = categorize(rawTransactions, converted);
-        setRawTransactions(categorized);
+      if (pdfStates.length > 0) {
+        // Re-categorize each PDF's transactions with new categories
+        setPdfStates((prev) =>
+          prev.map((ps) => ({
+            ...ps,
+            transactions: categorize(ps.transactions, converted) as CategorizedTransaction[],
+          }))
+        );
       }
 
       toast.success('Categorías actualizadas correctamente');
@@ -202,7 +255,7 @@ export default function App() {
 
         {!loading && (
           <div className="panel relative z-10 mt-5 p-4 sm:p-5">
-            <FileUpload onFileLoaded={handleFile} />
+            <FileUpload onFilesLoaded={handleFiles} />
           </div>
         )}
       </section>
@@ -415,8 +468,11 @@ export default function App() {
         <Dashboard
           categories={categories}
           grandTotal={grandTotal}
-          transactionCount={filteredTransactions.length}
+          transactionCount={searchFilteredTransactions.length}
           dateRange={{ desde, hasta }}
+          allTransactions={filteredTransactions}
+          searchTerm={searchTerm}
+          onSearch={setSearchTerm}
         />
       ) : (
         <section className="panel status-card status-card--empty">

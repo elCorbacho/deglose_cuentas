@@ -93,3 +93,11 @@ export function group(
 
   return { categories: result, grandTotal };
 }
+
+/**
+ * Merge multiple arrays of PersistedTransaction into a single flat list.
+ * Duplicates are preserved (design decision: user sees them explicitly).
+ */
+export function mergeTransactions(txs: PersistedTransaction[][]): PersistedTransaction[] {
+  return txs.flat();
+}

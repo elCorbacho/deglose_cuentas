@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { group } from '../lib/aggregator';
+import { group, mergeTransactions } from '../lib/aggregator';
 
 describe('group', () => {
   it('preserves category totals and grand total', () => {
@@ -198,5 +198,54 @@ describe('group', () => {
       'INVALID A',
       'INVALID B',
     ]);
+  });
+});
+
+describe('mergeTransactions', () => {
+  it('merges two arrays of transactions into a single flat list', () => {
+    const arr1 = [
+      { fecha: '01/01/24', comercio: 'JUMBO', monto: 10000, categoria: 'Supermercado' },
+      { fecha: '02/01/24', comercio: 'COPEC', monto: 5000, categoria: 'Combustible' },
+    ];
+    const arr2 = [
+      { fecha: '03/01/24', comercio: 'STARBUCKS', monto: 3000, categoria: 'Cafeterías' },
+    ];
+
+    const result = mergeTransactions([arr1, arr2]);
+
+    expect(result).toHaveLength(3);
+    expect(result[0].comercio).toBe('JUMBO');
+    expect(result[1].comercio).toBe('COPEC');
+    expect(result[2].comercio).toBe('STARBUCKS');
+  });
+
+  it('returns empty array when all input arrays are empty', () => {
+    const result = mergeTransactions([[], []]);
+    expect(result).toHaveLength(0);
+    expect(result).toEqual([]);
+  });
+
+  it('handles a single array without modification', () => {
+    const arr = [{ fecha: '01/01/24', comercio: 'LIDER', monto: 20000, categoria: 'Supermercado' }];
+
+    const result = mergeTransactions([arr]);
+
+    expect(result).toHaveLength(1);
+    expect(result[0].comercio).toBe('LIDER');
+  });
+
+  it('preserves duplicates — design decision: duplicates are visible', () => {
+    const tx = { fecha: '01/01/24', comercio: 'DUPLICADO', monto: 1000, categoria: 'Otros' };
+    const result = mergeTransactions([[tx], [tx]]);
+
+    expect(result).toHaveLength(2);
+    expect(result[0].comercio).toBe('DUPLICADO');
+    expect(result[1].comercio).toBe('DUPLICADO');
+  });
+
+  it('returns empty array when called with empty outer array', () => {
+    const result = mergeTransactions([]);
+    expect(result).toHaveLength(0);
+    expect(result).toEqual([]);
   });
 });

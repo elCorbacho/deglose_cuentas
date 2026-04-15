@@ -197,6 +197,38 @@ describe('App', () => {
     });
   });
 
+  it('CRITICAL 2: search in Dashboard updates grandTotal metric to reflect filtered transactions', async () => {
+    const { container } = render(<App />);
+    await uploadPdf(container);
+
+    // Wait for processing to complete
+    await waitFor(() => {
+      expect(screen.queryByText(/procesando tu pdf/i)).not.toBeInTheDocument();
+    });
+
+    // Navigate to dashboard view (the "Dashboard" sidebar button)
+    await userEvent.click(screen.getByRole('button', { name: /^dashboard$/i }));
+
+    // Dashboard shows full total initially in "Total Gastado" card
+    await waitFor(() => {
+      // The dashboard-total-value should show combined total
+      expect(screen.getByRole('article', { name: /total gastado/i })).toBeInTheDocument();
+    });
+
+    // Confirm initial grandTotal is $17.000 (2 transactions combined)
+    const totalCard = screen.getByRole('article', { name: /total gastado/i });
+    expect(totalCard).toHaveTextContent('$17.000');
+
+    // Type in the search bar to filter to only Supermercado transaction ($12.000)
+    const searchInput = screen.getByRole('textbox', { name: /buscar transacciones/i });
+    await userEvent.type(searchInput, 'SUPERMERCADO');
+
+    // After search the "Total Gastado" card should reflect only the filtered transaction ($12.000)
+    await waitFor(() => {
+      expect(totalCard).toHaveTextContent('$12.000');
+    });
+  });
+
   it('lets users expand and collapse category details for readability', async () => {
     const { container } = render(<App />);
     await uploadPdf(container);

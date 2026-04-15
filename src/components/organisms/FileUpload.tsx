@@ -4,31 +4,55 @@ import { FileText, Info } from 'lucide-react';
 import Button from '../atoms/Button';
 import { Tooltip, TooltipTrigger, TooltipContent } from '../atoms/Tooltip';
 
+const MAX_FILES = 10;
+
 interface FileUploadProps {
-  onFileLoaded: (file: File) => void | Promise<void>;
+  onFilesLoaded: (files: File[]) => void | Promise<void>;
 }
 
-export default function FileUpload({ onFileLoaded }: FileUploadProps) {
+export default function FileUpload({ onFilesLoaded }: FileUploadProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [error, setError] = useState('');
 
-  const handleFile = (file?: File) => {
+  const handleFiles = (fileList: FileList | File[]) => {
     setError('');
+    const files = Array.from(fileList);
 
-    if (!file || file.type !== 'application/pdf') {
-      setError('Archivo no válido. Sube un PDF de estado de cuenta para continuar.');
+    if (files.length === 0) return;
+
+    // 10-file limit
+    if (files.length > MAX_FILES) {
+      setError(`Se permite un máximo de ${MAX_FILES} archivos a la vez.`);
       return;
     }
 
-    onFileLoaded(file);
+    // Validate each file: only PDFs allowed
+    const validFiles: File[] = [];
+    const invalidNames: string[] = [];
+
+    for (const file of files) {
+      if (file.type !== 'application/pdf') {
+        invalidNames.push(file.name);
+      } else {
+        validFiles.push(file);
+      }
+    }
+
+    if (invalidNames.length > 0) {
+      setError(`Archivo no válido: ${invalidNames.join(', ')}. Solo se permiten archivos PDF.`);
+    }
+
+    if (validFiles.length > 0) {
+      onFilesLoaded(validFiles);
+    }
   };
 
   const handleDrop = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     setIsDragging(false);
-    const droppedFile = event.dataTransfer?.files?.[0];
-    if (!droppedFile) return;
-    handleFile(droppedFile);
+    const dropped = event.dataTransfer?.files;
+    if (!dropped || dropped.length === 0) return;
+    handleFiles(dropped);
   };
 
   const handleDragOver = (event: DragEvent<HTMLDivElement>) => {
@@ -39,7 +63,9 @@ export default function FileUpload({ onFileLoaded }: FileUploadProps) {
   const handleDragLeave = () => setIsDragging(false);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    handleFile(event.target.files?.[0]);
+    const fileList = event.target.files;
+    if (!fileList) return;
+    handleFiles(fileList);
   };
 
   const handleOpenPicker = (event: MouseEvent<HTMLButtonElement>) => {
@@ -109,6 +135,7 @@ export default function FileUpload({ onFileLoaded }: FileUploadProps) {
           id="pdf-upload-input"
           type="file"
           accept="application/pdf"
+          multiple
           onChange={handleInputChange}
           className="hidden"
         />
@@ -135,11 +162,13 @@ export default function FileUpload({ onFileLoaded }: FileUploadProps) {
                     />
                   </span>
                 </TooltipTrigger>
-                <TooltipContent>Solo PDFs de estados de cuenta Santander</TooltipContent>
+                <TooltipContent>
+                  Hasta {MAX_FILES} PDFs de estados de cuenta Santander
+                </TooltipContent>
               </Tooltip>
             </div>
             <p className="text-sm leading-5" style={{ color: 'var(--text-base)' }}>
-              También puedes hacer clic para seleccionar el archivo.
+              Podés seleccionar hasta {MAX_FILES} archivos a la vez.
             </p>
           </div>
 
@@ -178,6 +207,7 @@ export default function FileUpload({ onFileLoaded }: FileUploadProps) {
         </div>
 
         <div
+          role={error ? 'alert' : undefined}
           className={`upload-feedback ${error ? 'upload-feedback-error' : ''} px-3 py-2 leading-5`}
         >
           {error || 'Si el archivo no es válido, te lo avisamos aquí mismo antes de procesarlo.'}

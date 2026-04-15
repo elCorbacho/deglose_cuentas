@@ -3,13 +3,17 @@
  * Displays financial summary with key metrics and visualizations
  */
 
-import { Fragment } from 'react';
+import { Fragment, useMemo } from 'react';
 import type { ComponentType, SVGProps } from 'react';
-import type { CategoryGroup, DateRange } from '../../types';
+import type { CategoryGroup, DateRange, PersistedTransaction } from '../../types';
 import { formatCLP, formatDate } from '../../lib/formatters';
 import { TrendingUp, Calendar, Receipt, Wallet, Info } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { motion } from 'framer-motion';
+import SearchBar from '../molecules/SearchBar';
+import ExportButton from '../atoms/ExportButton';
+import { filterTransactions } from '../../lib/search';
+import { exportToCsv } from '../../lib/csvExporter';
 
 interface MetricCardProps {
   icon: ComponentType<SVGProps<SVGSVGElement>>;
@@ -31,6 +35,9 @@ interface DashboardProps {
   grandTotal: number;
   transactionCount: number;
   dateRange: DateRange;
+  allTransactions?: PersistedTransaction[];
+  searchTerm?: string;
+  onSearch?: (term: string) => void;
 }
 
 function MetricCard({ icon: Icon, label, value, subValue, highlight, tooltip }: MetricCardProps) {
@@ -135,7 +142,18 @@ export default function Dashboard({
   grandTotal,
   transactionCount,
   dateRange,
+  allTransactions = [],
+  searchTerm = '',
+  onSearch,
 }: DashboardProps) {
+  const filteredForExport = useMemo(
+    () => filterTransactions(allTransactions, searchTerm),
+    [allTransactions, searchTerm]
+  );
+
+  const hasActiveSearch = searchTerm.trim() !== '';
+  const isEmptySearchResult = hasActiveSearch && filteredForExport.length === 0;
+
   const topCategories = categories.slice(0, 5);
   const maxTotal = topCategories[0]?.total || 0;
 
@@ -181,6 +199,36 @@ export default function Dashboard({
           </div>
         </div>
       </motion.article>
+
+      {/* Search and Export toolbar */}
+      {onSearch && (
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex-1">
+            <SearchBar onSearch={onSearch} />
+          </div>
+          <ExportButton
+            onClick={() => exportToCsv(filteredForExport)}
+            disabled={filteredForExport.length === 0}
+          />
+        </div>
+      )}
+
+      {/* Empty search state */}
+      {isEmptySearchResult && onSearch && (
+        <div className="flex flex-col items-center gap-3 py-8 text-center">
+          <p className="text-sm" style={{ color: 'var(--text-soft)' }}>
+            No se encontraron transacciones
+          </p>
+          <button
+            type="button"
+            onClick={() => onSearch('')}
+            className="text-sm font-medium underline"
+            style={{ color: 'var(--text-base)' }}
+          >
+            Limpiar búsqueda
+          </button>
+        </div>
+      )}
 
       {/* Stats Grid */}
       <div
