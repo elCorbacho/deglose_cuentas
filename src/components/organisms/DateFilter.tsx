@@ -7,6 +7,7 @@ import { useState, useMemo } from 'react';
 import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import DatePicker from '../molecules/DatePicker';
+import { toISODate } from '../../lib/formatters';
 
 interface DateFilterProps {
   desde: string;
@@ -39,8 +40,8 @@ const PRESETS: DatePreset[] = [
       const firstDay = new Date(currentYear, currentMonth, 1);
       const lastDay = new Date(currentYear, currentMonth + 1, 0);
       return {
-        desde: firstDay.toISOString().split('T')[0],
-        hasta: lastDay.toISOString().split('T')[0],
+        desde: toISODate(firstDay),
+        hasta: toISODate(lastDay),
       };
     },
   },
@@ -52,8 +53,8 @@ const PRESETS: DatePreset[] = [
       const firstDay = new Date(currentYear, currentMonth - 1, 1);
       const lastDay = new Date(currentYear, currentMonth, 0);
       return {
-        desde: firstDay.toISOString().split('T')[0],
-        hasta: lastDay.toISOString().split('T')[0],
+        desde: toISODate(firstDay),
+        hasta: toISODate(lastDay),
       };
     },
   },
@@ -65,8 +66,8 @@ const PRESETS: DatePreset[] = [
       const thirtyDaysAgo = new Date(now);
       thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
       return {
-        desde: thirtyDaysAgo.toISOString().split('T')[0],
-        hasta: now.toISOString().split('T')[0],
+        desde: toISODate(thirtyDaysAgo),
+        hasta: toISODate(now),
       };
     },
   },

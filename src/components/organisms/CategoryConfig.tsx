@@ -559,7 +559,7 @@ const CategoryConfig = ({ onSaved }: CategoryConfigProps) => {
                   <Input
                     id="category-color"
                     type="text"
-                    value={selectedCategory.color}
+                    value={selectedCategory.color ?? ''}
                     onChange={(e) => updateCategory({ ...selectedCategory, color: e.target.value })}
                     className="w-20 text-center text-lg"
                   />

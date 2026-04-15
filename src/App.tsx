@@ -40,6 +40,25 @@ function convertCategoriesFromJSON(jsonCategories: CategoryJson[]): CategoriesMa
   return obj;
 }
 
+function loadCachedCategories(): CategoriesMap | null {
+  try {
+    const cached = localStorage.getItem('cachedCategories');
+    if (!cached) return null;
+    return JSON.parse(cached) as CategoriesMap;
+  } catch (error) {
+    console.warn('Could not read cached categories:', error);
+    return null;
+  }
+}
+
+function saveCachedCategories(categories: CategoriesMap): void {
+  try {
+    localStorage.setItem('cachedCategories', JSON.stringify(categories));
+  } catch (error) {
+    console.warn('Could not cache categories:', error);
+  }
+}
+
 export default function App() {
   const [pdfStates, setPdfStates] = useState<MultiPdfState[]>(() => {
     const savedState = loadPdfState();
@@ -83,12 +102,12 @@ export default function App() {
         const data = await getCategories();
         const converted = convertCategoriesFromJSON(data.categories);
         setCategoriesConfig(converted);
-        localStorage.setItem('cachedCategories', JSON.stringify(converted));
+        saveCachedCategories(converted);
       } catch (err) {
         console.warn('Could not load categories from backend, using cached/default:', err);
-        const cached = localStorage.getItem('cachedCategories');
+        const cached = loadCachedCategories();
         if (cached) {
-          setCategoriesConfig(JSON.parse(cached));
+          setCategoriesConfig(cached);
         }
       }
     };
@@ -217,7 +236,7 @@ export default function App() {
       const data = await getCategories();
       const converted = convertCategoriesFromJSON(data.categories);
       setCategoriesConfig(converted);
-      localStorage.setItem('cachedCategories', JSON.stringify(converted));
+      saveCachedCategories(converted);
 
       if (pdfStates.length > 0) {
         // Re-categorize each PDF's transactions with new categories
