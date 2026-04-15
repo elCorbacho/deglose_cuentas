@@ -9,11 +9,10 @@ import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 
-// Use /tmp for Vercel (serverless has no persistent storage)
-// For development, use backend/data
-const DATA_DIR =
-  process.env.NODE_ENV === 'production' ? '/tmp' : path.join(__dirname, '../backend/data');
+// Local development file store (production serverless writes are disabled)
+const DATA_DIR = path.join(__dirname, '../backend/data');
 
 const categoriesFilePath = path.join(DATA_DIR, 'categories.json');
 
@@ -26,13 +25,23 @@ function ensureDataDir() {
 
 // CORS headers
 function setCorsHeaders(res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+  res.setHeader('Access-Control-Allow-Origin', IS_PRODUCTION ? frontendUrl : '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 }
 
 // Read categories file
 async function readCategories() {
+  if (IS_PRODUCTION) {
+    if (!fs.existsSync(categoriesFilePath)) {
+      throw new Error('Persistent storage not configured for serverless read operations');
+    }
+
+    const data = fs.readFileSync(categoriesFilePath, 'utf8');
+    return JSON.parse(data);
+  }
+
   try {
     ensureDataDir();
     if (!fs.existsSync(categoriesFilePath)) {
@@ -48,6 +57,10 @@ async function readCategories() {
 
 // Write categories file
 async function writeCategories(data) {
+  if (IS_PRODUCTION) {
+    throw new Error('Persistent storage not configured for serverless write operations');
+  }
+
   try {
     ensureDataDir();
     fs.writeFileSync(categoriesFilePath, JSON.stringify(data, null, 2));

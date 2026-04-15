@@ -154,14 +154,10 @@ export default function App() {
     }
 
     if (newPdfStates.length > 0) {
-      setPdfStates((prev) => {
-        const updated = [...prev, ...newPdfStates];
-        // Persist first file for backward compat
-        savePdfState({
-          rawTransactions: updated.flatMap((s) => s.transactions),
-          fileName: updated[0].fileName,
-        });
-        return updated;
+      setPdfStates(newPdfStates);
+      savePdfState({
+        rawTransactions: newPdfStates.flatMap((s) => s.transactions),
+        fileName: newPdfStates[0].fileName,
       });
       setActiveView('analysis');
     }

@@ -1,0 +1,32 @@
+status: archived
+archived_at: 2026-04-15T01:09:12.000Z
+archive_verdict: PASS
+
+engram_observation_ids:
+  proposal: 808
+  spec: 810
+  design: 811
+  tasks: 813
+  apply_progress: 814
+  verify_report: 815
+
+test_results:
+  test_files: 9
+  tests_passed: 92
+  tests_failed: 0
+  duration_seconds: 9.19
+
+lint_results:
+  errors: 0
+  warnings: 0
+
+requirements_status:
+  REQ-1_PDF_State_Replacement: implemented
+  REQ-2_LocalStorage_Reset: implemented_tested
+  REQ-3_Total_Amount_Accuracy: implemented
+  REQ-4_Regression_Update: completed
+  REQ-5_MultiSelect_Combination: implemented_tested
+
+files_changed:
+  - src/App.tsx
+  - src/test/App.test.tsx

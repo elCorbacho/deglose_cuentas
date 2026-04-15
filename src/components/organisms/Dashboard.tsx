@@ -204,7 +204,7 @@ export default function Dashboard({
       {onSearch && (
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex-1">
-            <SearchBar onSearch={onSearch} />
+            <SearchBar value={searchTerm} onSearch={onSearch} />
           </div>
           <ExportButton
             onClick={() => exportToCsv(filteredForExport)}

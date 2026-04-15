@@ -5,6 +5,6 @@
   },
   "deploy": {
     "numReplicas": 1,
-    "startCommand": "npm run preview"
+    "startCommand": "npm --prefix backend install --omit=dev && npm --prefix backend run start"
   }
 }
