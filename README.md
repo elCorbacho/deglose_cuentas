@@ -21,8 +21,9 @@ La rama `ui_5.0` acompaña la base ya migrada a TypeScript y deja el proyecto li
 
 ## Requisitos
 
-- Node.js 20 o superior
+- Node.js 20.19+ en la rama 20, o 22.12+ (requisito de Vite 8)
 - npm
+- Para ejecutar desde Windows: WSL con Ubuntu y Node.js/npm instalados dentro de Ubuntu.
 
 ## Instalación
 
@@ -30,11 +31,14 @@ La rama `ui_5.0` acompaña la base ya migrada a TypeScript y deja el proyecto li
 npm install
 cd backend
 npm install
+cd ..
 ```
+
+Ejecutar desde la raíz del proyecto. La instalación se realiza una vez y se repite cuando cambian las dependencias.
 
 ## Desarrollo local
 
-Abrí dos terminales:
+Abrir dos terminales en la raíz del proyecto:
 
 ### Frontend
 
@@ -50,6 +54,40 @@ npm run dev
 ```
 
 El frontend corre en `http://localhost:5173` y el backend en `http://localhost:3001`.
+
+### Desde Windows con WSL
+
+Los siguientes comandos se ejecutan en **PowerShell o Windows Terminal con PowerShell**, no en una terminal de Ubuntu. Se asume que la distribución se llama `Ubuntu` y que el proyecto está en `/home/histo/proyectos/deglose_cuentas`; adaptar estos valores si la instalación usa otros nombres o rutas.
+
+**Primera instalación:** instalar las dependencias de ambas aplicaciones dentro de WSL:
+
+```powershell
+wsl -d Ubuntu -- bash -ic "cd /home/histo/proyectos/deglose_cuentas && npm install && cd backend && npm install"
+```
+
+**Terminal 1 — backend:**
+
+```powershell
+wsl -d Ubuntu -- bash -ic "cd /home/histo/proyectos/deglose_cuentas/backend && npm run dev"
+```
+
+**Terminal 2 — frontend:**
+
+```powershell
+wsl -d Ubuntu -- bash -ic "cd /home/histo/proyectos/deglose_cuentas && npm run dev"
+```
+
+Abrir **http://localhost:5173** en el navegador de Windows. Mantener ambas terminales abiertas mientras se usa la aplicación. Para detenerla, presionar `Ctrl+C` en cada terminal.
+
+### Problemas comunes al iniciar
+
+| Problema                                       | Qué comprobar                                                                                                                                                                                                  |
+| ---------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| WSL no encuentra `Ubuntu`                      | Ejecutar `wsl --list --verbose` en PowerShell y usar el nombre real de la distribución. Si WSL no está instalado, completar primero la [instalación oficial](https://learn.microsoft.com/windows/wsl/install). |
+| `node` o `npm` no se encuentran                | Instalar Node.js y npm dentro de Ubuntu; una instalación en Windows no reemplaza la de WSL.                                                                                                                    |
+| Faltan dependencias                            | Repetir el comando de primera instalación en WSL para instalar tanto frontend como backend.                                                                                                                    |
+| El navegador no abre la aplicación             | Confirmar que la terminal del frontend sigue activa y usar la URL que muestra Vite; si el puerto 5173 está ocupado, puede elegir otro.                                                                         |
+| Las categorías se muestran, pero no se guardan | Revisar la terminal del backend y la URL de la API. La aplicación puede mostrar categorías cacheadas aunque el backend no esté disponible.                                                                     |
 
 ## Variables de entorno
 
